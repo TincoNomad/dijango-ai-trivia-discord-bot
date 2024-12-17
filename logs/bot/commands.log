@@ -1,0 +1,910 @@
+2024-11-07 23:20:39,224 - bot_commands - ERROR - Error in trivia command: 'TriviaAPIClient' object has no attribute 'get'
+2024-11-08 00:20:01,508 - bot_commands - ERROR - Error in trivia command: 'TriviaAPIClient' object has no attribute 'get'
+2024-11-08 00:24:26,212 - bot_commands - ERROR - Error in trivia command: Cannot connect to host 127.0.0.1:8000 ssl:default [Connect call failed ('127.0.0.1', 8000)]
+2024-11-08 00:33:53,888 - bot_commands - ERROR - Error in trivia command: 404, message='Not Found', url='http://127.0.0.1:8000/api/trivias'
+2024-11-08 12:43:58,474 - bot_commands - ERROR - Error in trivia command: 404, message='Not Found', url='http://127.0.0.1:8000/trivias'
+2024-11-08 12:44:33,795 - bot_commands - ERROR - Error in trivia command: 404, message='Not Found', url='http://127.0.0.1:8000/trivias'
+2024-11-08 12:48:38,741 - bot_commands - ERROR - Error in trivia command: 404, message='Not Found', url='http://127.0.0.1:8000/trivias'
+2024-11-08 12:50:45,468 - bot_commands - ERROR - Error in trivia command: 404, message='Not Found', url='http://127.0.0.1:8000/api/trivias'
+2024-11-08 12:52:41,530 - bot_commands - ERROR - Error in trivia command: 404, message='Not Found', url='http://127.0.0.1:8000/api/trivias'
+2024-11-08 12:57:04,782 - bot_commands - ERROR - Error in trivia command: 404, message='Not Found', url='http://127.0.0.1:8000/api/trivias//difficulty/'
+2024-11-08 12:58:57,784 - bot_commands - ERROR - Error in trivia command: 401, message='Unauthorized', url='http://127.0.0.1:8000/api/trivias/difficulty/'
+2024-11-08 13:54:32,053 - bot_commands - ERROR - Error in trivia command: 'NoneType' object has no attribute 'wait_for'
+2024-11-08 22:19:12,074 - bot_commands - ERROR - Error in trivia command: 'TriviaGame' object has no attribute 'difficulty_choice'
+2024-11-08 22:32:25,261 - bot_commands - ERROR - Error in trivia command: 'TriviaGame' object has no attribute 'difficulty_choice'
+2024-11-08 23:01:57,946 - bot_commands - ERROR - Error in trivia command: No trivias available
+2024-11-08 23:07:47,917 - bot_commands - ERROR - Error in trivia command: No trivias available
+2024-11-08 23:57:41,399 - bot_commands - ERROR - Error in trivia command: 403, message='Forbidden', url='http://127.0.0.1:8000/api/trivias/filter/?theme=3acf39bf-d249-4aa1-87e0-dc974e9029be&difficulty=1'
+2024-11-09 13:17:30,036 - bot_commands - ERROR - Error in score command: Session is closed
+2024-11-09 17:08:28,818 - bot_commands - ERROR - Error in score command: Session is closed
+2024-11-09 18:01:55,790 - bot_commands - ERROR - Error in trivia command: Session is closed
+2024-11-09 18:09:19,356 - bot_commands - ERROR - Error in trivia command: Session is closed
+2024-11-09 18:21:52,106 - bot_commands - ERROR - Error in trivia command: Session is closed
+2024-11-09 18:32:05,291 - bot_commands - ERROR - Error in score command: 404, message='Not Found', url='http://127.0.0.1:8000/api/score/leaderboard/'
+2024-11-09 21:06:56,254 - bot_commands - ERROR - Error in score command: 404, message='Not Found', url='http://127.0.0.1:8000/api/score/leaderboard/'
+2024-11-21 19:05:04,028 - bot_commands - ERROR - Error getting trivia: 403, message='Forbidden', url='http://127.0.0.1:8000/api/score/leaderboard/'
+2024-11-21 19:05:04,319 - bot_commands - ERROR - Error in trivia command: 403, message='Forbidden', url='http://127.0.0.1:8000/api/score/leaderboard/'
+2024-11-22 10:40:46,207 - bot_commands - ERROR - Error getting trivia: 403, message='Forbidden', url='http://127.0.0.1:8000/api/score/leaderboard/'
+2024-11-22 10:40:46,531 - bot_commands - ERROR - Error in trivia command: 403, message='Forbidden', url='http://127.0.0.1:8000/api/score/leaderboard/'
+2024-11-28 19:16:04,523 - bot_commands - ERROR - Error getting trivia: 403, message='Forbidden', url='http://127.0.0.1:8000/api/score/leaderboard/'
+2024-11-28 19:16:04,741 - bot_commands - ERROR - Error in trivia command: 403, message='Forbidden', url='http://127.0.0.1:8000/api/score/leaderboard/'
+2024-11-28 19:32:25,910 - bot_commands - ERROR - Error getting trivia: api/leaderboards/
+2024-11-28 19:32:26,207 - bot_commands - ERROR - Error in trivia command: api/leaderboards/
+2024-11-30 00:32:39,828 - bot_commands - ERROR - Error getting trivia: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/'
+2024-11-30 00:32:40,059 - bot_commands - ERROR - Error in trivia command: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/'
+2024-12-01 21:14:11,808 - bot_commands - ERROR - Error getting trivia: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/'
+2024-12-01 21:14:12,028 - bot_commands - ERROR - Error in trivia command: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/'
+2024-12-02 08:54:43,301 - bot_commands - ERROR - Error in score command: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/'
+2024-12-03 06:22:17,465 - bot_commands - ERROR - Error in score command: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/?discord_channel=%F0%9F%A4%96%E2%80%A2ai-trivia'
+2024-12-03 06:22:17,697 - bot_commands - ERROR - Error getting trivia: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/?discord_channel=%F0%9F%A4%96%E2%80%A2ai-trivia'
+2024-12-03 06:22:17,909 - bot_commands - ERROR - Error in trivia command: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/?discord_channel=%F0%9F%A4%96%E2%80%A2ai-trivia'
+2024-12-03 06:27:45,488 - bot_commands - ERROR - Error getting trivia: Datos inválidos para actualizar score
+2024-12-03 06:27:45,685 - bot_commands - ERROR - Error in trivia command: Datos inválidos para actualizar score
+2024-12-03 11:30:27,981 - bot_commands - ERROR - Error in score command: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/?discord_channel=%F0%9F%A4%96%E2%80%A2ai-trivia'
+2024-12-03 11:30:29,983 - bot_commands - ERROR - Error getting trivia: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/?discord_channel=%F0%9F%A4%96%E2%80%A2ai-trivia'
+2024-12-03 11:30:30,452 - bot_commands - ERROR - Error in trivia command: 400, message='Bad Request', url='http://127.0.0.1:8000/api/leaderboards/?discord_channel=%F0%9F%A4%96%E2%80%A2ai-trivia'
+2024-12-03 13:18:12,184 - bot_commands - ERROR - Error getting trivia: Datos inválidos para actualizar score
+2024-12-03 13:18:12,420 - bot_commands - ERROR - Error in trivia command: Datos inválidos para actualizar score
+2024-12-03 17:39:44,613 - bot_commands - ERROR - Error in score command: 'list' object has no attribute 'get'
+2024-12-03 18:05:36,555 - bot_commands - ERROR - Error getting trivia: Datos inválidos para actualizar score
+2024-12-03 18:05:36,820 - bot_commands - ERROR - Error in trivia command: Datos inválidos para actualizar score
+2024-12-04 11:39:29,071 - bot_commands - ERROR - Error in score command: Session is closed
+2024-12-05 14:33:13,091 - bot_commands - ERROR - Error in score command: 'list' object has no attribute 'get'
+2024-12-06 13:36:57,534 - bot_commands - ERROR - Error creating trivia: 'Member' object has no attribute '_banner'
+2024-12-06 14:44:14,813 - bot_commands - ERROR - Error creating trivia: 'Member' object has no attribute '_banner'
+2024-12-06 15:00:34,408 - bot_commands - ERROR - Error creating trivia: Error creating trivia: Unknown error
+2024-12-06 15:20:29,278 - bot_commands - INFO - Attempting to create trivia with data:
+2024-12-06 15:20:29,280 - bot_commands - INFO - {
+  "title": "prueba3",
+  "theme": "1",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "questions": [
+    {
+      "question_title": "esta funcionando?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "son mas de 3 preguntas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-06 15:20:29,397 - bot_commands - INFO - API Response: {
+  "id": "ea5e6008-3599-42e9-9239-4c444fa477f2",
+  "title": "prueba3",
+  "is_public": true,
+  "difficulty": 1,
+  "theme": "1",
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "created_by": "99b13037-8ebf-4d37-ae4c-6d8fc83e8bef",
+  "created_at": "2024-12-06T20:20:29.375876Z",
+  "questions": [
+    {
+      "id": 10,
+      "question_title": "esta funcionando?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 22,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 23,
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "id": 24,
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "question_title": "son mas de 3 preguntas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 25,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 26,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 27,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 28,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "can_make_private": false
+}
+2024-12-06 15:20:29,397 - bot_commands - ERROR - API Error Response: {
+  "id": "ea5e6008-3599-42e9-9239-4c444fa477f2",
+  "title": "prueba3",
+  "is_public": true,
+  "difficulty": 1,
+  "theme": "1",
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "created_by": "99b13037-8ebf-4d37-ae4c-6d8fc83e8bef",
+  "created_at": "2024-12-06T20:20:29.375876Z",
+  "questions": [
+    {
+      "id": 10,
+      "question_title": "esta funcionando?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 22,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 23,
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "id": 24,
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "question_title": "son mas de 3 preguntas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 25,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 26,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 27,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 28,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "can_make_private": false
+}
+2024-12-06 15:20:29,397 - bot_commands - ERROR - Error during trivia creation:
+2024-12-06 15:20:29,397 - bot_commands - ERROR - Data sent: {
+  "title": "prueba3",
+  "theme": "1",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "questions": [
+    {
+      "question_title": "esta funcionando?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "son mas de 3 preguntas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-06 15:20:29,398 - bot_commands - ERROR - Exception: Error creating trivia: Unknown error
+2024-12-06 15:20:29,398 - bot_commands - ERROR - Error creating trivia: Error creating trivia: Unknown error
+2024-12-06 18:53:36,523 - bot_commands - INFO - Attempting to create trivia with data:
+2024-12-06 18:53:36,525 - bot_commands - INFO - {
+  "title": "prueba3",
+  "theme": "1",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "questions": [
+    {
+      "question_title": "esta funcionando?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "son mas de 3 preguntas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-06 18:53:36,619 - bot_commands - INFO - API Response: {
+  "id": "133a607b-49a8-4b5f-b53a-6baaff3e20e5",
+  "title": "prueba3",
+  "is_public": true,
+  "difficulty": 1,
+  "theme": "1",
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "created_by": "99b13037-8ebf-4d37-ae4c-6d8fc83e8bef",
+  "created_at": "2024-12-06T23:53:36.572418Z",
+  "questions": [
+    {
+      "id": 13,
+      "question_title": "esta funcionando?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 29,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 30,
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "id": 31,
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "question_title": "son mas de 3 preguntas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 32,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 33,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 34,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 35,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "can_make_private": false
+}
+2024-12-06 20:42:23,596 - bot_commands - INFO - Available themes list: 1- pruebas
+2024-12-06 20:42:23,596 - bot_commands - INFO - Theme choices dictionary: {}
+2024-12-06 20:42:25,987 - bot_commands - INFO - User response: 1
+2024-12-06 20:42:25,988 - bot_commands - INFO - Converted to number: 1
+2024-12-06 20:42:25,988 - bot_commands - INFO - Theme choices keys: dict_keys([])
+2024-12-06 20:42:25,988 - bot_commands - INFO - Is number in choices?: False
+2024-12-06 20:42:25,989 - bot_commands - INFO - Theme not found in choices, using as new theme: 1
+2024-12-06 20:50:10,635 - bot_commands - INFO - Available themes list: 1- pruebas
+2024-12-06 20:50:10,635 - bot_commands - INFO - Theme choices dictionary: {}
+2024-12-06 20:50:12,588 - bot_commands - INFO - User response: 1
+2024-12-06 20:50:12,588 - bot_commands - INFO - Converted to number: 1
+2024-12-06 20:50:12,588 - bot_commands - INFO - Theme choices keys: dict_keys([])
+2024-12-06 20:50:12,588 - bot_commands - INFO - Is number in choices?: False
+2024-12-06 20:50:12,588 - bot_commands - INFO - Theme not found in choices, using as new theme: 1
+2024-12-06 20:52:01,672 - bot_commands - INFO - Attempting to create trivia with data:
+2024-12-06 20:52:01,672 - bot_commands - INFO - {
+  "title": "prueba3",
+  "theme": "1",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "questions": [
+    {
+      "question_title": "esta funcionando?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "son mas de 3 preguntas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-06 20:52:01,696 - bot_commands - INFO - API Response: {
+  "id": "1e0996aa-2db8-40c5-9fa2-feb3bb294f33",
+  "title": "prueba3",
+  "is_public": true,
+  "difficulty": 1,
+  "theme": "1",
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "created_by": "99b13037-8ebf-4d37-ae4c-6d8fc83e8bef",
+  "created_at": "2024-12-07T01:52:01.686615Z",
+  "questions": [
+    {
+      "id": 16,
+      "question_title": "esta funcionando?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 36,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 37,
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "id": 38,
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "question_title": "son mas de 3 preguntas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 39,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 40,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 41,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 42,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "can_make_private": false
+}
+2024-12-06 20:55:36,366 - bot_commands - INFO - Available themes list: 1- pruebas
+2- 1
+2024-12-06 20:55:36,366 - bot_commands - INFO - Theme choices dictionary: {1: {'id': 'fbbba4d6-8bd4-46d0-a4ee-a46090ac4a17', 'name': 'pruebas'}, 2: {'id': '97962678-fcb5-47c7-8388-7bf791d9a03a', 'name': '1'}}
+2024-12-06 20:55:45,966 - bot_commands - INFO - User response: 1
+2024-12-06 20:55:45,966 - bot_commands - INFO - Converted to number: 1
+2024-12-06 20:55:45,966 - bot_commands - INFO - Theme choices keys: dict_keys([1, 2])
+2024-12-06 20:55:45,967 - bot_commands - INFO - Is number in choices?: True
+2024-12-06 20:55:45,967 - bot_commands - INFO - Theme data found: {'id': 'fbbba4d6-8bd4-46d0-a4ee-a46090ac4a17', 'name': 'pruebas'}
+2024-12-06 20:55:45,967 - bot_commands - INFO - Selected theme name: pruebas
+2024-12-06 20:57:08,553 - bot_commands - ERROR - Error mostrando puntuación final: 404, message='Not Found', url='http://127.0.0.1:8000/api/leaderboards/'
+2024-12-06 22:00:34,135 - bot_commands - INFO - Attempting to create trivia with data:
+2024-12-06 22:00:34,137 - bot_commands - INFO - {
+  "title": "prueba3",
+  "theme": "pruebas",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "questions": [
+    {
+      "question_title": "esta funcionando?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "son mas de 3 preguntas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-06 22:00:34,184 - bot_commands - INFO - API Response: {
+  "id": "389c79fd-d22a-4818-b3f9-663ce2a604d4",
+  "title": "prueba3",
+  "is_public": true,
+  "difficulty": 1,
+  "theme": "pruebas",
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "created_by": "99b13037-8ebf-4d37-ae4c-6d8fc83e8bef",
+  "created_at": "2024-12-07T03:00:34.175019Z",
+  "questions": [
+    {
+      "id": 19,
+      "question_title": "esta funcionando?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 43,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 44,
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "id": 45,
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "question_title": "son mas de 3 preguntas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 46,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 47,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 48,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 49,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "can_make_private": false
+}
+2024-12-07 07:31:15,238 - bot_commands - INFO - Attempting to create trivia with data:
+2024-12-07 07:31:15,239 - bot_commands - INFO - {
+  "title": "prueba3",
+  "theme": "pruebas",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": null,
+  "questions": [
+    {
+      "question_title": "sadfasdf",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "asdfa",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "asdf",
+      "answers": [
+        {
+          "answer_title": "sdff",
+          "is_correct": true
+        },
+        {
+          "answer_title": "adasd",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "asdfasda",
+      "answers": [
+        {
+          "answer_title": "asdf",
+          "is_correct": true
+        },
+        {
+          "answer_title": "asdfwe",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-07 07:31:15,252 - bot_commands - ERROR - Error during trivia creation:
+2024-12-07 07:31:15,252 - bot_commands - ERROR - Data sent: {
+  "title": "prueba3",
+  "theme": "pruebas",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": null,
+  "questions": [
+    {
+      "question_title": "sadfasdf",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "asdfa",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "asdf",
+      "answers": [
+        {
+          "answer_title": "sdff",
+          "is_correct": true
+        },
+        {
+          "answer_title": "adasd",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "asdfasda",
+      "answers": [
+        {
+          "answer_title": "asdf",
+          "is_correct": true
+        },
+        {
+          "answer_title": "asdfwe",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-07 07:31:15,252 - bot_commands - ERROR - Exception: 400, message='Bad Request', url='http://127.0.0.1:8000/api/trivias/'
+2024-12-07 07:31:15,253 - bot_commands - ERROR - Error creating trivia: 400, message='Bad Request', url='http://127.0.0.1:8000/api/trivias/'
+2024-12-07 08:38:26,979 - bot_commands - ERROR - Error creating trivia: 400, message='Bad Request', url='http://127.0.0.1:8000/api/trivias/'
+2024-12-07 09:13:13,354 - bot_commands - ERROR - Error creating trivia: 400, message='Bad Request', url='http://127.0.0.1:8000/api/trivias/'
+2024-12-07 09:44:25,726 - bot_commands - INFO - Attempting to create trivia with data:
+2024-12-07 09:44:25,734 - bot_commands - INFO - {
+  "title": "prueba4",
+  "theme": "pruebas",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": null,
+  "questions": [
+    {
+      "question_title": "esta funcionando?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "son mas de 3 preguntas?",
+      "answers": [
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-07 09:44:25,957 - bot_commands - ERROR - Error during trivia creation:
+2024-12-07 09:44:25,957 - bot_commands - ERROR - Data sent: {
+  "title": "prueba4",
+  "theme": "pruebas",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": null,
+  "questions": [
+    {
+      "question_title": "esta funcionando?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "son mas de 3 preguntas?",
+      "answers": [
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-07 09:44:25,958 - bot_commands - ERROR - Exception: 500, message='Internal Server Error', url='http://127.0.0.1:8000/api/trivias/'
+2024-12-07 09:44:25,958 - bot_commands - ERROR - Error creating trivia: 500, message='Internal Server Error', url='http://127.0.0.1:8000/api/trivias/'
+2024-12-09 19:12:17,159 - bot_commands - INFO - Listing trivias for user: tinconomad
