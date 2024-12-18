@@ -198,6 +198,6 @@ class ConcurrentTriviaFactory(TriviaFactory):
                         {'answer_title': f'Wrong Answer {i}', 'is_correct': False}
                     ]
                 }
-                for i in range(1, 4)  # 3 preguntas
+                for i in range(1, 4)
             ]
         }

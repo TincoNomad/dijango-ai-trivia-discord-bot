@@ -12,6 +12,7 @@ import uuid
 from api.apps.trivia.tests.factories import QuestionFactory, AnswerFactory, TriviaFactory, InvalidTriviaFactory, UserFactory, PrivateTriviaFactory, ConcurrentTriviaFactory
 from concurrent.futures import ThreadPoolExecutor
 import threading
+from rest_framework.test import APIClient
 
 @pytest.mark.django_db
 class TestTriviaBase:
@@ -718,18 +719,24 @@ class TestTriviaAdvanced(TestTriviaBase):
         }
 
     def test_concurrent_trivia_creation(self, api_client_authenticated):
-        """Prueba la creación simultánea de trivias."""
+        """Prueba la creación simultánea de trivias por diferentes usuarios."""
+        
         def create_trivia():
+            # Crear un usuario único para cada hilo
+            thread_user = UserFactory()
+            thread_user.save()
+            
+            client = APIClient()
             thread_id = threading.get_ident()
+            client.force_authenticate(user=thread_user)
+            
             data = ConcurrentTriviaFactory.create_concurrent_data(
-                user=self.user,
+                user=thread_user,  # Usar el usuario específico del hilo
                 theme=self.theme,
                 thread_id=thread_id
             )
-            response = api_client_authenticated.post(self.url, data, format='json')
-            print(f"Thread {thread_id} response: {response.status_code}")  # Debug
-            if response.status_code != 201:
-                print(f"Error data: {response.data}")  # Debug
+            
+            response = client.post(self.url, data, format='json')
             return response
 
         with ThreadPoolExecutor(max_workers=3) as executor:
