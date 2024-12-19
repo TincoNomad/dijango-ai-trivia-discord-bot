@@ -5,6 +5,11 @@ Contains constants and test data fixtures.
 
 from typing import TypedDict, List
 
+MAX_QUESTIONS = 5
+MIN_QUESTIONS = 3
+MAX_ANSWERS = 5
+MIN_ANSWERS = 2
+
 class AnswerData(TypedDict):
     answer_title: str
     is_correct: bool

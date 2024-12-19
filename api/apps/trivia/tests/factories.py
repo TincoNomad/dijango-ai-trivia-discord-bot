@@ -91,6 +91,15 @@ class TriviaFactory(factory.django.DjangoModelFactory):
                 for answer_data in question_data.get('answers', []):
                     AnswerFactory(question=question, **answer_data)
 
+    @classmethod
+    def create_with_specific_questions(cls, question_count, answers_per_question=2, **kwargs):
+        """Create a trivia with specific number of questions and answers"""
+        trivia = cls.create(**kwargs)
+        for _ in range(question_count):
+            question = QuestionFactory(trivia=trivia)
+            AnswerFactory.create_batch(answers_per_question, question=question)
+        return trivia
+
 class PrivateTriviaFactory(TriviaFactory):
     """Factory for creating private trivias"""
     

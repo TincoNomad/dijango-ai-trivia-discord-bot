@@ -8,12 +8,12 @@ the test environment before running tests.
 import os
 import django
 import pytest
-from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
-from api.apps.trivia.models import Theme
+from api.apps.trivia.models import Theme, Trivia
+from api.apps.users.models import CustomUser
 from api.apps.trivia.tests.factories import (
     UserFactory, ThemeFactory, TriviaFactory, 
-    QuestionFactory, AnswerFactory, PrivateTriviaFactory, MaxQuestionsTrivia
+    QuestionFactory, AnswerFactory, PrivateTriviaFactory, MaxQuestionsTrivia, InvalidTriviaFactory
 )
 
 def pytest_configure(config):
@@ -71,10 +71,22 @@ def trivia_with_max_questions(db, test_user):
     """Create a trivia with maximum questions"""
     return MaxQuestionsTrivia(created_by=test_user)
 
+@pytest.fixture
+def trivia_with_max_answers(db, test_user):
+    """Create a trivia with a question that has maximum answers"""
+    trivia = TriviaFactory(created_by=test_user)
+    question = QuestionFactory(trivia=trivia)
+    AnswerFactory.create_batch(5, question=question)  # Crear 5 respuestas (máximo)
+    return trivia
+
+@pytest.fixture
+def trivia_with_invalid_difficulty(db, test_user):
+    """Create a trivia with invalid difficulty"""
+    return InvalidTriviaFactory(created_by=test_user)
+
 @pytest.fixture(autouse=True)
-def clean_db(db):
-    """Cleans the database after each test."""
-    yield
-    User = get_user_model()
-    User.objects.all().delete()
+def clean_db():
+    """Limpiar la base de datos antes de cada prueba"""
+    Trivia.objects.all().delete()
     Theme.objects.all().delete()
+    CustomUser.objects.exclude(username='admin').delete()
