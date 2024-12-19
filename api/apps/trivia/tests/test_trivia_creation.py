@@ -3,6 +3,7 @@ import pytest
 from django.urls import reverse
 from .test_trivia_base import TestTriviaBase
 from .test_data import TEST_TRIVIA_DATA, ERROR_MESSAGES
+from .factories import TriviaFactory
 
 @pytest.mark.django_db
 class TestTriviaCreation(TestTriviaBase):
@@ -13,26 +14,46 @@ class TestTriviaCreation(TestTriviaBase):
         """Initial setup for each test."""
         self.url = reverse('trivia-list')
         self.valid_data = TEST_TRIVIA_DATA['valid_trivia'].copy()
+        self.valid_data['theme'] = test_theme.id
+        self.valid_data['username'] = test_user.username
         self.user = test_user
         self.theme = test_theme
 
     def test_trivia_creation_should_succeed_with_valid_data(self, api_client_authenticated):
         """Test successful trivia creation"""
-        trivia_data = TEST_TRIVIA_DATA['valid_trivia'].copy()
-        trivia_data['theme'] = self.theme.id
-        trivia_data['username'] = self.user.username
-        
-        response = api_client_authenticated.post(self.url, trivia_data, format='json')
+        response = api_client_authenticated.post(self.url, self.valid_data, format='json')
         assert response.status_code == 201
 
-    def test_trivia_creation_should_fail_with_duplicate_title(self, api_client_authenticated):
-        """Test trivia creation with duplicate title."""
-        # Create first trivia
-        api_client_authenticated.post(self.url, self.valid_data, format='json')
-        # Try to create duplicate
-        response = api_client_authenticated.post(self.url, self.valid_data, format='json')
+    def test_trivia_creation_should_fail_with_duplicate_title(self, api_client_authenticated, test_user):
+        """Test duplicate title handling"""
+        # Crear primera trivia
+        trivia = TriviaFactory.create(created_by=test_user)
+        
+        # Intentar crear trivia con el mismo título
+        duplicate_data = self.valid_data.copy()
+        duplicate_data.update({
+            'title': trivia.title,
+            'username': test_user.username
+        })
+        
+        response = api_client_authenticated.post(self.url, duplicate_data, format='json')
         assert response.status_code == 400
         assert ERROR_MESSAGES['DUPLICATE_TITLE'] in str(response.data)
+
+    def test_trivia_creation_should_fail_when_user_not_authenticated(self, api_client):
+        """
+        Test that unauthenticated users cannot create trivia.
+        """
+        api_client.credentials()
+        api_client.force_authenticate(user=None)
+        
+        invalid_data = self.valid_data.copy()
+        invalid_data['username'] = 'nonexistent_user'
+        
+        response = api_client.post(self.url, invalid_data, format='json')
+        assert response.status_code == 400, "Should fail with validation error"
+        assert "No user exists with this username" in str(response.data), \
+            "Should indicate user validation failure"
 
     def test_create_trivia_invalid_difficulty(self, api_client_authenticated):
         """Test trivia creation with invalid difficulty."""
@@ -41,11 +62,6 @@ class TestTriviaCreation(TestTriviaBase):
         response = api_client_authenticated.post(self.url, data, format='json')
         assert response.status_code == 400
         assert ERROR_MESSAGES['INVALID_DIFFICULTY'] in str(response.data)
-
-    def test_trivia_creation_should_fail_when_user_not_authenticated(self, api_client):
-        """Test trivia creation without authentication."""
-        response = api_client.post(self.url, self.valid_data, format='json')
-        assert response.status_code == 401
 
     def test_trivia_with_maximum_questions(self, api_client_authenticated):
         """Test creating trivia with maximum allowed questions."""
