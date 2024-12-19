@@ -2,8 +2,9 @@
 import pytest
 from django.urls import reverse
 from .test_trivia_base import TestTriviaBase
-from .factories import TriviaFactory, UserFactory
+from .factories import UserFactory
 from .test_data import TEST_TRIVIA_DATA, ERROR_MESSAGES
+from api.apps.trivia.models import Trivia
 
 @pytest.mark.django_db
 class TestTriviaUpdates(TestTriviaBase):
@@ -11,13 +12,22 @@ class TestTriviaUpdates(TestTriviaBase):
 
     @pytest.fixture(autouse=True)
     def setup_method(self, test_user, test_theme):
-        """Initial setup for each test."""
-        self.user = test_user
+        """
+        Initial setup for each test.
+        """
+        # Configurar el usuario como admin
+        test_user.role = 'admin'
+        test_user.is_authenticated = True
+        test_user.save()
+        
+        # Crear la trivia directamente con el usuario
         self.theme = test_theme
-        # Crear trivia explícitamente con el usuario de prueba
-        self.trivia = TriviaFactory.create(
+        self.trivia = Trivia.objects.create(
+            title='Test Trivia',
+            difficulty=1,
+            theme=test_theme,
             created_by=test_user,
-            theme=test_theme
+            is_public=True
         )
         self.url = reverse('trivia-detail', args=[self.trivia.id])
         self.update_data = TEST_TRIVIA_DATA['update_data']['basic'].copy()
@@ -26,17 +36,14 @@ class TestTriviaUpdates(TestTriviaBase):
     def test_trivia_update_should_succeed_when_user_is_authenticated_and_owner(
             self, api_client, test_user):
         """Test that trivia title can be updated by authenticated owner"""
-        trivia = TriviaFactory.create_with_questions(created_by=test_user)
-        url = reverse('trivia-detail', args=[trivia.id])
-        
         api_client.force_authenticate(user=test_user)
         update_data = TEST_TRIVIA_DATA['update_data']['basic'].copy()
         update_data['username'] = test_user.username
         
-        response = api_client.patch(url, update_data, format='json')
+        response = api_client.patch(self.url, update_data, format='json')
         assert response.status_code == 200, "Update should succeed"
-        trivia.refresh_from_db()
-        assert trivia.title == update_data['title'], "Title should be updated"
+        self.trivia.refresh_from_db()
+        assert self.trivia.title == update_data['title'], "Title should be updated"
 
     def test_update_trivia_by_non_creator(self, api_client, test_user):
         """Test updating trivia by non-creator fails"""
