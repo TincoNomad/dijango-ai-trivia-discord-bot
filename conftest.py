@@ -15,6 +15,7 @@ from api.apps.trivia.tests.factories import (
     UserFactory, ThemeFactory, TriviaFactory, 
     QuestionFactory, AnswerFactory, PrivateTriviaFactory, MaxQuestionsTrivia, InvalidTriviaFactory
 )
+from api.apps.score.tests.factories import LeaderBoardFactory, ScoreFactory
 
 def pytest_configure(config):
     """Configure test environment"""
@@ -90,3 +91,20 @@ def clean_db():
     Trivia.objects.all().delete()
     Theme.objects.all().delete()
     CustomUser.objects.exclude(username='admin').delete()
+
+@pytest.fixture
+def test_leaderboard(db, test_user):
+    """Create a test leaderboard"""
+    return LeaderBoardFactory(created_by=test_user)
+
+@pytest.fixture
+def test_score(db, test_leaderboard):
+    """Create a test score"""
+    return ScoreFactory(leaderboard=test_leaderboard)
+
+@pytest.fixture
+def leaderboard_with_scores(db, test_user):
+    """Create a leaderboard with multiple scores"""
+    leaderboard = LeaderBoardFactory(created_by=test_user)
+    ScoreFactory.create_batch(size=15, leaderboard=leaderboard)
+    return leaderboard

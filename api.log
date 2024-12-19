@@ -1845,3 +1845,5 @@ django.db.utils.ProgrammingError: (1146, "Table 'trivia_db.users_customuser' doe
 2024-12-19 17:15:29,817 - django.utils.autoreload - INFO - /app/api/apps/score/viewsets.py changed, reloading.
 2024-12-19 17:15:46,448 - django.utils.autoreload - INFO - /app/api/apps/score/serializers.py changed, reloading.
 2024-12-19 17:16:24,255 - django.utils.autoreload - INFO - /app/api/apps/score/viewsets.py changed, reloading.
+2024-12-19 17:52:41,788 - django.utils.autoreload - INFO - /app/api/apps/score/viewsets.py changed, reloading.
+2024-12-19 17:52:43,518 - django.utils.autoreload - INFO - /app/api/apps/score/viewsets.py changed, reloading.

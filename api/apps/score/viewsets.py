@@ -147,7 +147,13 @@ class ScoreViewSet(viewsets.ModelViewSet):
                 return Response({
                     "error": "Missing required fields"
                 }, status=status.HTTP_400_BAD_REQUEST)
-                
+            
+            # ✅ Validar puntos negativos
+            if int(points) < 0:
+                return Response({
+                    "error": "Points cannot be negative"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            
             # Get the leaderboard
             try:
                 leaderboard = LeaderBoard.objects.get(discord_channel=discord_channel)
