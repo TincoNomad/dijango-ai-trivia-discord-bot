@@ -9,7 +9,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.db import models
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LeaderBoardViewSet(viewsets.ModelViewSet):
@@ -165,7 +164,12 @@ class ScoreViewSet(viewsets.ModelViewSet):
             
             if existing_score:
                 # Update existing points
-                existing_score.points += int(points)
+                update_mode = data.get('update_mode', 'add')  # 'add' o 'replace'
+                
+                if update_mode == 'add':
+                    existing_score.points += int(points)
+                else:
+                    existing_score.points = int(points)
                 existing_score.save()
                 score = existing_score
             else:

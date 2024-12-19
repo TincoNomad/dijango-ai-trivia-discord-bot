@@ -15,10 +15,10 @@ FILTER_URL = f"{TRIVIA_URL}filter/"
 GET_TRIVIA_URL = f"{TRIVIA_URL}get_trivia/"
 GET_QUESTIONS_URL = f"{TRIVIA_URL}get_questions/"
 LEADERBOARD_URL = f"{BASE_URL}/api/leaderboards/"
-SCORE_URL = f"{BASE_URL}/api/score/"
+SCORES_URL = f"{BASE_URL}/api/scores/"
 
 __all__ = [
     'BASE_URL', 'TRIVIA_URL', 'THEME_URL', 
     'DIFFICULTY_URL', 'FILTER_URL', 'GET_TRIVIA_URL',
-    'GET_QUESTIONS_URL', 'LEADERBOARD_URL', 'SCORE_URL'
+    'GET_QUESTIONS_URL', 'LEADERBOARD_URL', 'SCORES_URL'
 ]

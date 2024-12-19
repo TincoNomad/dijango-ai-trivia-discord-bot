@@ -65,6 +65,16 @@ class ScoreSerializer(serializers.ModelSerializer):
         model = Score
         fields = ['name', 'points']
 
+    def validate_points(self, value):
+        if not isinstance(value, int) or value < 0:
+            raise serializers.ValidationError("Points must be a positive integer")
+        return value
+
+    def validate_discord_channel(self, value):
+        if not value.startswith('#'):
+            raise serializers.ValidationError("Discord channel must start with #")
+        return value
+
 class TriviaWinnerSerializer(serializers.ModelSerializer):
     class Meta:
         model = TriviaWinner
