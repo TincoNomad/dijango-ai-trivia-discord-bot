@@ -1,29 +1,41 @@
 import pytest
 from django.urls import reverse
-from .test_score_base import TestScoreBase
-from .test_data import TEST_LEADERBOARD_DATA
+from .test_score_base import BaseScoreTest, LeaderboardTestMixin
 
 @pytest.mark.django_db
-class TestScorePermissions(TestScoreBase):
+class TestScorePermissions(BaseScoreTest, LeaderboardTestMixin):
     """Tests para permisos de score"""
 
     @pytest.fixture(autouse=True)
     def setup_method(self, test_user):
         """Setup para cada test"""
-        self.url = reverse('leaderboard-list')
-        self.valid_data = TEST_LEADERBOARD_DATA['valid_leaderboard'].copy()
-        self.valid_data['username'] = test_user.username
+        self.setup_test_data()
+        self.url = '/api/leaderboards/'  # ✅ Corregir URL (plural)
 
-    def test_create_leaderboard_requires_auth(self, api_client):
+    def setup_test_data(self):
+        """Configurar datos iniciales"""
+        pass
+
+    def teardown_test_data(self):
+        """Limpiar datos después del test"""
+        pass
+
+    def test_create_leaderboard_requires_auth(self, api_client, valid_score_data):
         """Test que crear leaderboard requiere autenticación"""
-        response = api_client.post(self.url, self.valid_data)
-        assert response.status_code == 400
+        # Act
+        response = api_client.post(self.url, valid_score_data)
+        
+        # Assert
+        self.assert_leaderboard_response(response, 400)
 
-    def test_create_leaderboard_success(self, api_client_authenticated):
-        """Test creación exitosa de leaderboard"""
+    def test_create_leaderboard_success(self, api_client_authenticated, valid_score_data):
+        """Test creación exitosa de leaderboard con autenticación"""
+        # Act
         response = api_client_authenticated.post(
-            self.url, 
-            data=self.valid_data,
+            self.url,
+            data=valid_score_data,
             format='json'
         )
-        assert response.status_code == 200
+
+        # Assert
+        self.assert_leaderboard_response(response, 200)

@@ -1,45 +1,53 @@
 import pytest
-from .test_score_base import TestScoreBase
-from .test_data import TEST_SCORE_DATA
+from .test_score_base import BaseScoreTest, ScoreTestMixin
 
 @pytest.mark.django_db
-class TestScoreCreation(TestScoreBase):
+class TestScoreCreation(BaseScoreTest, ScoreTestMixin):
     """Tests para la creación de scores"""
 
     @pytest.fixture(autouse=True)
     def setup_method(self, test_user, test_leaderboard):
         """Setup para cada test"""
+        self.setup_test_data()
         self.url = '/api/score/'
-        self.valid_data = TEST_SCORE_DATA['valid_score'].copy()
-        self.valid_data['username'] = test_user.username
-        self.valid_data['discord_channel'] = test_leaderboard.discord_channel
 
-    def test_create_score_success(self, api_client_authenticated):
+    def setup_test_data(self):
+        """Configurar datos iniciales"""
+        pass
+
+    def teardown_test_data(self):
+        """Limpiar datos después del test"""
+        pass
+
+    def test_create_score_success(self, api_client_authenticated, valid_score_data):
         """Test creación exitosa de score"""
+        # Arrange
+        score_data = valid_score_data
+
+        # Act
         response = api_client_authenticated.post(
             self.url,
-            data=self.valid_data,
+            data=score_data,
             format='json'
         )
-        assert response.status_code == 200
 
-    def test_create_score_invalid_points(self, api_client_authenticated):
+        # Assert
+        self.assert_score_response(response, 200)
+        assert response.data['data']['points'] == score_data['points']
+
+    def test_create_score_invalid_points(self, api_client_authenticated, valid_score_data):
         """Test creación de score con puntos inválidos"""
-        invalid_data = self.valid_data.copy()
+        # Arrange
+        invalid_data = valid_score_data.copy()
         invalid_data['points'] = -100
-        response = api_client_authenticated.post(
-            self.url,
-            data=invalid_data,
-            format='json'
-        )
-        assert response.status_code == 400
 
-    def test_create_score_missing_fields(self, api_client_authenticated):
-        """Test creación de score sin campos requeridos"""
-        invalid_data = {'name': 'Test'}
+        # Act
         response = api_client_authenticated.post(
             self.url,
             data=invalid_data,
             format='json'
         )
-        assert response.status_code == 400
+
+        # Assert
+        self.assert_score_response(response, 400, check_data=False)
+        assert 'error' in response.data

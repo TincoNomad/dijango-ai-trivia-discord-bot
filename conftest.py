@@ -16,6 +16,8 @@ from api.apps.trivia.tests.factories import (
     QuestionFactory, AnswerFactory, PrivateTriviaFactory, MaxQuestionsTrivia, InvalidTriviaFactory
 )
 from api.apps.score.tests.factories import LeaderBoardFactory, ScoreFactory
+from api.apps.score.models import Score, LeaderBoard
+
 
 def pytest_configure(config):
     """Configure test environment"""
@@ -108,3 +110,28 @@ def leaderboard_with_scores(db, test_user):
     leaderboard = LeaderBoardFactory(created_by=test_user)
     ScoreFactory.create_batch(size=15, leaderboard=leaderboard)
     return leaderboard
+
+@pytest.fixture
+def valid_score_data(test_leaderboard):
+    """Fixture para datos válidos de score"""
+    return {
+        'name': 'TestPlayer',
+        'points': 100,
+        'discord_channel': test_leaderboard.discord_channel
+    }
+
+@pytest.fixture
+def invalid_score_data():
+    """Fixture para datos inválidos de score"""
+    return {
+        'name': 'TestPlayer',
+        'points': -100,
+        'discord_channel': 'invalid-channel'
+    }
+
+@pytest.fixture(autouse=True)
+def cleanup_after_test():
+    """Limpiar datos después de cada test"""
+    yield
+    Score.objects.all().delete()
+    LeaderBoard.objects.all().delete()
