@@ -1,5 +1,4 @@
 import pytest
-from django.urls import reverse
 from .test_score_base import BaseScoreTest, LeaderboardTestMixin
 from .factories import LeaderBoardFactory, ScoreFactory
 @pytest.mark.django_db

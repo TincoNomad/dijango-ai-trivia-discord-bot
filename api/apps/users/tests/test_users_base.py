@@ -89,3 +89,24 @@ class BaseUserTest:
         user_data = TEST_USER_DATA['valid_user'].copy()
         self.create_and_authenticate_user(client, user_data)
         return client
+
+    # Agregar métodos comunes de autenticación
+    @staticmethod
+    def authenticate_user(api_client, credentials):
+        """Helper method para autenticar usuarios en las pruebas"""
+        response = api_client.post(reverse('login'), credentials, format='json')
+        if response.status_code == 200:
+            api_client.credentials(HTTP_AUTHORIZATION=f'Bearer {response.data["access"]}')
+        return response
+
+    @staticmethod
+    def create_test_user(role='user', **kwargs):
+        """Helper method para crear usuarios de prueba"""
+        user_data = {
+            'username': f'test_{role}',
+            'email': f'test_{role}@example.com',
+            'password': 'testpass123',
+            'role': role,
+            **kwargs
+        }
+        return User.objects.create_user(**user_data)

@@ -40,11 +40,10 @@ class TestUserRegistration:
         """
         response = api_client.post(self.url, self.valid_data, format='json')
         
-        # Verify user creation
-        assert response.status_code == 201
+        assert response.status_code == 201, "El registro debería ser exitoso"
         user = User.objects.get(username=self.valid_data['username'])
-        assert user.email == self.valid_data['email']
-        assert user.check_password(self.valid_data['password'])
+        assert user.email == self.valid_data['email'], "El email no coincide"
+        assert user.check_password(self.valid_data['password']), "La contraseña no fue guardada correctamente"
 
     @pytest.mark.parametrize("invalid_email", [
         "not-an-email",

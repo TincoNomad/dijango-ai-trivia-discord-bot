@@ -25,3 +25,15 @@ ERROR_MESSAGES = {
     'INVALID_CREDENTIALS': 'Invalid credentials provided.',
     'USER_NOT_FOUND': 'User not found.',
 }
+
+TEST_CASES = {
+    'registration': {
+        'valid': {...},
+        'invalid_email': [...],
+        'invalid_password': [...],
+    },
+    'authentication': {
+        'valid': {...},
+        'invalid': [...],
+    }
+}

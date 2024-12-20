@@ -135,3 +135,13 @@ def cleanup_after_test():
     yield
     Score.objects.all().delete()
     LeaderBoard.objects.all().delete()
+
+@pytest.fixture
+def mock_auth_backend(mocker):
+    """Mock del backend de autenticación"""
+    return mocker.patch('django.contrib.auth.backends.ModelBackend')
+
+@pytest.fixture
+def mock_email_service(mocker):
+    """Mock del servicio de email"""
+    return mocker.patch('django.core.mail.send_mail')

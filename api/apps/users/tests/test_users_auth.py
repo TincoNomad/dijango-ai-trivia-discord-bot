@@ -92,3 +92,50 @@ class TestUserAuthentication:
         assert 'password' in response.data
         assert 'This field is required.' in str(response.data['username'])
         assert 'This field is required.' in str(response.data['password'])
+
+    @pytest.mark.parametrize("invalid_credentials,expected_status,expected_error", [
+        (
+            {'username': '', 'password': 'test123'}, 
+            400, 
+            'This field may not be blank'
+        ),
+        (
+            {'username': 'test', 'password': ''}, 
+            400, 
+            'This field may not be blank'
+        ),
+        (
+            {'username': 'test', 'password': 'wrong'}, 
+            401, 
+            'No active account found'
+        )
+    ])
+    def test_login_failures(self, api_client, invalid_credentials, expected_status, expected_error):
+        """Test diferentes escenarios de fallo de login
+        
+        Args:
+            invalid_credentials: Credenciales inválidas a probar
+            expected_status: Código de estado HTTP esperado
+            expected_error: Mensaje de error esperado
+            
+        Verifica:
+            - 400: Para errores de validación (campos vacíos)
+            - 401: Para credenciales incorrectas
+        """
+        response = api_client.post(self.login_url, invalid_credentials, format='json')
+        assert response.status_code == expected_status, (
+            f"Se esperaba {expected_status} para las credenciales: {invalid_credentials}"
+        )
+        
+        if expected_status == 400:
+            # Verificar mensaje de error de validación
+            error_messages = [str(error) for error in response.data.values()]
+            assert any(
+                expected_error in error_msg
+                for error_msg in error_messages
+            ), f"Debería contener el mensaje '{expected_error}'. Mensajes recibidos: {error_messages}"
+        else:
+            # Verificar mensaje de credenciales inválidas
+            assert expected_error in str(response.data['detail']), (
+                f"Debería contener el mensaje '{expected_error}'"
+            )

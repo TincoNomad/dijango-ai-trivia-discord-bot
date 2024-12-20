@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import pytest
-from django.urls import reverse
 from .factories import ScoreFactory, LeaderBoardFactory
 
 class BaseScoreTest(ABC):
