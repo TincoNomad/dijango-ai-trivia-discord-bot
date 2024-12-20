@@ -1,4 +1,11 @@
-"""Tests for user credentials management."""
+"""
+Test suite for user credentials management.
+
+This module contains test cases for:
+- Credentials update
+- Password validation
+- Email update verification
+"""
 
 import pytest
 from django.urls import reverse
@@ -12,7 +19,7 @@ class TestUserCredentials:
 
     @pytest.fixture(autouse=True)
     def setup_method(self):
-        """Setup para cada test"""
+        """Set up test environment before each test"""
         self.url = reverse('update-credentials')
         self.new_credentials = {
             'username': 'newuser',
@@ -21,16 +28,21 @@ class TestUserCredentials:
         }
 
     def test_successful_credentials_update(self, api_client):
-        """Test actualización exitosa de credenciales"""
-        # Crear usuario sin credenciales
+        """
+        Test successful credentials update.
+        Should update user data and return 200.
+        """
+        # Create user without credentials
         user = User.objects.create_user(
             username=self.new_credentials['username'],
             email='',
             password=''
         )
         
+        # Update credentials
         response = api_client.post(self.url, self.new_credentials, format='json')
         
+        # Verify response and data update
         assert response.status_code == 200
         user.refresh_from_db()
         assert user.email == self.new_credentials['email']

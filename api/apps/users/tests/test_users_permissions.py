@@ -1,35 +1,32 @@
-"""Tests for user permissions."""
+"""
+Test suite for user permissions and access control.
+
+This module contains test cases for:
+- Admin access rights
+- Regular user restrictions
+- Role-based access control
+"""
 
 import pytest
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from .test_data import TEST_USER_DATA
-from rest_framework.test import APIClient
 
 User = get_user_model()
 
-@pytest.fixture
-def api_client():
-    """
-    Fixture that provides a DRF API client for testing endpoints.
-    Returns:
-        APIClient: A test client for making API requests
-    """
-    return APIClient()
-
 @pytest.mark.django_db
 class TestUserPermissions:
-    """Test cases for user permissions"""
+    """Test cases for user permissions and access control"""
 
     @pytest.fixture(autouse=True)
     def setup_method(self):
-        """Setup para cada test"""
+        """Set up test environment before each test"""
         self.users_url = reverse('user-list')
         self.valid_credentials = TEST_USER_DATA['valid_user'].copy()
 
     @pytest.fixture
     def admin_user(self):
-        """Fixture que crea un usuario admin"""
+        """Create an admin user with full privileges"""
         user = User.objects.create_user(
             username=self.valid_credentials['username'],
             email=self.valid_credentials['email'],
@@ -43,8 +40,11 @@ class TestUserPermissions:
         return user
 
     def test_admin_access(self, api_client, admin_user):
-        """Test acceso de administrador"""
-        # Login
+        """
+        Test admin user access rights.
+        Should allow full access to admin endpoints.
+        """
+        # Login as admin
         response = api_client.post(
             reverse('login'),
             self.valid_credentials,
@@ -55,18 +55,21 @@ class TestUserPermissions:
             HTTP_AUTHORIZATION=f'Bearer {response.data["access"]}'
         )
         
-        # Verificar acceso
-        me_response = api_client.get('/api/users/')  # Usar la URL completa como en el test anterior
+        # Verify admin access
+        me_response = api_client.get('/api/users/')
         assert me_response.status_code == 200
 
     def test_regular_user_restricted_access(self, api_client):
-        """Test restricción de acceso para usuario regular"""
-        # Crear usuario regular
+        """
+        Test regular user access restrictions.
+        Should prevent access to admin-only endpoints.
+        """
+        # Create regular user
         user_data = self.valid_credentials.copy()
         user_data['role'] = 'user'
         User.objects.create_user(**user_data)
         
-        # Login
+        # Login as regular user
         login_response = api_client.post(
             reverse('login'),
             user_data,
@@ -77,6 +80,6 @@ class TestUserPermissions:
             HTTP_AUTHORIZATION=f'Bearer {login_response.data["access"]}'
         )
         
-        # Verificar restricción
+        # Verify access restriction
         response = api_client.post(self.users_url, {})
         assert response.status_code == 403
