@@ -4,8 +4,18 @@ import pytest
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from .test_data import TEST_USER_DATA
+from rest_framework.test import APIClient
 
 User = get_user_model()
+
+@pytest.fixture
+def api_client():
+    """
+    Fixture that provides a DRF API client for testing endpoints.
+    Returns:
+        APIClient: A test client for making API requests
+    """
+    return APIClient()
 
 @pytest.mark.django_db
 class TestUserAuthentication:
@@ -27,6 +37,8 @@ class TestUserAuthentication:
             password=self.valid_credentials['password'],
             role='admin'
         )
+        user.is_staff = True
+        user.is_superuser = True
         user.is_authenticated = True
         user.save()
         return user
@@ -42,6 +54,10 @@ class TestUserAuthentication:
         assert response.status_code == 200
         assert 'access' in response.data
         assert 'refresh' in response.data
+        
+        api_client.credentials(HTTP_AUTHORIZATION=f'Bearer {response.data["access"]}')
+        me_response = api_client.get('/api/users/')
+        assert me_response.status_code == 200
 
     def test_successful_logout(self, api_client, test_user):
         """Test logout exitoso"""
@@ -58,3 +74,13 @@ class TestUserAuthentication:
         # Logout
         response = api_client.post(self.logout_url)
         assert response.status_code == 205
+
+    def test_login_with_empty_credentials(self, api_client):
+        """Test login con credenciales vacías"""
+        response = api_client.post(self.login_url, {}, format='json')
+        assert response.status_code == 400
+        # Verificar que ambos campos son requeridos
+        assert 'username' in response.data
+        assert 'password' in response.data
+        assert 'This field is required.' in str(response.data['username'])
+        assert 'This field is required.' in str(response.data['password'])
