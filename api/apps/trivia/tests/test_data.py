@@ -1,6 +1,13 @@
 """
-Test data for trivia-related tests.
-Contains constants and test data fixtures.
+Test Data Module
+
+This module provides test data constants and fixtures.
+Includes:
+- Type definitions
+- Test constants
+- Sample data
+- Error messages
+- Test case configurations
 """
 
 from typing import TypedDict, List
@@ -11,14 +18,17 @@ MAX_ANSWERS = 5
 MIN_ANSWERS = 2
 
 class AnswerData(TypedDict):
+    """Type definition for answer test data"""
     answer_title: str
     is_correct: bool
 
 class QuestionData(TypedDict):
+    """Type definition for question test data"""
     question_title: str
     answers: List[AnswerData]
 
 class TriviaData(TypedDict):
+    """Type definition for trivia test data"""
     title: str
     difficulty: int
     theme: str
@@ -26,17 +36,20 @@ class TriviaData(TypedDict):
     questions: List[QuestionData]
 
 class ExpectedCounts(TypedDict):
+    """Type definition for expected count data"""
     admin: int
     user: int
     anonymous: int
 
 class TriviaPermissionData(TypedDict):
+    """Type definition for permission test data"""
     title: str
     difficulty: int
     is_public: bool
     created_by_other: bool
 
 class PermissionTestData(TypedDict):
+    """Type definition for permission test configuration"""
     expected_counts: ExpectedCounts
     trivias: List[TriviaPermissionData]
 

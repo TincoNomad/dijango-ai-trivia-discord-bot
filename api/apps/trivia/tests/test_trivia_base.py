@@ -1,6 +1,11 @@
 """
-Test suite for the trivia app.
-Contains base test class with common helper methods.
+Trivia Test Base Module
+
+This module provides base test functionality for trivia-related tests.
+Includes:
+- Common test fixtures
+- Helper methods
+- Assertion utilities
 """
 
 import pytest
@@ -9,17 +14,38 @@ from api.apps.trivia.models import Trivia
 
 @pytest.mark.django_db
 class TestTriviaBase:
-    """Base class for trivia tests with common helper methods"""
+    """
+    Base test class for trivia tests.
+    
+    Provides common functionality for:
+    - Question creation
+    - Data validation
+    - Test cleanup
+    """
     
     def create_question_with_answers(self, trivia):
-        """Helper method to create question with answers using factories"""
+        """
+        Create a question with default answers.
+        
+        Args:
+            trivia: Trivia instance to associate with
+            
+        Returns:
+            Question: Created question with answers
+        """
         question = QuestionFactory(trivia=trivia)
         AnswerFactory.create_batch(2, question=question)
         return question
 
     @staticmethod
     def assert_trivia_matches_input(trivia, input_data):
-        """Helper method to validate trivia data matches input"""
+        """
+        Validate trivia data against input.
+        
+        Args:
+            trivia: Trivia instance to validate
+            input_data: Expected data dictionary
+        """
         assert trivia.title == input_data['title']
         assert trivia.difficulty == input_data['difficulty']
         assert trivia.theme.name == input_data['theme']
@@ -27,7 +53,13 @@ class TestTriviaBase:
 
     @staticmethod
     def assert_trivia_update_successful(trivia, update_data):
-        """Helper method to validate trivia update was successful"""
+        """
+        Validate trivia update was successful.
+        
+        Args:
+            trivia: Updated trivia instance
+            update_data: Expected update data
+        """
         for field, value in update_data.items():
             if field != 'username':  # Skip username as it's not a direct field
                 assert getattr(trivia, field) == value, \
@@ -35,6 +67,6 @@ class TestTriviaBase:
 
     @pytest.fixture(autouse=True)
     def teardown_method(self):
-        """Cleanup after each test"""
+        """Clean up test data after each test"""
         yield
         Trivia.objects.all().delete()

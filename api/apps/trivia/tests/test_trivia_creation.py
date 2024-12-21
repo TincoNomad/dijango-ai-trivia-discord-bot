@@ -1,4 +1,13 @@
-"""Tests for trivia creation."""
+"""
+Trivia Creation Test Module
+
+This module contains test cases for:
+- Basic trivia creation
+- Validation handling
+- Error scenarios
+- Constraint checking
+"""
+
 import pytest
 from django.urls import reverse
 from .test_trivia_base import TestTriviaBase
@@ -7,11 +16,11 @@ from .factories import TriviaFactory
 
 @pytest.mark.django_db
 class TestTriviaCreation(TestTriviaBase):
-    """Test cases for trivia creation."""
+    """Test cases for trivia creation functionality"""
 
     @pytest.fixture(autouse=True)
     def setup_method(self, test_user, test_theme):
-        """Initial setup for each test."""
+        """Set up test environment"""
         self.url = reverse('trivia-list')
         self.valid_data = TEST_TRIVIA_DATA['valid_trivia'].copy()
         self.valid_data['theme'] = test_theme.id
@@ -20,16 +29,16 @@ class TestTriviaCreation(TestTriviaBase):
         self.theme = test_theme
 
     def test_trivia_creation_should_succeed_with_valid_data(self, api_client_authenticated):
-        """Test successful trivia creation"""
+        """Test successful trivia creation with valid data"""
         response = api_client_authenticated.post(self.url, self.valid_data, format='json')
         assert response.status_code == 201
 
     def test_trivia_creation_should_fail_with_duplicate_title(self, api_client_authenticated, test_user):
-        """Test duplicate title handling"""
-        # Crear primera trivia
+        """Test duplicate title validation"""
+        # Create first trivia
         trivia = TriviaFactory.create(created_by=test_user)
         
-        # Intentar crear trivia con el mismo título
+        # Attempt to create trivia with same title
         duplicate_data = self.valid_data.copy()
         duplicate_data.update({
             'title': trivia.title,

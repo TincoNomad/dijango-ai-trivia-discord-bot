@@ -1,3 +1,20 @@
+"""
+Trivia ViewSets Module
+
+This module provides API viewsets for trivia-related operations.
+Includes viewsets for:
+- Trivia CRUD operations
+- Theme management
+- Question updates
+- Filtering and search
+
+Features:
+- Permission handling
+- Transaction management
+- Logging
+- Error handling
+"""
+
 from rest_framework import viewsets, permissions
 from django.db import models
 from .models import Trivia, Theme, Question, Answer
@@ -14,37 +31,61 @@ from api.utils.jwt_utils import get_user_id_by_username
 from django.db import transaction
 import uuid
 
-
 User = get_user_model()
 
 class TriviaViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing trivias.
+    
+    Features:
+    - CRUD operations
+    - Custom serializer selection
+    - Permission-based access
+    - Query filtering
+    """
+
     def get_serializer_class(self):
+        """Select appropriate serializer based on action"""
         if self.action == 'list':
             return TriviaListSerializer
         return TriviaSerializer
     
     def get_permissions(self):
+        """Define permissions based on action"""
         if self.action in ['update', 'partial_update', 'destroy']:
             return [permissions.IsAuthenticated()]
         return []
     
     def get_queryset(self):
+        """
+        Filter queryset based on user permissions.
+        
+        Returns:
+            QuerySet: Filtered trivia objects
+        """
         user = self.request.user
         if user.is_authenticated:
             if user.role == 'admin':
                 logger.info(f"Admin access: {user.username} querying all trivias")
                 return Trivia.objects.all()
-            # Regular user: sees public trivias and their own private trivias
             logger.info(f"User access: {user.username} querying allowed trivias")
             return Trivia.objects.filter(
                 models.Q(is_public=True) | 
                 models.Q(is_public=False, created_by=user)
             )
-        # User not authenticated: only sees public trivias
         logger.info("Anonymous access: querying public trivias")
         return Trivia.objects.filter(is_public=True)
     
     def perform_create(self, serializer):
+        """
+        Create new trivia with creator information.
+        
+        Args:
+            serializer: Validated trivia serializer
+            
+        Raises:
+            ValidationError: If user not found or creation fails
+        """
         username = serializer.validated_data.get('username')
         try:
             user = User.objects.get(username=username)
@@ -62,12 +103,17 @@ class TriviaViewSet(viewsets.ModelViewSet):
                 f"Error={str(e)}"
             )
             raise
-    
+
     @action(detail=False, methods=['get'])
     def get_trivia(self, request):
         """
+        Retrieve specific trivia by ID.
+        
         GET /api/trivias/get_trivia/?id=trivia-uuid
-        Returns: Detailed information of a specific trivia
+        
+        Returns:
+            Response: Trivia details if found
+            Response: Error message if not found
         """
         trivia_id = request.query_params.get('id')
         if not trivia_id:
@@ -93,10 +139,15 @@ class TriviaViewSet(viewsets.ModelViewSet):
                 {"error": "Trivia not found"},
                 status=status.HTTP_404_NOT_FOUND
             )
-    
+
     @action(detail=False, methods=['get'])
     def difficulty(self, request):
-        """Returns the available difficulty options"""
+        """
+        Get available difficulty options.
+        
+        Returns:
+            Response: Dictionary of difficulty choices
+        """
         try:
             difficulties = dict(Trivia.DIFFICULTY_CHOICES)
             return Response(difficulties, status=status.HTTP_200_OK)
@@ -106,11 +157,15 @@ class TriviaViewSet(viewsets.ModelViewSet):
                 {"error": "Error retrieving difficulty choices"}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-    
+
     def list(self, request, *args, **kwargs):
         """
+        List trivias with optional username filter.
+        
         GET /api/trivias/?username=discord_user
-        Returns: List of trivias created by the specified user or all public trivias if no username
+        
+        Returns:
+            Response: List of trivias
         """
         username = request.query_params.get('username')
         
@@ -135,9 +190,16 @@ class TriviaViewSet(viewsets.ModelViewSet):
                 )
         
         return super().list(request, *args, **kwargs)
-    
+
     @action(detail=False, methods=['get'], url_path='filter')
     def filter_trivias(self, request):
+        """
+        Filter trivias by theme and difficulty.
+        
+        Returns:
+            Response: Filtered trivia list
+            Response: Error message if parameters invalid
+        """
         theme = request.query_params.get('theme')
         difficulty = request.query_params.get('difficulty')
         
@@ -153,7 +215,7 @@ class TriviaViewSet(viewsets.ModelViewSet):
         
         try:
             difficulty = int(difficulty)
-            uuid.UUID(theme)  # Validate UUID
+            uuid.UUID(theme)
             
             if not Theme.objects.filter(id=theme).exists():
                 logger.warning(f"Filtering attempt with non-existent theme: {theme}")
@@ -185,9 +247,10 @@ class TriviaViewSet(viewsets.ModelViewSet):
                 {"error": "The 'difficulty' parameter must be a number"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-    
+
     @log_exception
     def create(self, request, *args, **kwargs):
+        """Create trivia with transaction handling"""
         try:
             with transaction.atomic():
                 return super().create(request, *args, **kwargs)
@@ -197,29 +260,31 @@ class TriviaViewSet(viewsets.ModelViewSet):
             )
         except ValidationError as e:
             raise DRFValidationError(detail=str(e))
-    
+
     @action(detail=True, methods=['patch'])
     def update_questions(self, request, pk=None):
         """
+        Update questions and answers for a trivia.
+        
         PATCH /api/trivias/{trivia_id}/update_questions/
-        Updates only questions and answers for a trivia
+        
+        Returns:
+            Response: Success message if updated
+            Response: Error message if update fails
         """
         try:
             trivia = self.get_object()
             questions_data = request.data.get('questions', [])
             
-            # Update questions
             for question_data in questions_data:
                 question_id = question_data.get('id')
                 if question_id:
                     question = Question.objects.get(id=question_id, trivia=trivia)
-                    # Update question fields
                     for key, value in question_data.items():
                         if key != 'answers':
                             setattr(question, key, value)
                     question.save()
                     
-                    # Update answers if provided
                     if 'answers' in question_data:
                         for answer_data in question_data['answers']:
                             answer_id = answer_data.get('id')
@@ -248,12 +313,7 @@ class TriviaViewSet(viewsets.ModelViewSet):
             )
 
     def perform_update(self, serializer):
-        """
-        Maneja el CUÁNDO y QUIÉN puede actualizar
-        - Logging
-        - Permisos
-        - Contexto de la petición
-        """
+        """Log and handle trivia updates"""
         try:
             serializer.save()
             logger.info(f"Trivia updated by {self.request.user}")
@@ -262,5 +322,9 @@ class TriviaViewSet(viewsets.ModelViewSet):
             raise
 
 class ThemeViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet for theme management.
+    Provides read-only access to themes.
+    """
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer

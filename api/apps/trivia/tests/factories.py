@@ -1,6 +1,18 @@
 """
-Factories for testing the trivia app.
-Using Factory Boy to generate test data.
+Test Factory Module
+
+This module provides factory classes for test data generation.
+Uses Factory Boy to create:
+- Users
+- Themes
+- Trivias
+- Questions
+- Answers
+
+Features:
+- Automated data generation
+- Relationship handling
+- Test scenario variations
 """
 
 import factory
@@ -10,7 +22,7 @@ from api.apps.trivia.models import Theme, Trivia, Question, Answer
 User = get_user_model()
 
 class UserFactory(factory.django.DjangoModelFactory):
-    """Factory for creating test User instances."""
+    """Factory for creating test User instances"""
     
     class Meta:
         model = User
@@ -26,7 +38,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
-        """Override the _create method to properly handle user creation."""
+        """Override the _create method to properly handle user creation"""
         manager = cls._get_manager(model_class)
         if 'is_authenticated' in kwargs:
             kwargs.pop('is_authenticated')
@@ -34,7 +46,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     @classmethod
     def create_other_user(cls):
-        """Create a different user for testing permissions."""
+        """Create a different user for testing permissions"""
         return cls.create(
             username='other_user',
             email='other@example.com',
@@ -42,7 +54,7 @@ class UserFactory(factory.django.DjangoModelFactory):
         )
 
 class ThemeFactory(factory.django.DjangoModelFactory):
-    """Factory for creating test Theme instances."""
+    """Factory for creating test Theme instances"""
     
     class Meta:
         model = Theme
@@ -52,7 +64,7 @@ class ThemeFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: f'Theme {n}')
 
 class TriviaFactory(factory.django.DjangoModelFactory):
-    """Factory for creating test Trivia instances."""
+    """Factory for creating test Trivia instances"""
     
     class Meta:
         model = Trivia
@@ -78,7 +90,7 @@ class TriviaFactory(factory.django.DjangoModelFactory):
         Create questions and answers for the trivia.
         
         Args:
-            create: Bool indicating if the object should be created
+            create: Bool indicating if object should be created
             extracted: Optional list of question data
             kwargs: Additional arguments
         """
@@ -151,7 +163,7 @@ class InvalidTriviaFactory(TriviaFactory):
     difficulty = 5  # Invalid difficulty
 
 class QuestionFactory(factory.django.DjangoModelFactory):
-    """Factory for creating test Question instances."""
+    """Factory for creating test Question instances"""
     
     class Meta:
         model = Question
@@ -161,7 +173,7 @@ class QuestionFactory(factory.django.DjangoModelFactory):
     trivia = factory.SubFactory(TriviaFactory)
 
 class AnswerFactory(factory.django.DjangoModelFactory):
-    """Factory for creating test Answer instances."""
+    """Factory for creating test Answer instances"""
     
     class Meta:
         model = Answer

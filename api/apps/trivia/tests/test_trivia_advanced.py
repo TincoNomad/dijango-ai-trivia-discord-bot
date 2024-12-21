@@ -1,4 +1,12 @@
-"""Tests for advanced trivia operations."""
+"""
+Advanced Trivia Test Module
+
+This module contains advanced test cases for:
+- Concurrent operations
+- Performance testing
+- Edge case handling
+"""
+
 import pytest
 import threading
 import uuid
@@ -10,11 +18,14 @@ from .factories import UserFactory
 
 @pytest.mark.django_db(transaction=True)
 class TestTriviaAdvanced(TestTriviaBase):
-    """Pruebas avanzadas para demostrar manejo de concurrencia y rendimiento."""
+    """
+    Advanced test cases for trivia operations.
+    Tests concurrent access and performance scenarios.
+    """
 
     @pytest.fixture(autouse=True)
     def setup_method(self, test_user, test_theme):
-        """Setup for each test case"""
+        """Set up test environment"""
         self.url = reverse('trivia-list')
         self.user = test_user
         self.theme = test_theme
@@ -37,7 +48,14 @@ class TestTriviaAdvanced(TestTriviaBase):
         }
 
     def test_concurrent_trivia_creation(self, api_client_authenticated):
-        """Prueba la creación simultánea de trivias."""
+        """
+        Test concurrent trivia creation.
+        
+        Verifies:
+        - Multiple trivias can be created simultaneously
+        - No data corruption occurs
+        - At least one creation succeeds
+        """
         def create_trivia():
             thread_user = UserFactory(
                 username=f'user_{threading.get_ident()}_{uuid.uuid4().hex[:8]}'

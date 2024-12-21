@@ -1,3 +1,18 @@
+"""
+Trivia Views Module
+
+This module provides API views for trivia-related operations.
+Includes views for:
+- Question retrieval
+- Public trivia access
+- Error handling
+
+Features:
+- UUID validation
+- Logging
+- Response standardization
+"""
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import BasePermission
@@ -9,10 +24,31 @@ from uuid import UUID
 from rest_framework import status
 
 class GetQuestions(APIView):
+    """
+    View for retrieving trivia questions.
+    
+    Features:
+    - Public access
+    - UUID validation
+    - Error logging
+    """
+    
     permission_classes: list[BasePermission] = []
     
     @log_exception
     def get(self, request, trivia_id: str, format=None):
+        """
+        Get questions for a specific trivia.
+        
+        Args:
+            request: HTTP request
+            trivia_id: UUID of the trivia
+            format: Response format (optional)
+            
+        Returns:
+            Response: List of questions if found
+            Response: Error details if not found or invalid
+        """
         try:
             # Validate UUID
             trivia_uuid = UUID(trivia_id)

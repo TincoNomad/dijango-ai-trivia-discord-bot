@@ -1,4 +1,12 @@
-"""Tests for trivia edge cases."""
+"""
+Trivia Edge Cases Test Module
+
+This module contains test cases for:
+- Boundary conditions
+- Special scenarios
+- Input validation edge cases
+"""
+
 import pytest
 from django.urls import reverse
 from .test_trivia_base import TestTriviaBase
@@ -6,11 +14,11 @@ from .test_data import TEST_TRIVIA_DATA
 
 @pytest.mark.django_db
 class TestTriviaEdgeCases(TestTriviaBase):
-    """Tests for trivia edge cases and boundary conditions."""
+    """Test cases for trivia edge cases and boundary conditions"""
 
     @pytest.fixture(autouse=True)
     def setup_method(self, test_user, test_theme):
-        """Initial setup for each test."""
+        """Set up test environment"""
         self.url = reverse('trivia-list')
         self.valid_data = TEST_TRIVIA_DATA['valid_trivia'].copy()
         self.user = test_user

@@ -1,15 +1,40 @@
-#for take the information form the data base and converted into a format the bot can use 
+"""
+Trivia Serializers Module
+
+This module provides serializers for trivia-related models.
+Includes serializers for:
+- Trivia creation and updates
+- Theme management
+- Question handling
+- Answer validation
+
+Features:
+- Data validation
+- Nested serialization
+- Custom field handling
+"""
 
 from rest_framework import serializers
 from .models import Question, Answer, Trivia, Theme
 from api.utils.jwt_utils import get_user_id_by_username
 
 class ThemeSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Theme model.
+    Handles basic theme data.
+    """
     class Meta:
         model = Theme
         fields = ['id', 'name']
 
 class AnswerSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Answer model.
+    
+    Features:
+    - Optional ID field for updates
+    - Answer validation
+    """
     id = serializers.IntegerField(required=False)
 
     class Meta:
@@ -17,6 +42,14 @@ class AnswerSerializer(serializers.ModelSerializer):
         fields = ['id', 'answer_title', 'is_correct']
 
 class QuestionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Question model.
+    
+    Features:
+    - Nested answer handling
+    - Points calculation
+    - Question validation
+    """
     id = serializers.IntegerField(required=False)
     answers = AnswerSerializer(many=True)
     points = serializers.IntegerField(default=10, read_only=True)
@@ -26,6 +59,15 @@ class QuestionSerializer(serializers.ModelSerializer):
         fields = ['id', 'question_title', 'points', 'answers']
 
 class TriviaSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Trivia model.
+    
+    Features:
+    - Theme handling
+    - Nested question serialization
+    - Permission checking
+    - User validation
+    """
     theme = serializers.CharField(max_length=100)
     questions = QuestionSerializer(many=True, required=True)
     can_make_private = serializers.SerializerMethodField()
@@ -41,6 +83,18 @@ class TriviaSerializer(serializers.ModelSerializer):
         read_only_fields = ['created_by', 'created_at']
 
     def validate(self, data):
+        """
+        Validate trivia data.
+        
+        Args:
+            data: The data to validate
+            
+        Returns:
+            dict: Validated data
+            
+        Raises:
+            ValidationError: If user not found
+        """
         username = data.get('username')
         user_id = get_user_id_by_username(username)
         if not user_id:
@@ -50,7 +104,18 @@ class TriviaSerializer(serializers.ModelSerializer):
         return data
 
     def validate_questions(self, value):
-        """Validate questions data"""
+        """
+        Validate questions data.
+        
+        Args:
+            value: Questions data to validate
+            
+        Returns:
+            list: Validated questions data
+            
+        Raises:
+            ValidationError: If validation fails
+        """
         if len(value) < 3:
             raise serializers.ValidationError(
                 "A trivia must have at least 3 questions"
@@ -81,7 +146,18 @@ class TriviaSerializer(serializers.ModelSerializer):
         return value
 
     def validate_title(self, value):
-        """Validate that the title does not already exist in the database"""
+        """
+        Validate trivia title uniqueness.
+        
+        Args:
+            value: Title to validate
+            
+        Returns:
+            str: Validated title
+            
+        Raises:
+            ValidationError: If title already exists
+        """
         if Trivia.objects.filter(title=value).exists():
             raise serializers.ValidationError(
                 "A trivia with this title already exists. Please choose another title."
@@ -89,10 +165,20 @@ class TriviaSerializer(serializers.ModelSerializer):
         return value
 
     def get_can_make_private(self, obj):
+        """
+        Check if user can make trivia private.
+        
+        Args:
+            obj: Trivia instance
+            
+        Returns:
+            bool: True if user can make private
+        """
         request = self.context.get('request')
         return request and request.user.is_authenticated
 
     def create(self, validated_data):
+        """Create trivia with nested data"""
         questions_data = validated_data.pop('questions', [])
         theme_data = validated_data.pop('theme', None)
         validated_data.pop('username', None)
@@ -117,12 +203,7 @@ class TriviaSerializer(serializers.ModelSerializer):
         return trivia
 
     def update(self, instance, validated_data):
-        """
-        Handles the logic of HOW data is updated
-        - Data transformation
-        - Specific validations 
-        - Relationship update logic
-        """
+        """Update trivia and related data"""
         questions_data = validated_data.pop('questions', None)
         
         # Update basic fields
@@ -137,6 +218,7 @@ class TriviaSerializer(serializers.ModelSerializer):
         return instance
 
     def update_questions(self, instance, questions_data):
+        """Update questions and their answers"""
         for question_data in questions_data:
             question_id = question_data.get('id')
             if question_id:
@@ -153,6 +235,7 @@ class TriviaSerializer(serializers.ModelSerializer):
                     self.create_answers(new_question, question_data['answers'])
 
     def update_answers(self, question, answers_data):
+        """Update answers for a question"""
         for answer_data in answers_data:
             answer_id = answer_data.get('id')
             if answer_id:
@@ -164,6 +247,10 @@ class TriviaSerializer(serializers.ModelSerializer):
                 Answer.objects.create(question=question, **answer_data)
 
 class TriviaListSerializer(serializers.ModelSerializer):
+    """
+    Serializer for trivia list view.
+    Simplified version of TriviaSerializer.
+    """
     theme = serializers.CharField(source='theme.name')
     created_by = serializers.UUIDField(source='created_by.id', read_only=True)
     
