@@ -19,7 +19,6 @@ from rest_framework.permissions import BasePermission
 from .serializers import TriviaSerializer
 from .models import Trivia
 from api.utils.logging_utils import log_exception, logger
-from django.shortcuts import get_object_or_404
 from uuid import UUID
 from rest_framework import status
 
