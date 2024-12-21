@@ -1,6 +1,11 @@
 """
-Test data for user-related tests.
-Contains constants and test data fixtures.
+Test Data Module
+
+This module provides test data constants and fixtures.
+Includes:
+- User test data
+- Error messages
+- Test case configurations
 """
 
 TEST_USER_DATA = {

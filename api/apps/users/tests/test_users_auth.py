@@ -1,9 +1,10 @@
 """
-Test suite for user authentication functionality.
+Authentication Test Module
 
 This module contains test cases for:
-- User login
-- User logout
+- User login functionality
+- User logout functionality
+- Token validation
 - Authentication error handling
 """
 
@@ -51,12 +52,10 @@ class TestUserAuthentication:
             format='json'
         )
         
-        # Verify response contains required tokens
         assert response.status_code == 200
         assert 'access' in response.data
         assert 'refresh' in response.data
         
-        # Verify token works for authenticated endpoint
         api_client.credentials(HTTP_AUTHORIZATION=f'Bearer {response.data["access"]}')
         me_response = api_client.get('/api/users/')
         assert me_response.status_code == 200
@@ -66,7 +65,6 @@ class TestUserAuthentication:
         Test successful logout flow.
         Should return 205 status code.
         """
-        # Login first using the working pattern
         login_response = api_client.post(
             self.login_url,
             self.valid_credentials,
@@ -76,7 +74,6 @@ class TestUserAuthentication:
         assert login_response.status_code == 200
         api_client.credentials(HTTP_AUTHORIZATION=f'Bearer {login_response.data["access"]}')
         
-        # Perform logout
         response = api_client.post(self.logout_url)
         assert response.status_code == 205
 
@@ -87,7 +84,6 @@ class TestUserAuthentication:
         """
         response = api_client.post(self.login_url, {}, format='json')
         assert response.status_code == 400
-        # Verify both fields are required
         assert 'username' in response.data
         assert 'password' in response.data
         assert 'This field is required.' in str(response.data['username'])
@@ -111,31 +107,26 @@ class TestUserAuthentication:
         )
     ])
     def test_login_failures(self, api_client, invalid_credentials, expected_status, expected_error):
-        """Test diferentes escenarios de fallo de login
+        """
+        Test various login failure scenarios.
         
         Args:
-            invalid_credentials: Credenciales inválidas a probar
-            expected_status: Código de estado HTTP esperado
-            expected_error: Mensaje de error esperado
+            invalid_credentials: Invalid credentials to test
+            expected_status: Expected HTTP status code
+            expected_error: Expected error message
             
-        Verifica:
-            - 400: Para errores de validación (campos vacíos)
-            - 401: Para credenciales incorrectas
+        Verifies:
+            - 400: For validation errors (empty fields)
+            - 401: For incorrect credentials
         """
         response = api_client.post(self.login_url, invalid_credentials, format='json')
-        assert response.status_code == expected_status, (
-            f"Se esperaba {expected_status} para las credenciales: {invalid_credentials}"
-        )
+        assert response.status_code == expected_status
         
         if expected_status == 400:
-            # Verificar mensaje de error de validación
             error_messages = [str(error) for error in response.data.values()]
             assert any(
                 expected_error in error_msg
                 for error_msg in error_messages
-            ), f"Debería contener el mensaje '{expected_error}'. Mensajes recibidos: {error_messages}"
-        else:
-            # Verificar mensaje de credenciales inválidas
-            assert expected_error in str(response.data['detail']), (
-                f"Debería contener el mensaje '{expected_error}'"
             )
+        else:
+            assert expected_error in str(response.data['detail'])

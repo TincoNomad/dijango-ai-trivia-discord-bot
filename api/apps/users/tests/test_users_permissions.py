@@ -1,10 +1,11 @@
 """
-Test suite for user permissions and access control.
+User Permissions Test Module
 
 This module contains test cases for:
-- Admin access rights
-- Regular user restrictions
 - Role-based access control
+- Admin privileges verification
+- User access restrictions
+- Permission inheritance
 """
 
 import pytest
@@ -44,7 +45,6 @@ class TestUserPermissions:
         Test admin user access rights.
         Should allow full access to admin endpoints.
         """
-        # Login as admin
         response = api_client.post(
             reverse('login'),
             self.valid_credentials,
@@ -55,7 +55,6 @@ class TestUserPermissions:
             HTTP_AUTHORIZATION=f'Bearer {response.data["access"]}'
         )
         
-        # Verify admin access
         me_response = api_client.get('/api/users/')
         assert me_response.status_code == 200
 
@@ -64,12 +63,10 @@ class TestUserPermissions:
         Test regular user access restrictions.
         Should prevent access to admin-only endpoints.
         """
-        # Create regular user
         user_data = self.valid_credentials.copy()
         user_data['role'] = 'user'
         User.objects.create_user(**user_data)
         
-        # Login as regular user
         login_response = api_client.post(
             reverse('login'),
             user_data,
@@ -80,6 +77,5 @@ class TestUserPermissions:
             HTTP_AUTHORIZATION=f'Bearer {login_response.data["access"]}'
         )
         
-        # Verify access restriction
         response = api_client.post(self.users_url, {})
         assert response.status_code == 403

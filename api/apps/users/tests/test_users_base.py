@@ -1,6 +1,12 @@
 """
-Base test class for user-related tests.
-Contains common functionality and helper methods.
+Base Test Module for Users
+
+This module provides base test functionality for user-related tests.
+Includes:
+- Common test fixtures
+- Authentication helpers
+- Response validation
+- User creation utilities
 """
 
 import pytest
@@ -13,17 +19,33 @@ User = get_user_model()
 
 @pytest.mark.django_db
 class BaseUserTest:
-    """Clase base para tests de usuarios"""
+    """
+    Base test class for user-related tests.
+    
+    Provides common functionality for:
+    - User creation and authentication
+    - Response validation
+    - API client setup
+    """
     
     @pytest.fixture(autouse=True)
     def setup_base(self):
-        """Setup básico para todos los tests"""
+        """Set up basic test environment"""
         self.api_client = APIClient()
 
     @staticmethod
     def create_and_authenticate_user(api_client, user_data):
-        """Helper para crear y autenticar usuario"""
-        # Crear usuario usando create_superuser si es admin
+        """
+        Create and authenticate a user for testing.
+        
+        Args:
+            api_client: API client instance
+            user_data: User data dictionary
+            
+        Returns:
+            User: Created and authenticated user
+        """
+        # Create user with appropriate permissions
         if user_data.get('role') == 'admin' or user_data.get('is_superuser'):
             user = User.objects.create_superuser(
                 username=user_data['username'],
@@ -39,14 +61,14 @@ class BaseUserTest:
                 role=user_data.get('role', 'user')
             )
 
-        # Asignar permisos adicionales si es necesario
+        # Set additional permissions
         if user_data.get('is_staff'):
             user.is_staff = True
         if user_data.get('is_superuser'):
             user.is_superuser = True
         user.save()
 
-        # Realizar login para obtener tokens
+        # Perform login and get tokens
         login_url = reverse('login')
         response = api_client.post(
             login_url,
@@ -65,7 +87,13 @@ class BaseUserTest:
 
     @staticmethod
     def assert_user_response_valid(response, expected_status=200):
-        """Validar respuesta de usuario"""
+        """
+        Validate user API response.
+        
+        Args:
+            response: API response to validate
+            expected_status: Expected HTTP status code
+        """
         assert response.status_code == expected_status
         if expected_status == 200:
             if 'access' in response.data:
@@ -77,23 +105,44 @@ class BaseUserTest:
 
     @staticmethod
     def get_auth_tokens(response):
-        """Extraer tokens de autenticación"""
+        """
+        Extract authentication tokens from response.
+        
+        Args:
+            response: API response containing tokens
+            
+        Returns:
+            tuple: (access_token, refresh_token)
+        """
         assert 'access' in response.data
         assert 'refresh' in response.data
         return response.data['access'], response.data['refresh']
 
     @pytest.fixture
     def authenticated_client(self):
-        """Fixture para obtener un cliente autenticado"""
+        """
+        Fixture providing an authenticated API client.
+        
+        Returns:
+            APIClient: Authenticated client instance
+        """
         client = APIClient()
         user_data = TEST_USER_DATA['valid_user'].copy()
         self.create_and_authenticate_user(client, user_data)
         return client
 
-    # Agregar métodos comunes de autenticación
     @staticmethod
     def authenticate_user(api_client, credentials):
-        """Helper method para autenticar usuarios en las pruebas"""
+        """
+        Authenticate a user with given credentials.
+        
+        Args:
+            api_client: API client instance
+            credentials: User credentials
+            
+        Returns:
+            Response: Authentication response
+        """
         response = api_client.post(reverse('login'), credentials, format='json')
         if response.status_code == 200:
             api_client.credentials(HTTP_AUTHORIZATION=f'Bearer {response.data["access"]}')
@@ -101,7 +150,16 @@ class BaseUserTest:
 
     @staticmethod
     def create_test_user(role='user', **kwargs):
-        """Helper method para crear usuarios de prueba"""
+        """
+        Create a test user with given role and attributes.
+        
+        Args:
+            role: User role
+            **kwargs: Additional user attributes
+            
+        Returns:
+            User: Created test user
+        """
         user_data = {
             'username': f'test_{role}',
             'email': f'test_{role}@example.com',

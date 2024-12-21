@@ -1,10 +1,11 @@
 """
-Test suite for user credentials management.
+Credentials Management Test Module
 
 This module contains test cases for:
-- Credentials update
+- User credential setup
 - Password validation
-- Email update verification
+- Email verification
+- Authentication status updates
 """
 
 import pytest

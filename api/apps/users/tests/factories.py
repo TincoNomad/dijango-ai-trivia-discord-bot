@@ -1,6 +1,12 @@
 """
-Factories for user-related tests.
-Using Factory Boy to generate test data.
+User Test Factories Module
+
+This module provides factory classes for creating test data.
+Uses Factory Boy to generate:
+- Regular users
+- Admin users
+- Unauthenticated users
+- Batch user creation
 """
 
 import factory
@@ -10,7 +16,15 @@ from api.utils.logging_utils import log_exception
 User = get_user_model()
 
 class UserFactory(factory.django.DjangoModelFactory):
-    """Factory para crear instancias de prueba de User"""
+    """
+    Factory for creating test User instances.
+    
+    Features:
+    - Automatic username generation
+    - Default password setting
+    - Role-based user creation
+    - Batch creation support
+    """
     
     class Meta:
         model = User
@@ -24,16 +38,28 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     @classmethod
     def _create(cls, model_class, *args, **kwargs):
-        """Override para usar create_user o create_superuser según corresponda"""
+        """
+        Override default creation method.
+        
+        Creates user with appropriate permissions based on role.
+        
+        Args:
+            model_class: The model class to create
+            *args: Additional positional arguments
+            **kwargs: Additional keyword arguments
+            
+        Returns:
+            User: Created user instance
+        """
         manager = cls._get_manager(model_class)
         
-        # Extraer flags importantes
+        # Extract important flags
         is_superuser = kwargs.pop('is_superuser', False)
         is_staff = kwargs.pop('is_staff', False)
         role = kwargs.get('role', 'user')
         password = kwargs.pop('password', 'testpass123')
         
-        # Crear usuario según sus permisos
+        # Create user based on permissions
         if is_superuser or role == 'admin':
             user = manager.create_superuser(
                 *args,
@@ -47,7 +73,7 @@ class UserFactory(factory.django.DjangoModelFactory):
                 **kwargs
             )
         
-        # Asignar permisos adicionales
+        # Assign additional permissions
         user.is_staff = is_staff or is_superuser
         user.is_superuser = is_superuser
         user.save()
@@ -57,7 +83,12 @@ class UserFactory(factory.django.DjangoModelFactory):
     @classmethod
     @log_exception
     def create_admin(cls, **kwargs):
-        """Crear usuario administrador"""
+        """
+        Create an admin user.
+        
+        Returns:
+            User: Created admin user instance
+        """
         kwargs.update({
             'role': 'admin',
             'is_staff': True,
@@ -68,7 +99,12 @@ class UserFactory(factory.django.DjangoModelFactory):
     @classmethod
     @log_exception
     def create_regular_user(cls, **kwargs):
-        """Crear usuario regular"""
+        """
+        Create a regular user.
+        
+        Returns:
+            User: Created regular user instance
+        """
         kwargs.update({
             'role': 'user',
             'is_staff': False,
@@ -79,7 +115,12 @@ class UserFactory(factory.django.DjangoModelFactory):
     @classmethod
     @log_exception
     def create_unauthenticated_user(cls, **kwargs):
-        """Crear usuario sin autenticar"""
+        """
+        Create an unauthenticated user.
+        
+        Returns:
+            User: Created unauthenticated user instance
+        """
         kwargs.update({
             'is_authenticated': False,
             'password': '',
@@ -90,5 +131,14 @@ class UserFactory(factory.django.DjangoModelFactory):
     @classmethod
     @log_exception
     def create_batch_users(cls, size=3, **kwargs):
-        """Crear múltiples usuarios"""
+        """
+        Create multiple users.
+        
+        Args:
+            size: Number of users to create
+            **kwargs: Additional user attributes
+            
+        Returns:
+            list[User]: List of created users
+        """
         return cls.create_batch(size=size, **kwargs)
