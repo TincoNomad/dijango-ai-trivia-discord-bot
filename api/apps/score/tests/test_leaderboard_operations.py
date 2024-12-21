@@ -1,25 +1,37 @@
+"""
+Leaderboard Operations Test Module
+
+This module contains integration tests for leaderboard operations.
+Tests cover:
+- Top scores retrieval
+- Leaderboard creation
+- Error handling
+- Score ordering
+"""
+
 import pytest
 from .test_score_base import BaseScoreTest, LeaderboardTestMixin
 from .factories import LeaderBoardFactory, ScoreFactory
+
 @pytest.mark.django_db
 class TestLeaderboardOperations(BaseScoreTest, LeaderboardTestMixin):
-    """Tests para operaciones de leaderboard"""
+    """Tests for leaderboard operations"""
 
     @pytest.fixture(autouse=True)
     def setup_method(self):
-        """Setup para cada test"""
+        """Setup for each test"""
         self.setup_test_data()
 
     def setup_test_data(self):
-        """Configurar datos iniciales"""
-        self.url = '/api/leaderboards/'  # ✅ Cambiar a plural como en los otros tests
+        """Set up initial test data"""
+        self.url = '/api/leaderboards/'
 
     def teardown_test_data(self):
-        """Limpiar datos después del test"""
+        """Clean up test data"""
         pass
 
     def test_get_leaderboard_top_10(self, api_client, leaderboard_with_scores):
-        """Test obtener top 10 scores de un leaderboard"""
+        """Test retrieving top 10 scores from a leaderboard"""
         # Arrange
         leaderboard = leaderboard_with_scores
 
@@ -33,7 +45,7 @@ class TestLeaderboardOperations(BaseScoreTest, LeaderboardTestMixin):
         assert len(response.data) == 10
 
     def test_get_nonexistent_leaderboard(self, api_client):
-        """Test obtener leaderboard que no existe"""
+        """Test retrieving a non-existent leaderboard"""
         # Act
         response = api_client.get(f"{self.url}?channel=nonexistent")
         
@@ -41,7 +53,7 @@ class TestLeaderboardOperations(BaseScoreTest, LeaderboardTestMixin):
         assert response.status_code == 404
 
     def test_get_leaderboard_ordering(self, api_client, test_user):
-        """Test que los scores estén ordenados por puntos"""
+        """Test that scores are ordered by points"""
         # Arrange
         leaderboard = LeaderBoardFactory(created_by=test_user)
         ScoreFactory.create_batch(size=5, leaderboard=leaderboard)
@@ -57,7 +69,7 @@ class TestLeaderboardOperations(BaseScoreTest, LeaderboardTestMixin):
         )
 
     def test_get_leaderboard_by_id(self, api_client, test_leaderboard):
-        """Test obtener leaderboard por ID"""
+        """Test retrieving leaderboard by ID"""
         # Act
         response = api_client.get(f"{self.url}get_leaderboard/?id={test_leaderboard.id}")
         

@@ -1,3 +1,19 @@
+"""
+Score ViewSets Module
+
+This module provides API views for the scoring system.
+Includes viewsets for:
+- LeaderBoard management
+- Score tracking and updates
+- Trivia winner management
+
+Features:
+- CSRF protection
+- Authentication handling
+- Custom actions for specific operations
+- Error handling and logging
+"""
+
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -12,18 +28,41 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LeaderBoardViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing leaderboards.
+    
+    Provides endpoints for:
+    - Creating/retrieving leaderboards
+    - Listing all leaderboards
+    - Getting top scores for a leaderboard
+    
+    Features:
+    - CSRF exemption
+    - Error handling
+    - Logging
+    """
+    
     serializer_class = LeaderBoardSerializer
 
     def get_queryset(self):
+        """Get all leaderboards"""
         return LeaderBoard.objects.all()
 
     def create(self, request, *args, **kwargs):
         """
+        Create a new leaderboard or return existing one.
+        
         POST /api/leaderboards/
-        Receives: {
-            "discord_channel": "channel_name",
-            "username": "username"
-        }
+        
+        Request Body:
+            {
+                "discord_channel": "channel_name",
+                "username": "username"
+            }
+            
+        Returns:
+            200: Leaderboard details
+            400: Validation error details
         """
         try:
             serializer = self.get_serializer(data=request.data)  
@@ -54,8 +93,13 @@ class LeaderBoardViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'], url_path='all')
     def all_leaderboards(self, request):
         """
+        Get all leaderboards with creator information.
+        
         GET /api/leaderboards/all/
-        Returns: List of all leaderboards with creator username
+        
+        Returns:
+            200: List of all leaderboards with details
+            500: Server error details
         """
         try:
             leaderboards = LeaderBoard.objects.all()
@@ -102,7 +146,7 @@ class LeaderBoardViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def get_leaderboard(self, request):
         """
-        GET /api/leaderboards/get_leaderboard/?id=uuid-de-leaderboard
+        GET /api/leaderboards/get_leaderboard/?id=leaderboard-uuid
         Returns: Top 10 scores of the specific leaderboard
         """
         leaderboard_id = request.query_params.get('id')
@@ -130,6 +174,20 @@ class LeaderBoardViewSet(viewsets.ModelViewSet):
 
 @method_decorator(csrf_exempt, name='dispatch')
 class ScoreViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing scores.
+    
+    Provides endpoints for:
+    - Creating/updating scores
+    - Retrieving leaderboard scores
+    - Score API information
+    
+    Features:
+    - CSRF protection
+    - Score validation
+    - Error handling
+    """
+    
     serializer_class = ScoreSerializer
 
     def get_queryset(self):
@@ -148,7 +206,7 @@ class ScoreViewSet(viewsets.ModelViewSet):
                     "error": "Missing required fields"
                 }, status=status.HTTP_400_BAD_REQUEST)
             
-            # ✅ Validar puntos negativos
+            # Validate negative points
             if int(points) < 0:
                 return Response({
                     "error": "Points cannot be negative"
@@ -246,5 +304,12 @@ class ScoreViewSet(viewsets.ModelViewSet):
         }, status=status.HTTP_200_OK)
 
 class TriviaWinnerViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for managing trivia winners.
+    
+    Provides standard CRUD operations for trivia winners.
+    Uses default ModelViewSet implementation.
+    """
+    
     queryset = TriviaWinner.objects.all()
     serializer_class = TriviaWinnerSerializer

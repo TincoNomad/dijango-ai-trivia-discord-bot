@@ -1,3 +1,12 @@
+"""
+Test Data Module
+
+This module contains test data constants used across test cases.
+Includes sample data for:
+- Score creation and updates
+- Leaderboard operations
+"""
+
 TEST_SCORE_DATA = {
     'valid_score': {
         'name': 'TestPlayer',
@@ -6,7 +15,7 @@ TEST_SCORE_DATA = {
     },
     'update_data': {
         'points': 150,
-        'update_mode': 'add'  # o 'replace'
+        'update_mode': 'add'  # or 'replace'
     }
 }
 
