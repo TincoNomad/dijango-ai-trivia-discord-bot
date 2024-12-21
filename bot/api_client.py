@@ -3,8 +3,9 @@ from typing import Dict, Any, Optional, List
 from typing_extensions import Self
 from .utils.logging_bot import bot_logger
 from api.django import (
-    FILTER_URL, LEADERBOARD_URL, SCORE_URL, QUESTION_URL, BASE_URL, TRIVIA_URL
+    FILTER_URL, LEADERBOARD_URL, SCORES_URL, GET_QUESTIONS_URL, BASE_URL, TRIVIA_URL
 )
+
 
 class TriviaAPIClient:
     def __init__(self) -> None:
@@ -89,7 +90,7 @@ class TriviaAPIClient:
             self.session = aiohttp.ClientSession()
         
         try:
-            async with self.session.get(SCORE_URL) as response:
+            async with self.session.get(SCORES_URL) as response:
                 csrf_cookie = response.cookies.get('csrftoken')
                 if csrf_cookie is None:
                     bot_logger.error("CSRF token not found in cookies")
@@ -103,7 +104,7 @@ class TriviaAPIClient:
             
     async def fetch_trivia_questions(self) -> List[Dict[str, Any]]:
         """Gets trivia questions from the API"""
-        return await self.get(QUESTION_URL)
+        return await self.get(GET_QUESTIONS_URL)
             
     async def get_filtered_trivias(self, theme: str, difficulty: int) -> List[Dict[str, Any]]:
         """Gets filtered trivia questions by theme and difficulty"""
@@ -178,7 +179,7 @@ class TriviaAPIClient:
                 "discord_channel": discord_channel
             }
             
-            response = await self.post(f"{SCORE_URL}", data)
+            response = await self.post(f"{SCORES_URL}", data)
             
             # Verify successful response
             if "message" in response and response["message"] == "Score updated successfully":
