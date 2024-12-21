@@ -18,17 +18,17 @@ class TestMonitoringPerformance(MonitoringBaseTest):
 
     @pytest.fixture(autouse=True)
     def setup(self, api_client, test_user):
-        """Setup para cada test"""
+        """Setup for each test"""
         self.client = api_client
-        self.test_user = test_user  # Guardar referencia al usuario
+        self.test_user = test_user  # Store user reference
         self.cleanup_logs()
         yield
         self.cleanup_logs()
 
     def test_logging_response_time(self, api_client_authenticated):
-        """Verificar que el logging no impacte significativamente el tiempo de respuesta"""
+        """Verify that logging does not significantly impact response time"""
         # Arrange
-        endpoint = reverse('trivia-list')  # Usar reverse para generar la URL correcta
+        endpoint = reverse('trivia-list')
         
         # Act
         start_time = time.time()
@@ -42,10 +42,10 @@ class TestMonitoringPerformance(MonitoringBaseTest):
         assert log.response_time < PERFORMANCE_THRESHOLDS['max_response_time']
 
     def test_concurrent_requests_logging(self, test_user):
-        """Verificar comportamiento bajo múltiples requests simultáneos"""
+        """Verify behavior under concurrent requests"""
         # Arrange
         num_requests = 10
-        endpoint = reverse('trivia-list')  # Usar reverse para generar la URL correcta
+        endpoint = reverse('trivia-list')
 
         def make_request():
             client = APIClient()
@@ -64,7 +64,7 @@ class TestMonitoringPerformance(MonitoringBaseTest):
                   for log in logs)
 
     def test_batch_log_creation(self):
-        """Verificar rendimiento al crear múltiples logs"""
+        """Verify performance when creating multiple logs"""
         # Arrange
         batch_size = PERFORMANCE_THRESHOLDS['batch_size']
         

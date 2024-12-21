@@ -16,12 +16,12 @@ class TestLogCleanup(MonitoringBaseTest):
     """Test cases for log cleanup operations"""
 
     def test_cleanup_old_request_logs(self):
-        """Verificar limpieza de logs antiguos de requests"""
+        """Verify cleanup of old request logs"""
         # Arrange
         retention_days = settings.MONITORING['REQUEST_LOG_RETENTION_DAYS']
         old_date = timezone.now() - timedelta(days=retention_days + 1)
         
-        # Crear logs antiguos y recientes
+        # Create old and recent logs
         old_log = RequestLog.objects.create(
             path='/test/',
             method='GET',
@@ -44,12 +44,12 @@ class TestLogCleanup(MonitoringBaseTest):
         assert RequestLog.objects.filter(id=recent_log.id).exists()
 
     def test_cleanup_old_error_logs(self):
-        """Verificar limpieza de logs antiguos de errores"""
+        """Verify cleanup of old error logs"""
         # Arrange
         retention_days = settings.MONITORING['ERROR_LOG_RETENTION_DAYS']
         old_date = timezone.now() - timedelta(days=retention_days + 1)
         
-        # Crear logs antiguos y recientes
+        # Create old and recent logs
         old_error = ErrorLog.objects.create(
             error_type='404',
             error_message='Not Found',
@@ -72,13 +72,13 @@ class TestLogCleanup(MonitoringBaseTest):
         assert ErrorLog.objects.filter(id=recent_error.id).exists()
 
     def test_cleanup_batch_processing(self):
-        """Verificar que la limpieza funcione correctamente en lotes"""
+        """Verify that cleanup works correctly in batches"""
         # Arrange
         retention_days = settings.MONITORING['REQUEST_LOG_RETENTION_DAYS']
         old_date = timezone.now() - timedelta(days=retention_days + 1)
         
-        # Crear muchos logs antiguos
-        batch_size = 1500  # Más grande que el tamaño del lote
+        # Create many old logs
+        batch_size = 1500  # Larger than batch size
         logs = []
         for _ in range(batch_size):
             logs.append(RequestLog(
@@ -94,4 +94,4 @@ class TestLogCleanup(MonitoringBaseTest):
         call_command('cleanup_logs')
         
         # Assert
-        assert RequestLog.objects.count() == 0 
+        assert RequestLog.objects.count() == 0

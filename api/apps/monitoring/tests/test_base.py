@@ -3,36 +3,47 @@ Base test class for monitoring-related tests.
 Contains common functionality and helper methods.
 """
 
-import pytest
-from django.utils import timezone
-from datetime import timedelta
+from typing import Tuple, List
 from api.apps.monitoring.models import RequestLog, ErrorLog
 from .factories import RequestLogFactory, ErrorLogFactory
 
 class MonitoringBaseTest:
-    """Clase base para tests de monitoreo"""
+    """Base class for monitoring tests with common functionality"""
 
     @staticmethod
-    def create_sample_logs(num_requests=5, num_errors=3):
-        """Helper para crear logs de prueba"""
+    def cleanup_logs():
+        """Clean up all logs after tests"""
+        RequestLog.objects.all().delete()
+        ErrorLog.objects.all().delete()
+
+    @staticmethod
+    def create_sample_logs(
+        num_requests: int = 5,
+        num_errors: int = 3
+    ) -> Tuple[List[RequestLog], List[ErrorLog]]:
+        """
+        Creates sample logs for testing.
+        
+        Args:
+            num_requests: Number of request logs to create
+            num_errors: Number of error logs to create
+            
+        Returns:
+            Tuple containing lists of created request and error logs
+        """
         requests = RequestLogFactory.create_batch(size=num_requests)
         errors = ErrorLogFactory.create_batch(size=num_errors)
         return requests, errors
 
     @staticmethod
-    def create_old_logs(days_old=30):
-        """Helper para crear logs antiguos"""
-        old_date = timezone.now() - timedelta(days=days_old)
-        return RequestLogFactory.create(timestamp=old_date)
-
-    @staticmethod
-    def assert_log_fields(log_entry, expected_data):
-        """Validar campos de un log"""
-        for field, value in expected_data.items():
-            assert getattr(log_entry, field) == value
-
-    @staticmethod
-    def cleanup_logs():
-        """Limpiar todos los logs después de las pruebas"""
-        RequestLog.objects.all().delete()
-        ErrorLog.objects.all().delete()
+    def assert_valid_log(log: RequestLog) -> None:
+        """
+        Validates that a log entry contains all required fields.
+        
+        Args:
+            log: The log entry to validate
+        """
+        assert log.path is not None
+        assert log.method in ['GET', 'POST', 'PUT', 'DELETE']
+        assert isinstance(log.response_time, float)
+        assert isinstance(log.status_code, int)

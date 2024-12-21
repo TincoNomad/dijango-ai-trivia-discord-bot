@@ -8,7 +8,7 @@ from django.utils import timezone
 from api.apps.monitoring.models import RequestLog, ErrorLog
 
 class RequestLogFactory(factory.django.DjangoModelFactory):
-    """Factory para crear instancias de prueba de RequestLog"""
+    """Factory for creating test RequestLog instances"""
     
     class Meta:
         model = RequestLog
@@ -30,7 +30,7 @@ class RequestLogFactory(factory.django.DjangoModelFactory):
     })
 
 class ErrorLogFactory(factory.django.DjangoModelFactory):
-    """Factory para crear instancias de prueba de ErrorLog"""
+    """Factory for creating test ErrorLog instances"""
     
     class Meta:
         model = ErrorLog

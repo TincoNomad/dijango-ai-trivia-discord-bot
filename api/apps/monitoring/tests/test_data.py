@@ -3,35 +3,35 @@ Test data for monitoring-related tests.
 Contains constants and test data fixtures.
 """
 
-TEST_REQUEST_DATA = {
-    'valid_request': {
-        'path': '/api/test/endpoint',
-        'method': 'GET',
-        'response_time': 0.5,
-        'status_code': 200,
-        'user_id': 'test_user',
-        'ip_address': '127.0.0.1'
-    },
-    'error_request': {
-        'path': '/api/test/error',
-        'method': 'POST',
-        'error_type': 'ValidationError',
-        'error_message': 'Invalid data provided',
-        'user_id': 'test_user'
-    }
-}
+from typing import TypedDict, List
 
-ENDPOINTS_TO_TEST = [
-    ('/api/users/', 'GET'),
-    ('/api/score/', 'POST'),
-    ('/api/trivia/', 'GET'),
-    ('/api/nonexistent/', 'GET')
+class EndpointTestCase(TypedDict):
+    endpoint: str
+    method: str
+    expected_status: int
+
+class PerformanceThresholds(TypedDict):
+    max_response_time: float
+    batch_size: int
+    max_memory_usage: int
+
+ENDPOINTS_TO_TEST: List[EndpointTestCase] = [
+    {'endpoint': '/api/users/', 'method': 'GET', 'expected_status': 200},
+    {'endpoint': '/api/score/', 'method': 'POST', 'expected_status': 200},
+    {'endpoint': '/api/trivia/', 'method': 'GET', 'expected_status': 200},
 ]
 
-PERFORMANCE_THRESHOLDS = {
+PERFORMANCE_THRESHOLDS: PerformanceThresholds = {
     'max_response_time': 1.0,  # segundos
     'batch_size': 1000,
     'max_memory_usage': 100 * 1024 * 1024  # 100MB
+}
+
+TEST_REQUEST_DATA = {
+    'valid_request': {
+        'name': 'test',
+        'points': 100
+    }
 }
 
 ERROR_MESSAGES = {
