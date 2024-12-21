@@ -58,29 +58,54 @@ class QuestionSerializer(serializers.ModelSerializer):
         model = Question
         fields = ['id', 'question_title', 'points', 'answers']
 
-class TriviaSerializer(serializers.ModelSerializer):
+class TriviaListSerializer(serializers.ModelSerializer):
     """
-    Serializer for Trivia model.
+    Serializer for trivia list endpoint.
     
     Features:
+    - Basic trivia information
+    - Theme name resolution
+    - Creator UUID handling
+    
+    Used in:
+    - GET /api/trivias/ endpoint
+    - List view responses
+    """
+    theme = serializers.CharField(source='theme.name')
+    created_by = serializers.UUIDField(source='created_by.id', read_only=True)
+    
+    class Meta:
+        model = Trivia
+        fields = ['id', 'title', 'difficulty', 'theme', 'is_public', 'created_by']
+
+class TriviaSerializer(serializers.ModelSerializer):
+    """
+    Serializer for detailed trivia information.
+    
+    Features:
+    - Complete trivia data
+    - Nested questions and answers
     - Theme handling
-    - Nested question serialization
     - Permission checking
-    - User validation
+    - Creation tracking
+    
+    Used in:
+    - GET /api/trivias/{id}/ endpoint
+    - Detail view responses
+    - Trivia creation/updates
     """
     theme = serializers.CharField(max_length=100)
     questions = QuestionSerializer(many=True, required=True)
     can_make_private = serializers.SerializerMethodField()
-    username = serializers.CharField(write_only=True)
-
+    username = serializers.CharField(write_only=True, required=False)
+    
     class Meta:
         model = Trivia
         fields = [
             'id', 'title', 'is_public', 'difficulty', 
             'theme', 'url', 'created_by', 'created_at',
-            'username', 'questions', 'can_make_private'
+            'questions', 'can_make_private', 'username'
         ]
-        read_only_fields = ['created_by', 'created_at']
 
     def validate(self, data):
         """
@@ -96,11 +121,12 @@ class TriviaSerializer(serializers.ModelSerializer):
             ValidationError: If user not found
         """
         username = data.get('username')
-        user_id = get_user_id_by_username(username)
-        if not user_id:
-            raise serializers.ValidationError({
-                "username": "No user exists with this username"
-            })
+        if username:
+            user_id = get_user_id_by_username(username)
+            if not user_id:
+                raise serializers.ValidationError({
+                    "username": "No user exists with this username"
+                })
         return data
 
     def validate_questions(self, value):
@@ -245,15 +271,3 @@ class TriviaSerializer(serializers.ModelSerializer):
                 answer.save()
             else:
                 Answer.objects.create(question=question, **answer_data)
-
-class TriviaListSerializer(serializers.ModelSerializer):
-    """
-    Serializer for trivia list view.
-    Simplified version of TriviaSerializer.
-    """
-    theme = serializers.CharField(source='theme.name')
-    created_by = serializers.UUIDField(source='created_by.id', read_only=True)
-    
-    class Meta:
-        model = Trivia
-        fields = ['id', 'title', 'difficulty', 'theme', 'is_public', 'created_by']

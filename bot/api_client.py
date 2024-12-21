@@ -3,7 +3,7 @@ from typing import Dict, Any, Optional, List
 from typing_extensions import Self
 from .utils.logging_bot import bot_logger
 from api.django import (
-    FILTER_URL, LEADERBOARD_URL, SCORES_URL, GET_QUESTIONS_URL, BASE_URL, TRIVIA_URL
+    FILTER_URL, LEADERBOARD_URL, SCORES_URL, BASE_URL, TRIVIA_URL, QUESTIONS_URL
 )
 
 
@@ -104,7 +104,7 @@ class TriviaAPIClient:
             
     async def fetch_trivia_questions(self) -> List[Dict[str, Any]]:
         """Gets trivia questions from the API"""
-        return await self.get(GET_QUESTIONS_URL)
+        return await self.get(QUESTIONS_URL)
             
     async def get_filtered_trivias(self, theme: str, difficulty: int) -> List[Dict[str, Any]]:
         """Gets filtered trivia questions by theme and difficulty"""
@@ -151,27 +151,7 @@ class TriviaAPIClient:
             raise
             
     async def update_score(self, name: str, points: int, discord_channel: str):
-        """Updates the score using CSRF token
-        
-        Args:
-            name (str): Discord username
-            points (int): Points earned in the question
-            discord_channel (str): Discord channel identifier
-            
-        Returns:
-            Dict: Updated score data
-            
-        Raises:
-            ValueError: If required data is missing or invalid
-            ClientResponseError: If there are communication errors with the API
-        """
-        # Basic validations
-        if not name or not discord_channel:
-            raise ValueError("Discord name and channel are required")
-        
-        if not isinstance(points, (int, float)):
-            raise ValueError("Points must be a number")
-        
+        """Updates the score using CSRF token"""
         try:
             data = {
                 "name": name,
@@ -179,7 +159,7 @@ class TriviaAPIClient:
                 "discord_channel": discord_channel
             }
             
-            response = await self.post(f"{SCORES_URL}", data)
+            response = await self.post(f"{self.base_url}/api/score/", data)
             
             # Verify successful response
             if "message" in response and response["message"] == "Score updated successfully":
@@ -330,4 +310,22 @@ class TriviaAPIClient:
             return response
         except Exception as e:
             bot_logger.error(f"Error updating trivia questions: {e}")
+            raise
+            
+    async def get_trivia_info(self, trivia_id: str) -> Dict[str, Any]:
+        """Gets detailed information about a trivia"""
+        try:
+            url = f"{TRIVIA_URL}{trivia_id}/"
+            return await self.get(url)
+        except Exception as e:
+            bot_logger.error(f"Error getting trivia info: {e}")
+            raise
+
+    async def get_trivia_questions(self, trivia_id: str) -> List[Dict[str, Any]]:
+        """Gets questions for a specific trivia"""
+        try:
+            url = f"{BASE_URL}/api/questions/{trivia_id}/"
+            return await self.get(url)
+        except Exception as e:
+            bot_logger.error(f"Error getting trivia questions: {e}")
             raise

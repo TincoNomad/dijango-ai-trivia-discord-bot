@@ -908,3 +908,7 @@
 2024-12-07 09:44:25,958 - bot_commands - ERROR - Exception: 500, message='Internal Server Error', url='http://127.0.0.1:8000/api/trivias/'
 2024-12-07 09:44:25,958 - bot_commands - ERROR - Error creating trivia: 500, message='Internal Server Error', url='http://127.0.0.1:8000/api/trivias/'
 2024-12-09 19:12:17,159 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-21 14:28:51,924 - bot_commands - ERROR - Error in questions: Could not obtain CSRF token
+2024-12-21 14:28:52,132 - bot_commands - ERROR - Error in trivia command: Could not obtain CSRF token
+2024-12-21 15:31:32,652 - bot_commands - ERROR - Error in questions: 404, message='Not Found', url='http://127.0.0.1:8000/api/trivias/get_questions/9b835aa7-5b66-4a76-aaad-27315e135e11/'
+2024-12-21 15:31:32,870 - bot_commands - ERROR - Error in trivia command: 404, message='Not Found', url='http://127.0.0.1:8000/api/trivias/get_questions/9b835aa7-5b66-4a76-aaad-27315e135e11/'

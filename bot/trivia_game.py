@@ -2,7 +2,7 @@ from typing import Tuple, List, Dict, Any, Optional
 from .api_client import TriviaAPIClient
 from .utils.logging_bot import game_logger
 from .utils.utils import get_theme_list, get_difficulty_list
-from api.django import TRIVIA_URL, GET_QUESTIONS_URL
+from api.django import TRIVIA_URL
 
 POINTS_PER_CORRECT_ANSWER = 10
 
@@ -53,11 +53,26 @@ class TriviaGame:
             game_logger.error(f"Error obtaining trivias: {e}")
             raise
     
+    async def get_trivia_info(self, trivia_id: str) -> Dict[str, Any]:
+        """Gets detailed information about a trivia"""
+        try:
+            return await self.api_client.get_trivia_info(trivia_id)
+        except Exception as e:
+            game_logger.error(f"Error getting trivia info: {e}")
+            raise
+    
     async def get_trivia_questions(self, trivia_id: str) -> List[Dict[str, Any]]:
         """Gets questions for a specific trivia"""
         try:
-            questions = await self.api_client.get(f"{GET_QUESTIONS_URL}{trivia_id}/")
+            questions = await self.api_client.get_trivia_questions(trivia_id)
+            
+            if not questions:
+                game_logger.warning(f"No questions found for trivia {trivia_id}")
+                return []
+            
+            game_logger.info(f"Retrieved {len(questions)} questions for trivia {trivia_id}")
             return questions
+            
         except Exception as e:
             game_logger.error(f"Error getting trivia questions: {e}")
             raise

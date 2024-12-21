@@ -27,6 +27,10 @@ from .apps.users.views import (
     SetupCredentialsView
 )
 from .apps.users.viewsets import UserViewSet
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import HttpResponse
+from django.views import View
+from .apps.trivia.views import GetQuestions  # Importar la vista
 
 # Configure router to make trailing slashes optional
 class OptionalSlashRouter(DefaultRouter):
@@ -52,6 +56,12 @@ router.register(r'winners', TriviaWinnerViewSet, basename='winner')# Winner mana
 router.register(r'users', UserViewSet, basename='user')            # User management
 router.register(r'leaderboards', LeaderBoardViewSet, basename='leaderboard')  # Leaderboards
 
+# Agregar esta clase
+class CSRFView(View):
+    @ensure_csrf_cookie
+    def get(self, request):
+        return HttpResponse()
+
 # URL patterns configuration
 urlpatterns = [
     # Admin interface
@@ -66,6 +76,12 @@ urlpatterns = [
     re_path(r'^api/logout/?', LogoutView.as_view(), name='logout'),
     re_path(r'^api/create-user/?', CreateUserView.as_view(), name='create-user'),
     re_path(r'^api/update-credentials/?', SetupCredentialsView.as_view(), name='update-credentials'),
+    
+    # Agregar esta línea
+    re_path(r'^api/csrf/?$', CSRFView.as_view(), name='csrf'),
+    
+    # Agregar la ruta para questions
+    re_path(r'^api/questions/(?P<trivia_id>[^/.]+)/?$', GetQuestions.as_view(), name='get-questions'),
 ]
 
 # Static/Media files serving in development

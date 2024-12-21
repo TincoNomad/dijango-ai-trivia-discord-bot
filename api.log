@@ -1868,3 +1868,69 @@ django.db.utils.ProgrammingError: (1146, "Table 'trivia_db.users_customuser' doe
 2024-12-21 16:02:46,563 - django.utils.autoreload - INFO - /app/api/apps/trivia/serializers.py changed, reloading.
 2024-12-21 16:08:46,223 - django.utils.autoreload - INFO - /app/api/apps/trivia/viewsets.py changed, reloading.
 2024-12-21 16:14:20,990 - django.utils.autoreload - INFO - /app/api/apps/trivia/models.py changed, reloading.
+2024-12-21 19:00:24,790 - api.utils.logging_utils - INFO - New user registered: prueba2#9201
+2024-12-21 19:00:46,785 - api.utils.logging_utils - INFO - User logged in: prueba2#9201
+2024-12-21 19:01:09,375 - django.request - WARNING - Bad Request: /api/register/
+2024-12-21 19:11:18,092 - api.apps.score.serializers - INFO - Attempting to create/get leaderboard for channel: prueba2, username: tinconomad
+2024-12-21 19:11:18,098 - api.apps.score.serializers - INFO - Found user: tinconomad
+2024-12-21 19:11:18,104 - api.apps.score.serializers - INFO - Created new leaderboard for channel: prueba2
+2024-12-21 19:11:28,893 - django.request - WARNING - Not Found: /api/score/
+2024-12-21 19:11:38,341 - django.request - WARNING - Not Found: /api/leaderboards/7aefeeb5-89ef-4117-902a-628b1538fd19/
+2024-12-21 19:12:40,975 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-21 19:12:40,994 - api.utils.logging_utils - INFO - Trivia created successfully: ID=9b835aa7-5b66-4a76-aaad-27315e135e11, Creator=tinconomad, Title=prueba2
+2024-12-21 19:12:46,605 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-21 19:12:51,802 - django.request - WARNING - Not Found: /api/questions/dbbdfce6-a83d-4774-a589-9c37ac2b6ec8/
+2024-12-21 19:13:10,893 - django.request - WARNING - Not Found: /api/questions/64357e72-6f92-4da4-89f5-29e13a853e51/
+2024-12-21 19:13:36,956 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-21 19:13:49,288 - api.utils.jwt_utils - WARNING - No user found with username: prueba2
+2024-12-21 19:13:49,316 - django.request - WARNING - Not Found: /api/trivias/
+2024-12-21 19:14:17,424 - api.utils.jwt_utils - WARNING - No user found with username: prueba2
+2024-12-21 19:14:17,427 - django.request - WARNING - Not Found: /api/trivias/
+2024-12-21 19:28:35,384 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-21 19:28:44,102 - api.utils.logging_utils - INFO - Successful filtering: theme=64357e72-6f92-4da4-89f5-29e13a853e51, difficulty=1, results=1
+2024-12-21 19:28:51,920 - django.request - WARNING - Not Found: /api/scores/
+2024-12-21 20:22:31,259 - django.utils.autoreload - INFO - /app/api/django/__init__.py changed, reloading.
+2024-12-21 20:22:38,297 - django.utils.autoreload - INFO - /app/api/urls.py changed, reloading.
+2024-12-21 20:31:14,671 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-21 20:31:25,645 - api.utils.logging_utils - INFO - Successful filtering: theme=64357e72-6f92-4da4-89f5-29e13a853e51, difficulty=1, results=1
+2024-12-21 20:31:32,585 - api.apps.score.serializers - INFO - Attempting to create/get leaderboard for channel: 🤖•ai-trivia, username: tinconomad
+2024-12-21 20:31:32,587 - api.apps.score.serializers - INFO - Found user: tinconomad
+2024-12-21 20:31:32,591 - api.apps.score.serializers - INFO - Created new leaderboard for channel: 🤖•ai-trivia
+2024-12-21 20:31:32,649 - django.request - WARNING - Not Found: /api/trivias/get_questions/9b835aa7-5b66-4a76-aaad-27315e135e11/
+2024-12-21 21:57:14,772 - django.utils.autoreload - INFO - /app/api/apps/trivia/viewsets.py changed, reloading.
+2024-12-21 22:25:26,095 - django.utils.autoreload - INFO - /app/api/apps/trivia/viewsets.py changed, reloading.
+2024-12-21 22:27:14,831 - django.utils.autoreload - INFO - /app/api/django/__init__.py changed, reloading.
+2024-12-21 22:32:54,225 - django.utils.autoreload - INFO - /app/api/apps/trivia/serializers.py changed, reloading.
+2024-12-21 22:34:13,889 - api.utils.jwt_utils - WARNING - No user found with username: prueba2
+2024-12-21 22:34:13,895 - django.request - WARNING - Not Found: /api/trivias/
+2024-12-21 22:41:13,948 - django.utils.autoreload - INFO - /app/api/django/__init__.py changed, reloading.
+2024-12-21 22:42:00,415 - django.utils.autoreload - INFO - /app/api/django/__init__.py changed, reloading.
+2024-12-21 22:43:22,466 - django.utils.autoreload - INFO - /app/api/django/__init__.py changed, reloading.
+2024-12-21 22:44:34,140 - django.utils.autoreload - INFO - /app/api/django/__init__.py changed, reloading.
+2024-12-21 22:45:36,994 - django.utils.autoreload - INFO - /app/api/django/__init__.py changed, reloading.
+2024-12-21 22:48:51,718 - django.utils.autoreload - INFO - /app/api/apps/trivia/serializers.py changed, reloading.
+2024-12-21 22:48:56,485 - django.utils.autoreload - INFO - /app/api/apps/trivia/serializers.py changed, reloading.
+2024-12-21 22:50:11,703 - django.utils.autoreload - INFO - /app/api/apps/trivia/serializers.py changed, reloading.
+2024-12-21 22:53:06,783 - django.utils.autoreload - INFO - /app/api/apps/trivia/serializers.py changed, reloading.
+2024-12-21 22:59:12,774 - django.request - WARNING - Not Found: /api/questions/64357e72-6f92-4da4-89f5-29e13a853e51/
+2024-12-21 22:59:21,860 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-21 22:59:38,544 - django.request - WARNING - Not Found: /api/questions/9b835aa7-5b66-4a76-aaad-27315e135e11/
+2024-12-21 23:02:59,540 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-21 23:03:04,163 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-21 23:04:23,153 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-21 23:07:34,738 - django.utils.autoreload - INFO - /app/api/urls.py changed, reloading.
+2024-12-21 23:07:50,401 - api.utils.logging_utils - INFO - Successful questions query: Trivia=9b835aa7-5b66-4a76-aaad-27315e135e11, Title=prueba2
+2024-12-21 23:08:03,165 - django.utils.autoreload - INFO - /app/api/apps/trivia/views.py changed, reloading.
+2024-12-21 23:09:50,799 - django.utils.autoreload - INFO - /app/api/apps/trivia/views.py changed, reloading.
+2024-12-21 23:09:54,614 - api.utils.logging_utils - ERROR - Error retrieving questions: Trivia=9b835aa7-5b66-4a76-aaad-27315e135e11, Error=name 'uuid' is not defined
+2024-12-21 23:09:54,624 - django.request - WARNING - Not Found: /api/questions/9b835aa7-5b66-4a76-aaad-27315e135e11/
+2024-12-21 23:10:09,785 - django.utils.autoreload - INFO - /app/api/apps/trivia/views.py changed, reloading.
+2024-12-21 23:18:47,663 - api.utils.logging_utils - INFO - Successful questions query: Trivia=9b835aa7-5b66-4a76-aaad-27315e135e11, Title=prueba2
+2024-12-21 23:20:38,893 - api.utils.logging_utils - INFO - Successful questions query: Trivia=9b835aa7-5b66-4a76-aaad-27315e135e11, Title=prueba2
+2024-12-21 23:22:05,015 - django.utils.autoreload - INFO - /app/api/apps/trivia/views.py changed, reloading.
+2024-12-21 23:22:32,676 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-21 23:22:50,684 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-21 23:22:53,537 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-21 23:25:29,671 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-21 23:25:38,378 - api.utils.logging_utils - INFO - Successful filtering: theme=64357e72-6f92-4da4-89f5-29e13a853e51, difficulty=1, results=1
+2024-12-21 23:26:36,363 - django.request - WARNING - Not Found: /favicon.ico

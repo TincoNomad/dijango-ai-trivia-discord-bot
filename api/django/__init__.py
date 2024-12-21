@@ -24,18 +24,17 @@ else:
 
 # API Endpoints Configuration
 # These URLs are constructed using the environment-specific BASE_URL
-TRIVIA_URL = f"{BASE_URL}/api/trivias/"          # Base trivia endpoint
+TRIVIA_URL = f"{BASE_URL}/api/trivias/"          # Base trivia endpoint (list & detail)
 THEME_URL = f"{BASE_URL}/api/themes/"            # Theme management endpoint
 DIFFICULTY_URL = f"{TRIVIA_URL}difficulty/"       # Difficulty settings endpoint
 FILTER_URL = f"{TRIVIA_URL}filter/"              # Trivia filtering endpoint
-GET_TRIVIA_URL = f"{TRIVIA_URL}get_trivia/"      # Trivia retrieval endpoint
-GET_QUESTIONS_URL = f"{TRIVIA_URL}get_questions/" # Questions retrieval endpoint
+QUESTIONS_URL = f"{BASE_URL}/api/questions/"      # Questions endpoint
 LEADERBOARD_URL = f"{BASE_URL}/api/leaderboards/" # Leaderboard endpoint
-SCORES_URL = f"{BASE_URL}/api/scores/"           # Score management endpoint
+SCORES_URL = f"{BASE_URL}/api/score/"            # Score management endpoint
 
 # Export all URL configurations
 __all__ = [
     'BASE_URL', 'TRIVIA_URL', 'THEME_URL', 
-    'DIFFICULTY_URL', 'FILTER_URL', 'GET_TRIVIA_URL',
-    'GET_QUESTIONS_URL', 'LEADERBOARD_URL', 'SCORES_URL'
+    'DIFFICULTY_URL', 'FILTER_URL', 'QUESTIONS_URL',
+    'LEADERBOARD_URL', 'SCORES_URL'
 ]

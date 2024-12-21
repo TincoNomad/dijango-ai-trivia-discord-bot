@@ -18,7 +18,7 @@ Features:
 from rest_framework import viewsets, permissions
 from django.db import models
 from .models import Trivia, Theme, Question, Answer
-from .serializers import TriviaSerializer, ThemeSerializer, TriviaListSerializer
+from .serializers import TriviaSerializer, ThemeSerializer, TriviaListSerializer, QuestionSerializer
 from django.core.exceptions import ValidationError
 from django.db.utils import IntegrityError
 from rest_framework.exceptions import ValidationError as DRFValidationError
@@ -106,15 +106,7 @@ class TriviaViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def get_trivia(self, request):
-        """
-        Retrieve specific trivia by ID.
-        
-        GET /api/trivias/get_trivia/?id=trivia-uuid
-        
-        Returns:
-            Response: Trivia details if found
-            Response: Error message if not found
-        """
+        """Obtiene información general de la trivia (sin preguntas)"""
         trivia_id = request.query_params.get('id')
         if not trivia_id:
             return Response(
@@ -320,6 +312,14 @@ class TriviaViewSet(viewsets.ModelViewSet):
         except Exception as e:
             logger.error(f"Update failed: {str(e)}")
             raise
+
+    @action(detail=True, methods=['get'])
+    def questions(self, request, pk=None):
+        """Obtiene las preguntas y respuestas de una trivia específica"""
+        trivia = self.get_object()
+        questions = trivia.questions.all()
+        serializer = QuestionSerializer(questions, many=True)
+        return Response(serializer.data)
 
 class ThemeViewSet(viewsets.ReadOnlyModelViewSet):
     """
