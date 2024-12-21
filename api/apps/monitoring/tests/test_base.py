@@ -1,6 +1,10 @@
 """
 Base test class for monitoring-related tests.
-Contains common functionality and helper methods.
+Contains common functionality and helper methods for:
+- Log cleanup
+- Sample data creation
+- Log validation
+- Common assertions
 """
 
 from typing import Tuple, List
@@ -9,11 +13,24 @@ from .factories import RequestLogFactory, ErrorLogFactory
 from datetime import datetime
 
 class MonitoringBaseTest:
-    """Base class for monitoring tests with common functionality"""
+    """
+    Base class for monitoring tests with common functionality.
+    
+    Provides utility methods for:
+    - Log management
+    - Test data creation
+    - Log validation
+    - Common assertions
+    """
 
     @staticmethod
     def cleanup_logs():
-        """Clean up all logs after tests"""
+        """
+        Clean up all logs after tests.
+        
+        Removes all RequestLog and ErrorLog entries from the database.
+        Should be called in test teardown.
+        """
         RequestLog.objects.all().delete()
         ErrorLog.objects.all().delete()
 
@@ -30,7 +47,7 @@ class MonitoringBaseTest:
             num_errors: Number of error logs to create
             
         Returns:
-            Tuple containing lists of created request and error logs
+            Tuple[List[RequestLog], List[ErrorLog]]: Created logs
         """
         requests = RequestLogFactory.create_batch(size=num_requests)
         errors = ErrorLogFactory.create_batch(size=num_errors)
@@ -43,6 +60,9 @@ class MonitoringBaseTest:
         
         Args:
             log: The log entry to validate
+            
+        Raises:
+            AssertionError: If any validation fails
         """
         assert log.path is not None
         assert log.method in ['GET', 'POST', 'PUT', 'DELETE']
@@ -51,8 +71,14 @@ class MonitoringBaseTest:
 
     def assert_log_format(self, log_entry):
         """
-        Valida el formato correcto de un log.
-        Centraliza las validaciones comunes.
+        Validates the correct format of a log entry.
+        Centralizes common validations.
+        
+        Args:
+            log_entry: The log entry to validate
+            
+        Raises:
+            AssertionError: If any validation fails
         """
         assert isinstance(log_entry.timestamp, datetime)
         assert log_entry.method in ['GET', 'POST', 'PUT', 'DELETE']

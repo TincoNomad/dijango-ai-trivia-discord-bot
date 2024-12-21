@@ -1,3 +1,16 @@
+"""
+JWT Authentication Utilities Module
+
+This module provides utility functions for JWT (JSON Web Token) handling and authentication.
+It includes functions for:
+- Token decoding and user extraction
+- User authentication from request headers
+- Username to user ID conversion
+- Custom permission classes
+
+The module uses Django's settings for JWT configuration and includes detailed logging.
+"""
+
 import jwt
 from django.conf import settings
 import logging
@@ -8,13 +21,18 @@ logger = logging.getLogger(__name__)
 
 def get_user_from_token(token):
     """
-    Decode the JWT token and extract the user.
+    Decode a JWT token and extract the associated user.
     
     Args:
         token (str): The JWT token to decode.
     
     Returns:
-        User: The user object if successfully decoded, None otherwise.
+        User: The user object if successfully decoded and found.
+        None: If token is invalid, expired, or user not found.
+    
+    Raises:
+        jwt.ExpiredSignatureError: If the token has expired.
+        jwt.InvalidTokenError: If the token is invalid.
     """
     try:
         algorithm = settings.SIMPLE_JWT.get('ALGORITHM', 'HS256')
@@ -23,59 +41,68 @@ def get_user_from_token(token):
         logger.debug(f"Attempting to decode token with algorithm: {algorithm}")
         payload = jwt.decode(token, signing_key, algorithms=[algorithm])
         
-        # Importar User model aquí para evitar importación circular
+        # Import User model here to avoid circular imports
         from django.contrib.auth import get_user_model
         User = get_user_model()
         
-        # Obtener el usuario completo
+        # Retrieve full user object
         user = User.objects.filter(id=payload.get('id')).first()
-        logger.info(f"Successfully decoded token. User: {user}")
+        logger.info(f"Successfully decoded token for user: {user}")
         
         return user
     except jwt.ExpiredSignatureError:
         logger.error("Token has expired")
     except jwt.InvalidTokenError:
-        logger.error("Invalid token")
+        logger.error("Invalid token format or signature")
     except Exception as e:
-        logger.exception(f"Unexpected error occurred while decoding token: {str(e)}")
+        logger.exception(f"Unexpected error in token decoding: {str(e)}")
     
     return None
 
 def auth_jwt(request):
     """
-    Extract the user_id from the Authorization header in the request.
+    Authenticate a user from the request's Authorization header.
+    
+    Extracts the JWT token from the Authorization header and validates it.
     
     Args:
-        request: The request object containing the headers.
+        request: The HTTP request object containing headers.
     
     Returns:
-        int: The user_id if successfully extracted and decoded, None otherwise.
+        int: The authenticated user_id if successful.
+        None: If authentication fails or no valid token is found.
     """
     auth_header = request.headers.get('Authorization')
-    logger.debug(f"Authorization header: {auth_header}")
+    logger.debug(f"Processing Authorization header: {auth_header}")
     
     if auth_header and auth_header.startswith('Bearer '):
+        # Extract token from header
         token = auth_header.split(' ')[1]
-        logger.debug(f"Extracted token: {token[:10]}...")  # Log first 10 characters of token
+        logger.debug(f"Processing token: {token[:10]}...")  # Log first 10 chars for security
+        
         user_id = get_user_from_token(token)
         if user_id is not None:
-            logger.info(f"Successfully authenticated user with ID: {user_id}")
+            logger.info(f"Authentication successful for user ID: {user_id}")
             return user_id
         else:
-            logger.warning("Could not extract user_id from token")
+            logger.warning("Failed to extract user_id from token")
     else:
         logger.warning("No valid Authorization header found")
     return None
 
 def get_user_id_by_username(username):
     """
-    Find the user ID based on the username.
+    Retrieve a user's ID using their username.
     
     Args:
         username (str): The username to search for.
     
     Returns:
-        UUID: The user ID if found, None otherwise.
+        UUID: The user's ID if found.
+        None: If no user is found with the given username.
+    
+    Note:
+        This function uses the custom user model defined in Django settings.
     """
     try:
         from django.contrib.auth import get_user_model
@@ -83,26 +110,57 @@ def get_user_id_by_username(username):
         
         user = User.objects.filter(username=username).first()
         if user:
-            logger.info(f"User found: {username} with ID: {user.id}")
+            logger.info(f"Found user ID {user.id} for username: {username}")
             return user.id
         
         logger.warning(f"No user found with username: {username}")
         return None
         
     except Exception as e:
-        logger.exception(f"Error finding user by username: {str(e)}")
+        logger.exception(f"Error in username lookup: {str(e)}")
         return None
 
 class IsAdminUser(permissions.BasePermission):
+    """
+    Custom permission class to restrict access to admin users.
+    
+    Allows:
+    - GET requests for all authenticated users
+    - POST/PUT/DELETE requests only for admin users
+    
+    This permission can be used both at the view level and object level.
+    """
+    
     def has_permission(self, request, view):
-        # Allow GET requests for all authenticated users
+        """
+        Check if the user has permission to access the view.
+        
+        Args:
+            request: The HTTP request object.
+            view: The view being accessed.
+            
+        Returns:
+            bool: True if permission is granted, False otherwise.
+        """
+        # Allow GET requests for authenticated users
         if request.method in ['GET', 'HEAD', 'OPTIONS']:
             return request.user.is_authenticated
-        # For other methods (POST, PUT, DELETE), check if the user is admin
+        # Require admin role for other methods
         return request.user.is_authenticated and request.user.role == 'admin'
 
     def has_object_permission(self, request, view, obj):
-        # Similar to has_permission but for specific objects
+        """
+        Check if the user has permission to access a specific object.
+        
+        Args:
+            request: The HTTP request object.
+            view: The view being accessed.
+            obj: The object being accessed.
+            
+        Returns:
+            bool: True if permission is granted, False otherwise.
+        """
+        # Same logic as has_permission
         if request.method in ['GET', 'HEAD', 'OPTIONS']:
             return request.user.is_authenticated
         return request.user.is_authenticated and request.user.role == 'admin'

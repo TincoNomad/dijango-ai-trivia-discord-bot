@@ -1,3 +1,23 @@
+"""
+Django Base Settings Module
+
+This module contains the core Django settings used across all environments.
+It includes configurations for:
+- Database connections
+- Installed applications
+- Middleware
+- Authentication
+- Static files
+- REST Framework
+- JWT Authentication
+- Security settings
+
+The settings can be overridden by environment-specific files (dev.py, prod.py).
+
+Note:
+    Secret values and environment-specific settings are loaded from env.py
+"""
+
 import os
 import sys
 from pathlib import Path
@@ -5,45 +25,41 @@ from env import env
 from typing import List
 from datetime import timedelta
 
-# Set up the project root and add it to the Python path
+# Project setup
 project_root = Path(__file__).resolve().parent.parent
 sys.path.append(str(project_root))
 
-# Define the base directory of the project
+# Base directory configuration
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Import the secret key from the config file
+# Security settings
 SECRET_KEY = env('SECRET_KEY')
-
-# Debug mode from environment variables
 DEBUG = env('DEBUG')
-
-# List of allowed hosts (empty by default, should be set in production)
 ALLOWED_HOSTS: List[str] = []
 
-# Application definition
-# List of installed Django apps and third-party packages
+# Application configuration
 INSTALLED_APPS = [
-    # Custom apps
-    'api.apps.users.apps.UsersConfig',
-    'api.apps.trivia.apps.TriviaConfig',
-    'api.apps.score.apps.ScoreConfig',
-    'api.apps.monitoring.apps.MonitoringConfig',
-    # Django apps
+    # Custom applications for project functionality
+    'api.apps.users.apps.UsersConfig',      # User management
+    'api.apps.trivia.apps.TriviaConfig',    # Trivia game logic
+    'api.apps.score.apps.ScoreConfig',      # Score tracking
+    'api.apps.monitoring.apps.MonitoringConfig',  # System monitoring
+    
+    # Django built-in applications
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Third-party apps
-    'rest_framework',
-    'whitenoise.runserver_nostatic',
-    'rest_framework_simplejwt',
+    
+    # Third-party applications
+    'rest_framework',                    # REST API framework
+    'whitenoise.runserver_nostatic',     # Static file serving
+    'rest_framework_simplejwt',          # JWT authentication
 ]
 
-# Middleware configuration
-# List of middleware classes for request/response processing
+# Middleware configuration for request/response processing
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,6 +73,39 @@ MIDDLEWARE = [
     # WhiteNoise for static file serving
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
+
+# Database configuration
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': env('MYSQL_DATABASE'),
+        'USER': env('MYSQL_USER'),
+        'PASSWORD': env('MYSQL_PASSWORD'),
+        'HOST': env('MYSQL_HOST'),
+        'PORT': env('MYSQL_PORT'),
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
+    }
+}
+
+# JWT Authentication settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': env('SIGNING_KEY'),
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    'TOKEN_USER_CLASS': 'api.apps.users.models.CustomUser',
+}
 
 # Root URL configuration
 ROOT_URLCONF = 'api.urls'
@@ -80,22 +129,6 @@ TEMPLATES = [
 
 # WSGI application path
 WSGI_APPLICATION = 'api.wsgi.application'
-
-# Database configuration (using SQLite by default)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': env('MYSQL_DATABASE'),
-        'USER': env('MYSQL_USER'),
-        'PASSWORD': env('MYSQL_PASSWORD'),
-        'HOST': env('MYSQL_HOST'),
-        'PORT': env('MYSQL_PORT'),
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
-    }
-}
 
 # Password validation settings
 AUTH_PASSWORD_VALIDATORS = [
@@ -123,11 +156,11 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR.parent, 'staticfiles')
 
-# Configuración de WhiteNoise
+# WhiteNoise Configuration
 WHITENOISE_USE_FINDERS = True
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-# Directorio adicional para archivos estáticos
+# Additional directory for static files
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
@@ -151,22 +184,6 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler'
 }
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': env('SIGNING_KEY'),
-    'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'USER_ID_FIELD': 'id',
-    'USER_ID_CLAIM': 'user_id',
-    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-    'TOKEN_TYPE_CLAIM': 'token_type',
-    'TOKEN_USER_CLASS': 'api.apps.users.models.CustomUser',
-}
-
 AUTH_USER_MODEL = 'users.CustomUser'
 
 # Monitoring settings
@@ -179,10 +196,10 @@ if DEBUG:
     MONITORING['REQUEST_LOG_RETENTION_DAYS'] = 7
     MONITORING['ERROR_LOG_RETENTION_DAYS'] = 30
 
-# Configuración CSRF
+# CSRF Configuration
 CSRF_COOKIE_NAME = 'csrftoken'
 CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
-CSRF_COOKIE_SECURE = False  # True en producción
+CSRF_COOKIE_SECURE = False  # Should be True in production
 CSRF_COOKIE_HTTPONLY = False
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_SAMESITE = 'Lax'

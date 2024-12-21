@@ -1,11 +1,37 @@
 #!/usr/bin/env python
-"""Django's command-line utility for administrative tasks."""
+"""
+Django's command-line utility for administrative tasks.
+
+This module serves as the main entry point for Django management commands.
+It sets up the Django environment and handles command execution.
+
+Usage:
+    python manage.py <command> [options]
+
+Common commands:
+    runserver - Starts the development server
+    migrate - Applies database migrations
+    createsuperuser - Creates a superuser account
+"""
 import os
 import sys
 
 
 def main():
-    """Run administrative tasks."""
+    """
+    Main function that runs administrative tasks.
+    
+    This function:
+    1. Sets the Django settings module
+    2. Imports and executes Django management commands
+    3. Handles import errors with helpful messages
+    
+    Returns:
+        None
+    
+    Raises:
+        ImportError: If Django is not installed or PYTHONPATH is not set correctly
+    """
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.django.base')
     try:
         from django.core.management import execute_from_command_line

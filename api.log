@@ -1847,3 +1847,13 @@ django.db.utils.ProgrammingError: (1146, "Table 'trivia_db.users_customuser' doe
 2024-12-19 17:16:24,255 - django.utils.autoreload - INFO - /app/api/apps/score/viewsets.py changed, reloading.
 2024-12-19 17:52:41,788 - django.utils.autoreload - INFO - /app/api/apps/score/viewsets.py changed, reloading.
 2024-12-19 17:52:43,518 - django.utils.autoreload - INFO - /app/api/apps/score/viewsets.py changed, reloading.
+2024-12-21 01:39:47,420 - django.utils.autoreload - INFO - /app/manage.py changed, reloading.
+2024-12-21 01:39:50,119 - django.utils.autoreload - INFO - /app/manage.py changed, reloading.
+2024-12-21 02:05:21,839 - django.utils.autoreload - INFO - /app/api/django/dev.py changed, reloading.
+2024-12-21 02:06:43,286 - django.utils.autoreload - INFO - /app/api/urls.py changed, reloading.
+2024-12-21 02:06:44,900 - django.utils.autoreload - INFO - /app/api/urls.py changed, reloading.
+2024-12-21 02:08:47,676 - django.utils.autoreload - INFO - /app/api/utils/jwt_utils.py changed, reloading.
+2024-12-21 02:14:19,102 - django.utils.autoreload - INFO - /app/api/apps/monitoring/middleware.py changed, reloading.
+2024-12-21 02:23:30,595 - django.utils.autoreload - INFO - /app/api/apps/monitoring/apps.py changed, reloading.
+2024-12-21 02:25:19,294 - django.utils.autoreload - INFO - /app/api/django/base.py changed, reloading.
+2024-12-21 02:27:59,941 - django.utils.autoreload - INFO - /app/api/urls.py changed, reloading.

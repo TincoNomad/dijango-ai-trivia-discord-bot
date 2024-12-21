@@ -1,9 +1,27 @@
+"""
+Monitoring Models Module
+
+This module defines the database models for the monitoring system.
+It includes models for:
+- Request logging (HTTP requests)
+- Error logging (Application errors)
+
+Both models include appropriate indexes for efficient querying.
+"""
+
 from django.db import models
 from django.utils import timezone
 
-# Create your models here.
-
 class RequestLog(models.Model):
+    """
+    Model for logging HTTP requests.
+    
+    Stores detailed information about HTTP requests including timing,
+    method, path, status code, and associated data.
+    
+    Indexes are created on frequently queried fields for performance.
+    """
+    
     timestamp = models.DateTimeField(default=timezone.now)
     path = models.CharField(max_length=255)
     method = models.CharField(max_length=10)
@@ -22,9 +40,19 @@ class RequestLog(models.Model):
         ]
         
     def __str__(self):
+        """String representation of the request log."""
         return f"{self.method} {self.path} - {self.status_code}"
 
 class ErrorLog(models.Model):
+    """
+    Model for logging application errors.
+    
+    Stores detailed information about errors including type,
+    message, traceback, and request context.
+    
+    Indexes are created on frequently queried fields for performance.
+    """
+    
     timestamp = models.DateTimeField(default=timezone.now)
     error_type = models.CharField(max_length=100)
     error_message = models.TextField()

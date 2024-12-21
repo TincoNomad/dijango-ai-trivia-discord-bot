@@ -1,16 +1,24 @@
 """
 Test data for monitoring-related tests.
-Contains constants and test data fixtures.
+
+Contains:
+- Test case definitions
+- Performance thresholds
+- Sample request data
+- Error messages
+- Endpoint configurations
 """
 
 from typing import TypedDict, List
 
 class EndpointTestCase(TypedDict):
+    """Type definition for endpoint test cases"""
     endpoint: str
     method: str
     expected_status: int
 
 class PerformanceThresholds(TypedDict):
+    """Type definition for performance thresholds"""
     max_response_time: float
     batch_size: int
     max_memory_usage: int
@@ -22,11 +30,12 @@ ENDPOINTS_TO_TEST: List[EndpointTestCase] = [
 ]
 
 PERFORMANCE_THRESHOLDS: PerformanceThresholds = {
-    'max_response_time': 1.0,  # segundos
+    'max_response_time': 1.0,  # seconds
     'batch_size': 1000,
     'max_memory_usage': 100 * 1024 * 1024  # 100MB
 }
 
+# Test data constants
 TEST_REQUEST_DATA = {
     'valid_request': {
         'name': 'test',

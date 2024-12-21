@@ -7,6 +7,8 @@ This module verifies:
 - Error logging and handling
 - Authentication logging
 - Data logging in requests/responses
+- Response time tracking
+- Status code handling
 """
 
 import pytest
@@ -33,17 +35,17 @@ class TestMonitoringIntegration(MonitoringBaseTest):
     ])
     def test_endpoint_logging(self, endpoint, method, expected_status):
         """
-        Verifica el logging para diferentes endpoints.
+        Verify logging for different endpoints.
         
         Args:
-            endpoint (str): URL del endpoint a probar
-            method (str): Método HTTP (GET, POST)
-            expected_status (int): Código de estado esperado
+            endpoint (str): Endpoint URL to test
+            method (str): HTTP method (GET, POST)
+            expected_status (int): Expected status code
             
-        Verifica:
-            - Creación correcta del log
-            - Campos del log coinciden con la petición
-            - Tiempo de respuesta registrado
+        Verifies:
+            - Correct log creation
+            - Log fields match request
+            - Response time is recorded
         """
         # Act
         response = (
