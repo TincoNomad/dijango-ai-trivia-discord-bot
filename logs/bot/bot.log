@@ -4582,3 +4582,4 @@ Exception Value: Trivia() got unexpected keyword arguments: &#x27;username&#x27;
 2024-12-21 18:25:57,400 - discord_bot - INFO - Making POST request to http://127.0.0.1:8000/api/score/
 2024-12-21 18:25:57,466 - discord_bot - INFO - Score updated successfully - User: tinconomad, Points: 10, Channel: 🤖•ai-trivia
 2024-12-21 18:26:33,648 - discord_bot - INFO - Requesting leaderboard for channel: 🤖•ai-trivia
+2024-12-21 23:30:08,427 - discord_bot - INFO - We are connected as TriviaBotAI#7106

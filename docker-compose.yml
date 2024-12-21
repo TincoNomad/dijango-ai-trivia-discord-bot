@@ -44,5 +44,26 @@ services:
       db:
         condition: service_healthy
 
+  bot:
+    build: .
+    command: ./bot-entrypoint.sh
+    volumes:
+      - .:/app
+    environment:
+      - DJANGO_SETTINGS_MODULE=api.django.dev
+      - ENVIRONMENT=${ENVIRONMENT}
+      - DEBUG=${DEBUG}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_PORT=${MYSQL_PORT}
+      - SECRET_KEY=${SECRET_KEY}
+      - SIGNING_KEY=${SIGNING_KEY}
+      - DISCORD_KEY=${DISCORD_KEY}
+    depends_on:
+      - web
+      - db
+
 volumes:
   mysql_data:
