@@ -38,4 +38,17 @@ ERROR_MESSAGES = {
     'INVALID_REQUEST': 'Invalid request data',
     'LOG_CREATION_FAILED': 'Failed to create log entry',
     'CLEANUP_FAILED': 'Log cleanup operation failed'
+}
+
+TEST_CASES = {
+    'monitoring': {
+        'endpoints': [
+            {'url': '/api/users/', 'method': 'GET', 'expected_status': 200},
+            {'url': '/api/score/', 'method': 'POST', 'expected_status': 200},
+        ],
+        'performance': {
+            'max_response_time': 1.0,
+            'batch_size': 1000
+        }
+    }
 } 

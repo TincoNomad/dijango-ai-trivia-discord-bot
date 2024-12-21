@@ -33,12 +33,17 @@ class TestMonitoringIntegration(MonitoringBaseTest):
     ])
     def test_endpoint_logging(self, endpoint, method, expected_status):
         """
-        Verify logging for different endpoints.
+        Verifica el logging para diferentes endpoints.
         
         Args:
-            endpoint: URL endpoint to test
-            method: HTTP method (GET, POST)
-            expected_status: Expected status code
+            endpoint (str): URL del endpoint a probar
+            method (str): Método HTTP (GET, POST)
+            expected_status (int): Código de estado esperado
+            
+        Verifica:
+            - Creación correcta del log
+            - Campos del log coinciden con la petición
+            - Tiempo de respuesta registrado
         """
         # Act
         response = (

@@ -6,6 +6,7 @@ Contains common functionality and helper methods.
 from typing import Tuple, List
 from api.apps.monitoring.models import RequestLog, ErrorLog
 from .factories import RequestLogFactory, ErrorLogFactory
+from datetime import datetime
 
 class MonitoringBaseTest:
     """Base class for monitoring tests with common functionality"""
@@ -47,3 +48,13 @@ class MonitoringBaseTest:
         assert log.method in ['GET', 'POST', 'PUT', 'DELETE']
         assert isinstance(log.response_time, float)
         assert isinstance(log.status_code, int)
+
+    def assert_log_format(self, log_entry):
+        """
+        Valida el formato correcto de un log.
+        Centraliza las validaciones comunes.
+        """
+        assert isinstance(log_entry.timestamp, datetime)
+        assert log_entry.method in ['GET', 'POST', 'PUT', 'DELETE']
+        assert isinstance(log_entry.response_time, float)
+        assert 200 <= log_entry.status_code < 600
