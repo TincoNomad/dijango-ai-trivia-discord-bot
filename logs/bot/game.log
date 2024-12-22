@@ -117,3 +117,6 @@
 2024-12-21 15:31:32,652 - game_interactions - ERROR - Error getting trivia questions: 404, message='Not Found', url='http://127.0.0.1:8000/api/trivias/get_questions/9b835aa7-5b66-4a76-aaad-27315e135e11/'
 2024-12-21 18:25:29,707 - game_interactions - INFO - Trivia game initialized successfully
 2024-12-21 18:25:45,587 - game_interactions - INFO - Retrieved 3 questions for trivia 9b835aa7-5b66-4a76-aaad-27315e135e11
+2024-12-22 17:03:35,650 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host 127.0.0.1:8000 ssl:default [Connect call failed ('127.0.0.1', 8000)]
+2024-12-22 17:31:03,374 - game_interactions - INFO - Trivia game initialized successfully
+2024-12-22 17:31:23,082 - game_interactions - INFO - Retrieved 3 questions for trivia 9b835aa7-5b66-4a76-aaad-27315e135e11

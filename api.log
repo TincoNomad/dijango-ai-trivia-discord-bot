@@ -1934,3 +1934,13 @@ django.db.utils.ProgrammingError: (1146, "Table 'trivia_db.users_customuser' doe
 2024-12-21 23:25:29,671 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
 2024-12-21 23:25:38,378 - api.utils.logging_utils - INFO - Successful filtering: theme=64357e72-6f92-4da4-89f5-29e13a853e51, difficulty=1, results=1
 2024-12-21 23:26:36,363 - django.request - WARNING - Not Found: /favicon.ico
+2024-12-22 17:06:28,705 - django.utils.autoreload - INFO - /app/api/urls.py changed, reloading.
+2024-12-22 17:12:51,149 - django.utils.autoreload - INFO - /app/api/django/dev.py changed, reloading.
+2024-12-22 17:15:09,881 - django.request - WARNING - Not Found: /
+2024-12-22 17:15:11,304 - django.request - WARNING - Not Found: /favicon.ico
+2024-12-22 17:31:03,292 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-22 17:31:16,104 - api.utils.logging_utils - INFO - Successful filtering: theme=64357e72-6f92-4da4-89f5-29e13a853e51, difficulty=1, results=1
+2024-12-22 17:37:08,454 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-22 17:39:57,618 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 17:39:57,626 - api.utils.logging_utils - INFO - Trivia created successfully: ID=b0d11232-35ba-486a-be98-a0030a5d5477, Creator=tinconomad, Title=prueba3
+2024-12-22 17:40:58,341 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad

@@ -14,10 +14,10 @@ Key differences from production:
 from .base import *
 
 # Development server configurations
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'web']
 
 # Development API URL
-BASE_URL = 'http://127.0.0.1:8000'
+BASE_URL = 'http://web:8000'
 
 # Development-specific settings
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

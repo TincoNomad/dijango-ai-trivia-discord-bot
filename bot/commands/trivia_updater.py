@@ -15,7 +15,7 @@ class TriviaUpdater:
             command_logger.info(f"Listing trivias for user: {username}")
             
             # Send initial message to original channel
-            await message.channel.send("I've sent you a DM to update your trivia!")
+            await message.channel.send("I've sent you a DM to show you all trivias available!")
             
             params: Dict[str, str] = {"username": username}
             trivias: List[Dict[str, Any]] = await self.api_client.get_user_trivias(params)

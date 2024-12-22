@@ -15,9 +15,9 @@ from .base import *
 
 # Production security settings
 DEBUG = False
-ALLOWED_HOSTS = ['your-production-domain.com']
+ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='your-production-domain.com,web').split(',')
 
 # Production API URL
-BASE_URL = 'https://your-production-url.com'
+BASE_URL = env('API_BASE_URL', default='https://your-production-domain.com')
 
 # Additional production-specific settings can be added here

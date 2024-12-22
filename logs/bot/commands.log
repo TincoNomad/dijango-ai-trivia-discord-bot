@@ -912,3 +912,127 @@
 2024-12-21 14:28:52,132 - bot_commands - ERROR - Error in trivia command: Could not obtain CSRF token
 2024-12-21 15:31:32,652 - bot_commands - ERROR - Error in questions: 404, message='Not Found', url='http://127.0.0.1:8000/api/trivias/get_questions/9b835aa7-5b66-4a76-aaad-27315e135e11/'
 2024-12-21 15:31:32,870 - bot_commands - ERROR - Error in trivia command: 404, message='Not Found', url='http://127.0.0.1:8000/api/trivias/get_questions/9b835aa7-5b66-4a76-aaad-27315e135e11/'
+2024-12-22 17:03:35,651 - bot_commands - ERROR - Error in trivia command: Cannot connect to host 127.0.0.1:8000 ssl:default [Connect call failed ('127.0.0.1', 8000)]
+2024-12-22 17:39:57,570 - bot_commands - INFO - Attempting to create trivia with data:
+2024-12-22 17:39:57,572 - bot_commands - INFO - {
+  "title": "prueba3",
+  "theme": "pruebas",
+  "username": "tinconomad",
+  "difficulty": 1,
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "questions": [
+    {
+      "question_title": "esta funcionando?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "son mas de 3 preguntas?",
+      "answers": [
+        {
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "answer_title": "yes",
+          "is_correct": true
+        },
+        {
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "answers": [
+        {
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ]
+}
+2024-12-22 17:39:57,688 - bot_commands - INFO - API Response: {
+  "id": "b0d11232-35ba-486a-be98-a0030a5d5477",
+  "title": "prueba3",
+  "is_public": true,
+  "difficulty": 1,
+  "theme": "pruebas",
+  "url": "https://www.linkedin.com/in/tinconomad/",
+  "created_by": "1cf6c672-307a-4e5f-84a9-45d82abf54f2",
+  "created_at": "2024-12-22T17:39:57.620431Z",
+  "questions": [
+    {
+      "id": 4,
+      "question_title": "esta funcionando?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 8,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 9,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "question_title": "son mas de 3 preguntas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 10,
+          "answer_title": "no",
+          "is_correct": false
+        },
+        {
+          "id": 11,
+          "answer_title": "yes",
+          "is_correct": true
+        },
+        {
+          "id": 12,
+          "answer_title": "tal vez",
+          "is_correct": false
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "question_title": "todas las preguntas tienen al menos 2 respuestas?",
+      "points": 10,
+      "answers": [
+        {
+          "id": 13,
+          "answer_title": "si",
+          "is_correct": true
+        },
+        {
+          "id": 14,
+          "answer_title": "no",
+          "is_correct": false
+        }
+      ]
+    }
+  ],
+  "can_make_private": false
+}
+2024-12-22 17:40:58,084 - bot_commands - INFO - Listing trivias for user: tinconomad

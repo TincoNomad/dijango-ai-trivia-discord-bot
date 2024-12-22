@@ -4583,3 +4583,15 @@ Exception Value: Trivia() got unexpected keyword arguments: &#x27;username&#x27;
 2024-12-21 18:25:57,466 - discord_bot - INFO - Score updated successfully - User: tinconomad, Points: 10, Channel: 🤖•ai-trivia
 2024-12-21 18:26:33,648 - discord_bot - INFO - Requesting leaderboard for channel: 🤖•ai-trivia
 2024-12-21 23:30:08,427 - discord_bot - INFO - We are connected as TriviaBotAI#7106
+2024-12-22 17:03:03,395 - discord_bot - INFO - We are connected as TriviaBotAI#7106
+2024-12-22 17:03:35,649 - discord_bot - ERROR - Error in GET request to http://127.0.0.1:8000/api/trivias/: Cannot connect to host 127.0.0.1:8000 ssl:default [Connect call failed ('127.0.0.1', 8000)]
+2024-12-22 17:14:54,572 - discord_bot - INFO - We are connected as TriviaBotAI#7106
+2024-12-22 17:31:16,093 - discord_bot - INFO - Requesting filtered trivias with params: {'theme': '64357e72-6f92-4da4-89f5-29e13a853e51', 'difficulty': 1}
+2024-12-22 17:31:22,968 - discord_bot - INFO - Making POST request to http://web:8000/api/leaderboards/
+2024-12-22 17:31:28,054 - discord_bot - INFO - Making POST request to http://web:8000/api/score/
+2024-12-22 17:31:28,107 - discord_bot - INFO - Score updated successfully - User: tinconomad, Points: 10, Channel: 🤖•ai-trivia
+2024-12-22 17:31:42,396 - discord_bot - INFO - Making POST request to http://web:8000/api/score/
+2024-12-22 17:31:42,447 - discord_bot - INFO - Score updated successfully - User: tinconomad, Points: 10, Channel: 🤖•ai-trivia
+2024-12-22 17:32:18,208 - discord_bot - INFO - Requesting leaderboard for channel: 🤖•ai-trivia
+2024-12-22 17:39:57,584 - discord_bot - INFO - Making POST request to http://web:8000/api/trivias/
+2024-12-22 17:40:58,323 - discord_bot - INFO - Getting trivias for user with params: {'username': 'tinconomad'}
