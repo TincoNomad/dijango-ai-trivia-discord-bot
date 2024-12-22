@@ -226,7 +226,7 @@ class TriviaAPIClient:
         """Updates a trivia question
         
         Args:
-            data (Dict[str, Any]): Update data including trivia_id and the fields to update
+            data (Dict[str, Any]): Update data including trivia_id and username
             
         Returns:
             Dict[str, Any]: Updated trivia data
@@ -236,12 +236,11 @@ class TriviaAPIClient:
         """
         try:
             trivia_id = data.pop('trivia_id')
-            bot_logger.info(f"Updating trivia {trivia_id} with data: {data}")
+            username = data.pop('username')  # Extraer el username del data
             
-            # Usar PATCH en lugar de POST para actualizar solo campos específicos
-            response = await self.patch(f"{TRIVIA_URL}{trivia_id}/", data)
-            bot_logger.debug(f"Update trivia response: {response}")
-            return response
+            bot_logger.info(f"Updating trivia {trivia_id} with data: {data}")
+            return await self.patch_trivia(trivia_id, data, username)
+            
         except Exception as e:
             bot_logger.error(f"Error updating trivia: {e}")
             raise
@@ -268,23 +267,21 @@ class TriviaAPIClient:
             bot_logger.error(f"Error in PATCH request to {url}: {str(e)}")
             raise
             
-    async def patch_trivia(self, trivia_id: str, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Updates a trivia partially
-        
-        Args:
-            trivia_id (str): ID of the trivia to update
-            data (Dict[str, Any]): Fields to update
-            
-        Returns:
-            Dict[str, Any]: Updated trivia data
-        """
+    async def patch_trivia(self, trivia_id: str, data: Dict[str, Any], username: str) -> Dict[str, Any]:
+        """Updates a trivia partially"""
         try:
-            bot_logger.info(f"Partially updating trivia {trivia_id} with data: {data}")
-            response = await self.patch(f"{TRIVIA_URL}{trivia_id}/", data)
-            bot_logger.debug(f"Update trivia response: {response}")
+            bot_logger.info(f"Sending PATCH request to update trivia {trivia_id}")
+            bot_logger.debug(f"Update data: {data}")
+            
+            # Agregar username como query param
+            url = f"{TRIVIA_URL}{trivia_id}/?username={username}"
+            
+            response = await self.patch(url, data)
+            bot_logger.info(f"Successfully updated trivia {trivia_id}")
+            bot_logger.debug(f"API response: {response}")
             return response
         except Exception as e:
-            bot_logger.error(f"Error updating trivia: {e}")
+            bot_logger.error(f"Error updating trivia {trivia_id}: {str(e)}")
             raise
             
     async def update_trivia_questions(self, trivia_id: str, questions_data: List[Dict[str, Any]]) -> Dict[str, Any]:

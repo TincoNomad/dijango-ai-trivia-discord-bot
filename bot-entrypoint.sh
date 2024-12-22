@@ -1,18 +1,16 @@
 #!/bin/bash
 
 wait_for_db() {
-    echo "Waiting for MySQL to be ready..."
+    echo "🔄 Waiting for MySQL..."
     while ! python -c "import MySQLdb; MySQLdb.connect(host='db', user='admin', password='admin', db='trivia_db')" 2>/dev/null; do
-        echo "MySQL not ready... waiting"
         sleep 1
     done
-    echo "¡MySQL is ready!"
+    echo "✅ MySQL connected"
 }
 
 show_banner() {
     echo "==================================="
-    echo "🤖 Starting Discord Bot..."
-    echo "📊 Database: MySQL connected"
+    echo "🤖 Discord Bot Starting..."
     echo "==================================="
 }
 

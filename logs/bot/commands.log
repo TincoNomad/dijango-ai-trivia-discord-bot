@@ -1036,3 +1036,48 @@
   "can_make_private": false
 }
 2024-12-22 17:40:58,084 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 18:00:05,689 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 18:22:30,151 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 18:30:28,606 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 18:49:56,955 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 18:50:01,520 - bot_commands - INFO - Selected trivia for update: prueba3
+2024-12-22 18:50:09,186 - bot_commands - INFO - New value received: prueba3
+2024-12-22 18:50:09,186 - bot_commands - INFO - Current value: prueba3
+2024-12-22 18:50:09,187 - bot_commands - INFO - Update cancelled: new value is same as current
+2024-12-22 19:15:13,142 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 19:15:39,147 - bot_commands - INFO - Selected trivia for update: prueba3
+2024-12-22 19:15:47,851 - bot_commands - INFO - New value received: prueba2
+2024-12-22 19:15:47,851 - bot_commands - INFO - Current value: prueba3
+2024-12-22 19:15:47,880 - bot_commands - INFO - Existing titles: ['prueba2']
+2024-12-22 19:15:47,881 - bot_commands - INFO - Update cancelled: title 'prueba2' already exists
+2024-12-22 19:30:50,378 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 19:30:55,867 - bot_commands - INFO - Selected trivia for update: prueba3
+2024-12-22 19:31:01,579 - bot_commands - INFO - New value received: prueba2
+2024-12-22 19:31:01,580 - bot_commands - INFO - Current value: prueba3
+2024-12-22 19:31:01,598 - bot_commands - INFO - Existing titles: ['prueba2']
+2024-12-22 19:31:01,599 - bot_commands - INFO - Update cancelled: title 'prueba2' already exists
+2024-12-22 19:31:08,845 - bot_commands - INFO - New title attempt received: pruebaupdate
+2024-12-22 19:31:08,858 - bot_commands - INFO - Existing titles: ['prueba2']
+2024-12-22 19:31:08,859 - bot_commands - INFO - Preparing to update trivia b0d11232-35ba-486a-be98-a0030a5d5477 with data: {'title': 'pruebaupdate'}
+2024-12-22 19:31:08,909 - bot_commands - ERROR - Error updating trivia b0d11232-35ba-486a-be98-a0030a5d5477: 401, message='Unauthorized', url='http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/'
+2024-12-22 19:31:17,347 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 22:52:05,540 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 22:52:13,704 - bot_commands - INFO - Selected trivia for update: prueba3
+2024-12-22 22:52:24,687 - bot_commands - INFO - New value received: pruenaupdate
+2024-12-22 22:52:24,687 - bot_commands - INFO - Current value: prueba3
+2024-12-22 22:52:24,699 - bot_commands - INFO - Existing titles: ['prueba2']
+2024-12-22 22:52:24,700 - bot_commands - INFO - Preparing to update trivia b0d11232-35ba-486a-be98-a0030a5d5477 with data: {'title': 'pruenaupdate'}
+2024-12-22 22:52:24,735 - bot_commands - ERROR - Error updating trivia b0d11232-35ba-486a-be98-a0030a5d5477: 500, message='Internal Server Error', url='http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/'
+2024-12-22 22:59:08,674 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 22:59:16,430 - bot_commands - INFO - Selected trivia for update: prueba3
+2024-12-22 23:00:01,438 - bot_commands - INFO - New value received: pruebaupdate
+2024-12-22 23:00:01,439 - bot_commands - INFO - Current value: prueba3
+2024-12-22 23:00:01,456 - bot_commands - INFO - Existing titles: ['prueba2']
+2024-12-22 23:00:01,456 - bot_commands - INFO - Preparing to update trivia b0d11232-35ba-486a-be98-a0030a5d5477 with data: {'title': 'pruebaupdate'}
+2024-12-22 23:00:01,518 - bot_commands - INFO - Successfully updated trivia b0d11232-35ba-486a-be98-a0030a5d5477
+2024-12-22 23:00:06,828 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-22 23:00:11,285 - bot_commands - INFO - Selected trivia for update: pruebaupdate
+2024-12-22 23:00:28,301 - bot_commands - INFO - New value received: pruebaupdate
+2024-12-22 23:00:28,302 - bot_commands - INFO - Current value: pruebas
+2024-12-22 23:00:28,302 - bot_commands - INFO - Preparing to update trivia b0d11232-35ba-486a-be98-a0030a5d5477 with data: {'theme': 'pruebaupdate'}
+2024-12-22 23:00:28,382 - bot_commands - ERROR - Error updating trivia b0d11232-35ba-486a-be98-a0030a5d5477: 500, message='Internal Server Error', url='http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad'

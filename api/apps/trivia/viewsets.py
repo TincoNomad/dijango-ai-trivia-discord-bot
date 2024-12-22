@@ -15,7 +15,7 @@ Features:
 - Error handling
 """
 
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets
 from django.db import models
 from .models import Trivia, Theme, Question, Answer
 from .serializers import TriviaSerializer, ThemeSerializer, TriviaListSerializer, QuestionSerializer
@@ -52,8 +52,6 @@ class TriviaViewSet(viewsets.ModelViewSet):
     
     def get_permissions(self):
         """Define permissions based on action"""
-        if self.action in ['update', 'partial_update', 'destroy']:
-            return [permissions.IsAuthenticated()]
         return []
     
     def get_queryset(self):
@@ -307,8 +305,20 @@ class TriviaViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         """Log and handle trivia updates"""
         try:
+            username = self.request.query_params.get('username')
+            if not username:
+                raise ValidationError("Username is required for updates")
+
+            user_id = get_user_id_by_username(username)
+            if not user_id:
+                raise ValidationError(f"No user found with username: {username}")
+
+            trivia = self.get_object()
+            if trivia.created_by_id != user_id:
+                raise ValidationError("You can only update your own trivias")
+
             serializer.save()
-            logger.info(f"Trivia updated by {self.request.user}")
+            logger.info(f"Trivia updated by user: {username}")
         except Exception as e:
             logger.error(f"Update failed: {str(e)}")
             raise

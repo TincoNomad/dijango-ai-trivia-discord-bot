@@ -1944,3 +1944,106 @@ django.db.utils.ProgrammingError: (1146, "Table 'trivia_db.users_customuser' doe
 2024-12-22 17:39:57,618 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
 2024-12-22 17:39:57,626 - api.utils.logging_utils - INFO - Trivia created successfully: ID=b0d11232-35ba-486a-be98-a0030a5d5477, Creator=tinconomad, Title=prueba3
 2024-12-22 17:40:58,341 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 17:55:39,234 - django.utils.autoreload - INFO - /app/api/django/dev.py changed, reloading.
+2024-12-22 18:00:06,039 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 18:22:30,700 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 18:30:28,900 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 18:30:40,994 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 18:49:57,227 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 19:15:13,678 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 19:15:47,859 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 19:30:50,700 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 19:31:01,586 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 19:31:08,851 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 19:31:08,867 - django.request - WARNING - Unauthorized: /api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/
+2024-12-22 19:31:17,710 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 22:30:18,064 - django.utils.autoreload - INFO - /app/api/apps/trivia/viewsets.py changed, reloading.
+2024-12-22 22:36:30,658 - django.utils.autoreload - INFO - /app/api/apps/trivia/viewsets.py changed, reloading.
+2024-12-22 22:42:06,742 - django.utils.autoreload - INFO - /app/api/apps/trivia/viewsets.py changed, reloading.
+2024-12-22 22:49:17,560 - django.utils.autoreload - INFO - /app/api/apps/trivia/viewsets.py changed, reloading.
+2024-12-22 22:52:05,882 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 22:52:24,693 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 22:52:24,702 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-22 22:52:24,708 - api.utils.logging_utils - ERROR - Update failed: ['Username is required for updates']
+2024-12-22 22:52:24,728 - django.request - ERROR - Internal Server Error: /api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/mixins.py", line 82, in partial_update
+    return self.update(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/mixins.py", line 68, in update
+    self.perform_update(serializer)
+  File "/app/api/apps/trivia/viewsets.py", line 310, in perform_update
+    raise ValidationError("Username is required for updates")
+django.core.exceptions.ValidationError: ['Username is required for updates']
+2024-12-22 22:59:09,067 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 23:00:01,447 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 23:00:01,458 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-22 23:00:01,464 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 23:00:01,464 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-22 23:00:01,467 - api.utils.logging_utils - INFO - Trivia updated by user: tinconomad
+2024-12-22 23:00:07,134 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 23:00:28,310 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-22 23:00:28,326 - api.utils.jwt_utils - INFO - Found user ID 1cf6c672-307a-4e5f-84a9-45d82abf54f2 for username: tinconomad
+2024-12-22 23:00:28,326 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-22 23:00:28,331 - api.utils.logging_utils - ERROR - Update failed: Cannot assign "'pruebaupdate'": "Trivia.theme" must be a "Theme" instance.
+2024-12-22 23:00:28,364 - django.request - ERROR - Internal Server Error: /api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/mixins.py", line 82, in partial_update
+    return self.update(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/mixins.py", line 68, in update
+    self.perform_update(serializer)
+  File "/app/api/apps/trivia/viewsets.py", line 320, in perform_update
+    serializer.save()
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 203, in save
+    self.instance = self.update(self.instance, validated_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/api/apps/trivia/serializers.py", line 237, in update
+    setattr(instance, attr, value)
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/fields/related_descriptors.py", line 287, in __set__
+    raise ValueError(
+ValueError: Cannot assign "'pruebaupdate'": "Trivia.theme" must be a "Theme" instance.

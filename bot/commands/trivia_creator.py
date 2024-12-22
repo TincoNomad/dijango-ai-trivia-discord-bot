@@ -268,7 +268,7 @@ class TriviaCreator:
                 pass
 
         while True:
-            await author.send("\n� Please enter a new title for your trivia:")
+            await author.send("\n Please enter a new title for your trivia:")
             def check_dm(m):
                 return m.author == author and isinstance(m.channel, discord.DMChannel)
             
@@ -277,8 +277,8 @@ class TriviaCreator:
 
             # Verificar si el título ya existe en nuestra lista local
             if title.lower() in existing_titles:
-                await author.send("❌ There is already a trivia with that title. Please choose a different title.")
+                await author.send("❌ There is already a trivia with that title.")
                 continue
             
-            await author.send(f"✅ Title '{title}' is available!")
+            await author.send("✅ Title is available!")
             return title

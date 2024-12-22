@@ -37,6 +37,29 @@ class TriviaUpdater:
             await message.author.send("Error getting the list of trivias.")
             return None
             
+    async def ask_continue_update(self, message: Message, is_error: bool = False) -> bool:
+        """Asks user if they want to continue updating and handles the response"""
+        question = "Would you like to try updating something else? (yes/no)" if is_error else "Would you like to update something else? (yes/no)"
+        await message.author.send(question)
+        
+        def check_continue(m):
+            return (
+                m.author == message.author and 
+                isinstance(m.channel, DMChannel) and
+                m.content.lower() in ['yes', 'no']
+            )
+        
+        try:
+            response = await self.client.wait_for('message', timeout=30.0, check=check_continue)
+            if response.content.lower() == 'yes':
+                return True
+            else:
+                await message.author.send("✅ Update process completed!")
+                return False
+        except TimeoutError:
+            await message.author.send("⏰ No response received. Update process completed!")
+            return False
+
     async def handle_update_trivia(self, message: Message) -> None:
         """Handles updating a trivia through DM"""
         try:
@@ -48,16 +71,17 @@ class TriviaUpdater:
             await message.author.send("Which trivia would you like to update? (Enter the number)")
             
             def check(m):
-                return m.author == message.author and isinstance(m.channel, DMChannel) and m.content.isdigit()
+                return (
+                    m.author == message.author and 
+                    isinstance(m.channel, DMChannel) and 
+                    m.content.isdigit() and 
+                    1 <= int(m.content) <= len(trivias)
+                )
                 
             response = await self.client.wait_for('message', timeout=30.0, check=check)
             trivia_index = int(response.content) - 1
-            
-            if trivia_index < 0 or trivia_index >= len(trivias):
-                await message.author.send("Invalid trivia number.")
-                return
-                
             selected_trivia = trivias[trivia_index]
+            command_logger.info(f"Selected trivia for update: {selected_trivia['title']}")
             
             # Show update options
             await message.author.send(
@@ -68,118 +92,96 @@ class TriviaUpdater:
                 "4. Questions and Answers"
             )
             
-            response = await self.client.wait_for('message', timeout=30.0, check=check)
+            def check_option(m):
+                return (
+                    m.author == message.author and 
+                    isinstance(m.channel, DMChannel) and 
+                    m.content in ['1', '2', '3', '4']
+                )
+            
+            response = await self.client.wait_for('message', timeout=30.0, check=check_option)
             field_choice = int(response.content)
             
-            if field_choice == 4:
-                # Show existing questions
-                questions = selected_trivia.get('questions', [])
-                questions_list = "\n".join(
-                    f"{i+1}. {q['question_title']}"
-                    for i, q in enumerate(questions)
-                )
-                await message.author.send(f"Current questions:\n```\n{questions_list}\n```")
+            # Handle basic fields
+            field_mapping = {
+                1: "title",
+                2: "difficulty",
+                3: "theme"
+            }
+            
+            await message.author.send("Enter the new value:")
+            
+            def check_value(m):
+                return m.author == message.author and isinstance(m.channel, DMChannel)
+            
+            response = await self.client.wait_for('message', timeout=60.0, check=check_value)
+            new_value = response.content
+            command_logger.info(f"New value received: {new_value}")
+            
+            # Validar si el nuevo valor es igual al actual
+            current_value = selected_trivia[field_mapping[field_choice]]
+            command_logger.info(f"Current value: {current_value}")
+            
+            if str(new_value).lower() == str(current_value).lower():
+                command_logger.info("Update cancelled: new value is same as current")
+                await message.author.send("❗ The new value is the same as the current value. No update needed.")
                 
-                # Select question
-                await message.author.send("Which question would you like to edit? (Enter the number)")
-                response = await self.client.wait_for('message', timeout=30.0, check=check)
-                question_index = int(response.content) - 1
-                
-                if question_index < 0 or question_index >= len(questions):
-                    await message.author.send("Invalid question number.")
-                    return
+                if await self.ask_continue_update(message):
+                    return await self.handle_update_trivia(message)
+                return
+            
+            # Validar el título antes de actualizar
+            if field_choice == 1:
+                while True:  # Bucle para permitir múltiples intentos
+                    existing_trivias = await self.api_client.get_user_trivias({"username": message.author.name})
+                    existing_titles = [t['title'] for t in existing_trivias if t['id'] != selected_trivia['id']]
+                    command_logger.info(f"Existing titles: {existing_titles}")
                     
-                selected_question = questions[question_index]
-                
-                # Question edit options
-                await message.author.send(
-                    "What would you like to edit?\n"
-                    "1. Question text\n"
-                    "2. Correct answer\n"
-                    "3. Incorrect answers"
-                )
-                
-                response = await self.client.wait_for('message', timeout=30.0, check=check)
-                question_field = int(response.content)
-                
-                if question_field == 1:
-                    await message.author.send("Enter the new question text:")
-                    response = await self.client.wait_for('message', timeout=60.0, check=check)
-                    selected_question['question_title'] = response.content
-                    
-                elif question_field in [2, 3]:
-                    answers = selected_question.get('answers', [])
-                    if question_field == 2:
-                        # Edit correct answer
-                        correct_answer = next((a for a in answers if a['is_correct']), None)
-                        if correct_answer:
-                            await message.author.send("Enter the new correct answer:")
-                            response = await self.client.wait_for('message', timeout=60.0, check=check)
-                            correct_answer['answer_title'] = response.content
-                            
+                    if new_value in existing_titles:
+                        command_logger.info(f"Update cancelled: title '{new_value}' already exists")
+                        await message.author.send("❌ That title already exists. Please enter a different title:")
+                        
+                        try:
+                            response = await self.client.wait_for('message', timeout=60.0, check=check_value)
+                            new_value = response.content
+                            command_logger.info(f"New title attempt received: {new_value}")
+                        except TimeoutError:
+                            await message.author.send("⏰ Time's up! Update cancelled.")
+                            if await self.ask_continue_update(message):
+                                return await self.handle_update_trivia(message)
+                            return
                     else:
-                        # Edit incorrect answers
-                        incorrect_answers = [a for a in answers if not a['is_correct']]
-                        incorrect_list = "\n".join(
-                            f"{i+1}. {a['answer_title']}"
-                            for i, a in enumerate(incorrect_answers)
-                        )
-                        await message.author.send(f"Current incorrect answers:\n```\n{incorrect_list}\n```")
-                        
-                        await message.author.send("Which incorrect answer would you like to edit? (Enter the number)")
-                        response = await self.client.wait_for('message', timeout=30.0, check=check)
-                        answer_index = int(response.content) - 1
-                        
-                        if answer_index < 0 or answer_index >= len(incorrect_answers):
-                            await message.author.send("Invalid answer number.")
-                            return
-                            
-                        await message.author.send("Enter the new incorrect answer:")
-                        response = await self.client.wait_for('message', timeout=60.0, check=check)
-                        incorrect_answers[answer_index]['answer_title'] = response.content
-                
-                # Prepare question update data
-                questions_data = [{
-                    "id": selected_question["id"],
-                    "question_title": selected_question["question_title"],
-                    "answers": selected_question["answers"]
-                }]
-                
-                # Send update to API
-                await self.api_client.update_trivia_questions(selected_trivia["id"], questions_data)
-                
-            else:
-                # Handle basic fields
-                field_mapping = {
-                    1: "title",
-                    2: "difficulty",
-                    3: "theme"
-                }
-                
-                await message.author.send("Enter the new value:")
-                response = await self.client.wait_for('message', timeout=60.0, check=check)
-                new_value = response.content
-                
-                update_data = {
-                    field_mapping[field_choice]: int(new_value) if field_choice == 2 else new_value
-                }
-                
-                if field_choice == 2:
-                    try:
-                        difficulty = int(new_value)
-                        if difficulty not in range(1, 6):
-                            await message.author.send("Difficulty must be a number between 1 and 5.")
-                            return
-                    except ValueError:
-                        await message.author.send("Difficulty must be a number.")
-                        return
+                        break  # Título válido, continuar con la actualización
+            
+            update_data = {
+                field_mapping[field_choice]: int(new_value) if field_choice == 2 else new_value
+            }
+            command_logger.info(f"Preparing to update trivia {selected_trivia['id']} with data: {update_data}")
             
             # Send update to API
-            await self.api_client.patch_trivia(selected_trivia["id"], update_data)
-            await message.author.send("Trivia updated successfully!")
+            try:
+                await self.api_client.patch_trivia(
+                    selected_trivia["id"], 
+                    update_data,
+                    username=message.author.name
+                )
+                command_logger.info(f"Successfully updated trivia {selected_trivia['id']}")
+                await message.author.send("✅ Trivia updated successfully!")
+                
+                if await self.ask_continue_update(message):
+                    return await self.handle_update_trivia(message)
+                return
+                
+            except Exception as e:
+                command_logger.error(f"Error updating trivia {selected_trivia['id']}: {str(e)}")
+                await message.author.send("❌ Error updating the trivia. Please try again.")
+                
+                if await self.ask_continue_update(message, is_error=True):
+                    return await self.handle_update_trivia(message)
+                return
             
         except TimeoutError:
-            await message.author.send("Time's up! Please try again.")
+            await message.author.send("⏰ Time's up! Please try again.")
         except Exception as e:
             command_logger.error(f"Error updating trivia: {e}")
-            await message.author.send("Error updating the trivia.")
+            await message.author.send("❌ Error updating the trivia.")
