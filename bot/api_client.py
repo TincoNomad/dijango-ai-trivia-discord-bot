@@ -236,7 +236,15 @@ class TriviaAPIClient:
         """
         try:
             trivia_id = data.pop('trivia_id')
-            username = data.pop('username')  # Extraer el username del data
+            username = data.pop('username')
+            
+            # Handle theme update if present
+            if 'theme' in data:
+                theme_name = data['theme']
+                # If it's not a UUID, try to get or create the theme
+                if not isinstance(theme_name, str) or len(theme_name) != 36:
+                    theme_data = await self.get_or_create_theme(theme_name)
+                    data['theme'] = theme_data['id']
             
             bot_logger.info(f"Updating trivia {trivia_id} with data: {data}")
             return await self.patch_trivia(trivia_id, data, username)
@@ -325,4 +333,65 @@ class TriviaAPIClient:
             return await self.get(url)
         except Exception as e:
             bot_logger.error(f"Error getting trivia questions: {e}")
+            raise
+
+    async def get_themes(self) -> List[Dict[str, Any]]:
+        """Gets all available themes
+        
+        Returns:
+            List[Dict[str, Any]]: List of themes with their IDs and names
+            
+        Raises:
+            Exception: If there is an error getting the themes
+        """
+        try:
+            url = f"{self.base_url}/api/themes/"
+            return await self.get(url)
+        except Exception as e:
+            bot_logger.error(f"Error getting themes: {e}")
+            raise
+            
+    async def create_theme(self, name: str) -> Dict[str, Any]:
+        """Creates a new theme
+        
+        Args:
+            name (str): Name of the new theme
+            
+        Returns:
+            Dict[str, Any]: Created theme data
+            
+        Raises:
+            Exception: If there is an error creating the theme
+        """
+        try:
+            url = f"{self.base_url}/api/themes/"
+            data = {"name": name}
+            return await self.post(url, data)
+        except Exception as e:
+            bot_logger.error(f"Error creating theme: {e}")
+            raise
+            
+    async def get_or_create_theme(self, theme_name: str) -> Dict[str, Any]:
+        """Gets an existing theme by name or creates a new one
+        
+        Args:
+            theme_name (str): Name of the theme to get or create
+            
+        Returns:
+            Dict[str, Any]: Theme data
+            
+        Raises:
+            Exception: If there is an error with the theme operation
+        """
+        try:
+            # First try to find the theme
+            themes = await self.get_themes()
+            for theme in themes:
+                if theme['name'].lower() == theme_name.lower():
+                    return theme
+                    
+            # If not found, create it
+            return await self.create_theme(theme_name)
+        except Exception as e:
+            bot_logger.error(f"Error in get_or_create_theme: {e}")
             raise

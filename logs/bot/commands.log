@@ -1081,3 +1081,21 @@
 2024-12-22 23:00:28,302 - bot_commands - INFO - Current value: pruebas
 2024-12-22 23:00:28,302 - bot_commands - INFO - Preparing to update trivia b0d11232-35ba-486a-be98-a0030a5d5477 with data: {'theme': 'pruebaupdate'}
 2024-12-22 23:00:28,382 - bot_commands - ERROR - Error updating trivia b0d11232-35ba-486a-be98-a0030a5d5477: 500, message='Internal Server Error', url='http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad'
+2024-12-23 02:06:16,408 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-23 02:06:23,267 - bot_commands - INFO - Selected trivia for update: pruebaupdate
+2024-12-23 02:06:29,207 - bot_commands - INFO - New value received: 2
+2024-12-23 02:06:29,207 - bot_commands - INFO - Current value: 1
+2024-12-23 02:06:29,208 - bot_commands - INFO - Preparing to update trivia b0d11232-35ba-486a-be98-a0030a5d5477 with data: {'difficulty': 2}
+2024-12-23 02:06:29,241 - bot_commands - INFO - Successfully updated trivia b0d11232-35ba-486a-be98-a0030a5d5477
+2024-12-23 02:06:36,146 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-23 02:06:40,471 - bot_commands - INFO - Selected trivia for update: pruebaupdate
+2024-12-23 02:07:07,757 - bot_commands - INFO - New value received: pruebaupdate
+2024-12-23 02:07:07,759 - bot_commands - INFO - Current value: pruebas
+2024-12-23 02:07:07,760 - bot_commands - INFO - Preparing to update trivia b0d11232-35ba-486a-be98-a0030a5d5477 with data: {'theme': 'pruebaupdate'}
+2024-12-23 02:07:07,854 - bot_commands - ERROR - Error updating trivia b0d11232-35ba-486a-be98-a0030a5d5477: 500, message='Internal Server Error', url='http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad'
+2024-12-23 02:33:38,432 - bot_commands - INFO - Listing trivias for user: tinconomad
+2024-12-23 02:33:52,236 - bot_commands - INFO - Selected trivia for update: pruebaupdate
+2024-12-23 02:34:05,753 - bot_commands - INFO - New value received: pruebaupdate
+2024-12-23 02:34:05,754 - bot_commands - INFO - Current value: pruebas
+2024-12-23 02:34:05,755 - bot_commands - INFO - Preparing to update trivia b0d11232-35ba-486a-be98-a0030a5d5477 with data: {'theme': 'pruebaupdate'}
+2024-12-23 02:34:05,783 - bot_commands - INFO - Successfully updated trivia b0d11232-35ba-486a-be98-a0030a5d5477

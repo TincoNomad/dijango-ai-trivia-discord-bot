@@ -4644,3 +4644,19 @@ Exception Value: Trivia() got unexpected keyword arguments: &#x27;username&#x27;
 2024-12-22 23:00:28,304 - discord_bot - INFO - Making PATCH request to http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad
 2024-12-22 23:00:28,374 - discord_bot - ERROR - Error in PATCH request to http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad: 500, message='Internal Server Error', url='http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad'
 2024-12-22 23:00:28,374 - discord_bot - ERROR - Error updating trivia b0d11232-35ba-486a-be98-a0030a5d5477: 500, message='Internal Server Error', url='http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad'
+2024-12-23 02:05:43,259 - discord_bot - INFO - We are connected as TriviaBotAI#7106
+2024-12-23 02:06:16,642 - discord_bot - INFO - Getting trivias for user with params: {'username': 'tinconomad'}
+2024-12-23 02:06:29,209 - discord_bot - INFO - Sending PATCH request to update trivia b0d11232-35ba-486a-be98-a0030a5d5477
+2024-12-23 02:06:29,209 - discord_bot - INFO - Making PATCH request to http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad
+2024-12-23 02:06:29,241 - discord_bot - INFO - Successfully updated trivia b0d11232-35ba-486a-be98-a0030a5d5477
+2024-12-23 02:06:36,502 - discord_bot - INFO - Getting trivias for user with params: {'username': 'tinconomad'}
+2024-12-23 02:07:07,761 - discord_bot - INFO - Sending PATCH request to update trivia b0d11232-35ba-486a-be98-a0030a5d5477
+2024-12-23 02:07:07,763 - discord_bot - INFO - Making PATCH request to http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad
+2024-12-23 02:07:07,853 - discord_bot - ERROR - Error in PATCH request to http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad: 500, message='Internal Server Error', url='http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad'
+2024-12-23 02:07:07,853 - discord_bot - ERROR - Error updating trivia b0d11232-35ba-486a-be98-a0030a5d5477: 500, message='Internal Server Error', url='http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad'
+2024-12-23 02:32:43,992 - discord_bot - INFO - We are connected as TriviaBotAI#7106
+2024-12-23 02:33:38,688 - discord_bot - INFO - Getting trivias for user with params: {'username': 'tinconomad'}
+2024-12-23 02:34:05,756 - discord_bot - INFO - Sending PATCH request to update trivia b0d11232-35ba-486a-be98-a0030a5d5477
+2024-12-23 02:34:05,756 - discord_bot - INFO - Making PATCH request to http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad
+2024-12-23 02:34:05,782 - discord_bot - INFO - Successfully updated trivia b0d11232-35ba-486a-be98-a0030a5d5477
+2024-12-23 14:20:12,558 - discord_bot - INFO - We are connected as TriviaBotAI#7106

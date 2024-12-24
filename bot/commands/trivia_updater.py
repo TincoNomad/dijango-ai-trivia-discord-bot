@@ -2,11 +2,18 @@ from discord import Message, Client, DMChannel
 from ..api_client import TriviaAPIClient
 from ..utils.logging_bot import command_logger
 from typing import Dict, Any, List, Optional
+from ..game_state import GameState, ProcessType
 
 class TriviaUpdater:
-    def __init__(self, client: Client):
+    def __init__(self, client: Client, game_state: GameState):
         self.client = client
         self.api_client = TriviaAPIClient()
+        self.game_state = game_state
+        
+    async def check_process_cancelled(self, user_id: str) -> bool:
+        """Check if the current process has been cancelled"""
+        state = self.game_state.get_user_state(user_id)
+        return state is None or state.process_type != ProcessType.UPDATE
         
     async def handle_list_trivias(self, message: Message) -> Optional[List[Dict[str, Any]]]:
         """Handles listing trivias for a user through DM"""
@@ -62,11 +69,25 @@ class TriviaUpdater:
 
     async def handle_update_trivia(self, message: Message) -> None:
         """Handles updating a trivia through DM"""
+        user_id = str(message.author.id)
+        
+        # Check if user can start update process
+        if not self.game_state.can_start_process(user_id, ProcessType.UPDATE):
+            await message.channel.send("❌ You already have an active process. Use $cancel to cancel it first.")
+            return
+            
+        # Start update process
+        self.game_state.start_process(user_id, ProcessType.UPDATE, str(message.channel.id))
+        
         try:
             trivias = await self.handle_list_trivias(message)
             if not trivias:
+                self.game_state.end_process(user_id)
                 return
-            
+                
+            if await self.check_process_cancelled(user_id):
+                return
+                
             # Select trivia
             await message.author.send("Which trivia would you like to update? (Enter the number)")
             
@@ -130,9 +151,9 @@ class TriviaUpdater:
                     return await self.handle_update_trivia(message)
                 return
             
-            # Validar el título antes de actualizar
+            # Validate title before updating
             if field_choice == 1:
-                while True:  # Bucle para permitir múltiples intentos
+                while True:
                     existing_trivias = await self.api_client.get_user_trivias({"username": message.author.name})
                     existing_titles = [t['title'] for t in existing_trivias if t['id'] != selected_trivia['id']]
                     command_logger.info(f"Existing titles: {existing_titles}")
@@ -151,7 +172,7 @@ class TriviaUpdater:
                                 return await self.handle_update_trivia(message)
                             return
                     else:
-                        break  # Título válido, continuar con la actualización
+                        break
             
             update_data = {
                 field_mapping[field_choice]: int(new_value) if field_choice == 2 else new_value
@@ -185,3 +206,100 @@ class TriviaUpdater:
         except Exception as e:
             command_logger.error(f"Error updating trivia: {e}")
             await message.author.send("❌ Error updating the trivia.")
+        finally:
+            self.game_state.end_process(user_id)
+
+    async def handle_theme_update(self, message, trivia_id):
+        """Handle theme update interaction"""
+        try:
+            # Get existing themes
+            themes = await self.api_client.get_themes()
+            
+            # Format theme list message
+            theme_list = "Available themes:\n"
+            for i, theme in enumerate(themes, 1):
+                theme_list += f"{i}. {theme['name']}\n"
+            theme_list += "\nEnter a number to select an existing theme, or type a new theme name to create one:"
+            
+            await message.channel.send(theme_list)
+            
+            # Wait for user response
+            response = await self.client.wait_for(
+                'message',
+                check=lambda m: m.author == message.author and m.channel == message.channel,
+                timeout=30.0
+            )
+            
+            # Process response
+            selected_theme = response.content.strip()
+            
+            # Check if user selected an existing theme by number
+            try:
+                theme_index = int(selected_theme) - 1
+                if 0 <= theme_index < len(themes):
+                    theme_data = themes[theme_index]
+                    theme_name = theme_data['name']
+                else:
+                    await message.channel.send("❌ Invalid theme number. Using the provided value as a new theme name.")
+                    theme_name = selected_theme
+            except ValueError:
+                # User entered a new theme name
+                theme_name = selected_theme
+            
+            # Update the trivia with the selected/new theme
+            update_data = {
+                'trivia_id': trivia_id,
+                'username': message.author.name,
+                'theme': theme_name
+            }
+            
+            await self.api_client.update_trivia(update_data)
+            await message.channel.send("✅ Theme updated successfully!")
+            
+        except Exception as e:
+            await message.channel.send(f"❌ Error updating theme: {str(e)}")
+            command_logger.error(f"Error in handle_theme_update: {e}")
+
+    async def handle_update_field(self, message, trivia_id, field):
+        """Handle updating a specific field of the trivia"""
+        try:
+            if field == "Theme":
+                await self.handle_theme_update(message, trivia_id)
+                return True
+                
+            # Get current trivia info
+            trivia_info = await self.api_client.get_trivia_info(trivia_id)
+            current_value = trivia_info.get(field.lower(), "Not available")
+            
+            # Ask for new value
+            await message.channel.send("Enter the new value:")
+            
+            # Wait for response
+            response = await self.client.wait_for(
+                'message',
+                check=lambda m: m.author == message.author and m.channel == message.channel,
+                timeout=30.0
+            )
+            
+            new_value = response.content.strip()
+            command_logger.info(f"New value received: {new_value}")
+            command_logger.info(f"Current value: {current_value}")
+            
+            # Prepare update data
+            update_data = {
+                'trivia_id': trivia_id,
+                'username': message.author.name,
+                field.lower(): new_value
+            }
+            
+            command_logger.info(f"Preparing to update trivia {trivia_id} with data: {update_data}")
+            
+            # Send update request
+            await self.api_client.update_trivia(update_data)
+            await message.channel.send("✅ Trivia updated successfully!")
+            return True
+            
+        except Exception as e:
+            command_logger.error(f"Error updating {field}: {e}")
+            await message.channel.send(f"❌ Error updating {field}.")
+            return False

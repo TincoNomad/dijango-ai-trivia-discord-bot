@@ -231,6 +231,19 @@ class TriviaSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         """Update trivia and related data"""
         questions_data = validated_data.pop('questions', None)
+        theme_data = validated_data.pop('theme', None)
+        
+        # Handle theme update
+        if theme_data:
+            if isinstance(theme_data, (int, str)) and len(str(theme_data)) == 36:  # UUID length
+                try:
+                    theme = Theme.objects.get(id=theme_data)
+                except Theme.DoesNotExist:
+                    raise serializers.ValidationError({"theme": "Theme with this ID does not exist"})
+            else:
+                # If theme_data is a string (name), get or create the theme
+                theme, _ = Theme.objects.get_or_create(name=theme_data)
+            validated_data['theme'] = theme
         
         # Update basic fields
         for attr, value in validated_data.items():
