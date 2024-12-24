@@ -12,9 +12,15 @@ class TriviaAPIClient:
         self.session: Optional[aiohttp.ClientSession] = None
         self.csrf_token: Optional[str] = None
         self.base_url = BASE_URL
+        self.ssl_verify = not BASE_URL.startswith('http://')  # Verificar SSL solo en HTTPS
         
     async def __aenter__(self) -> Self:
-        self.session = aiohttp.ClientSession()
+        # Configurar el cliente con las opciones de SSL apropiadas
+        if self.ssl_verify:
+            self.session = aiohttp.ClientSession()
+        else:
+            bot_logger.warning("SSL verification disabled - Development environment detected")
+            self.session = aiohttp.ClientSession(connector=aiohttp.TCPConnector(verify_ssl=False))
         return self
         
     async def __aexit__(self, exc_type: Optional[type], exc_val: Optional[Exception], exc_tb: Optional[Any]) -> None:
@@ -38,11 +44,17 @@ class TriviaAPIClient:
             This method uses query parameters (added to URL) instead of a JSON body,
             following REST conventions for GET requests.
         """
-        if not self.session:
-            self.session = aiohttp.ClientSession()
+        if self.session is None:
+            await self.__aenter__()
+        
+        if self.session is None:  # Si aún es None después de __aenter__
+            raise RuntimeError("Failed to initialize session")
             
         try:
             bot_logger.debug(f"Making GET request to {url} with params: {params}")
+            # Ensure we use HTTPS in production
+            if not self.ssl_verify and url.startswith('https://'):
+                url = url.replace('https://', 'http://')
             async with self.session.get(url, params=params) as response:
                 response.raise_for_status()
                 return await response.json()
@@ -52,8 +64,11 @@ class TriviaAPIClient:
             
     async def post(self, url: str, data: Dict[str, Any], use_csrf: bool = True) -> Any:
         """Generic method for making POST requests"""
-        if not self.session:
-            self.session = aiohttp.ClientSession()
+        if self.session is None:
+            await self.__aenter__()
+            
+        if self.session is None:
+            raise RuntimeError("Failed to initialize session")
             
         try:
             headers = {'Content-Type': 'application/json'}            
@@ -86,8 +101,11 @@ class TriviaAPIClient:
             
     async def get_csrf_token(self) -> Optional[str]:
         """Gets the CSRF token from the server"""
-        if not self.session:
-            self.session = aiohttp.ClientSession()
+        if self.session is None:
+            await self.__aenter__()
+            
+        if self.session is None:
+            raise RuntimeError("Failed to initialize session")
         
         try:
             async with self.session.get(SCORES_URL) as response:
@@ -255,8 +273,11 @@ class TriviaAPIClient:
             
     async def patch(self, url: str, data: Dict[str, Any]) -> Any:
         """Generic method for making PATCH requests"""
-        if not self.session:
-            self.session = aiohttp.ClientSession()
+        if self.session is None:
+            await self.__aenter__()
+            
+        if self.session is None:
+            raise RuntimeError("Failed to initialize session")
         
         try:
             headers = {'Content-Type': 'application/json'}

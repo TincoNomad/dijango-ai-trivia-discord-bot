@@ -37,6 +37,23 @@ SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
 ALLOWED_HOSTS: List[str] = []
 
+# HTTPS Security Configuration
+# These settings will be automatically adjusted based on the environment
+# In development (DEBUG=True): These will be overridden to be more permissive
+# In production (DEBUG=False): These strict security settings will be used
+SECURE_SSL_REDIRECT = not DEBUG  # Only force HTTPS in production
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https' if not DEBUG else 'http')
+SESSION_COOKIE_SECURE = not DEBUG  # Only require HTTPS cookies in production
+CSRF_COOKIE_SECURE = not DEBUG     # Only require HTTPS CSRF in production
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0  # HSTS only in production
+SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG  # Include subdomains only in production
+SECURE_HSTS_PRELOAD = not DEBUG             # Preload only in production
+
+# Base URL Configuration
+# This will be overridden in environment-specific settings
+BASE_URL = env('API_BASE_URL', 
+              default='https://your-production-domain.com' if not DEBUG else 'http://web:8000')
+
 # Application configuration
 INSTALLED_APPS = [
     # Custom applications for project functionality
