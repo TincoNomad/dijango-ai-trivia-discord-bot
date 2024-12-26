@@ -25,6 +25,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
+from api.utils.throttling import CustomUserRateThrottle, CustomAnonRateThrottle
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LeaderBoardViewSet(viewsets.ModelViewSet):
@@ -43,6 +44,7 @@ class LeaderBoardViewSet(viewsets.ModelViewSet):
     """
     
     serializer_class = LeaderBoardSerializer
+    throttle_classes = [CustomUserRateThrottle, CustomAnonRateThrottle]
 
     def get_queryset(self):
         """Get all leaderboards"""
@@ -189,6 +191,7 @@ class ScoreViewSet(viewsets.ModelViewSet):
     """
     
     serializer_class = ScoreSerializer
+    throttle_classes = [CustomUserRateThrottle, CustomAnonRateThrottle]
 
     def get_queryset(self):
         return Score.objects.all()
@@ -313,3 +316,4 @@ class TriviaWinnerViewSet(viewsets.ModelViewSet):
     
     queryset = TriviaWinner.objects.all()
     serializer_class = TriviaWinnerSerializer
+    throttle_classes = [CustomUserRateThrottle]

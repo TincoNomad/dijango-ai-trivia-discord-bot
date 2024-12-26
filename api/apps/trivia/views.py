@@ -21,6 +21,7 @@ from .models import Trivia
 from api.utils.logging_utils import log_exception, logger
 from uuid import UUID
 from rest_framework import status
+from api.utils.throttling import CustomUserRateThrottle, CustomAnonRateThrottle
 
 class GetQuestions(APIView):
     """
@@ -30,9 +31,11 @@ class GetQuestions(APIView):
     - Public access
     - UUID validation
     - Error logging
+    - Rate limiting
     """
     
     permission_classes: list[BasePermission] = []
+    throttle_classes = [CustomUserRateThrottle, CustomAnonRateThrottle]
     
     @log_exception
     def get(self, request, trivia_id: str, format=None):

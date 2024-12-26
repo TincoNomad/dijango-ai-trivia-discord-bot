@@ -22,6 +22,7 @@ from .serializers import UserSerializer, SetupCredentialsSerializer
 from api.utils.logging_utils import log_exception, logger
 from rest_framework.views import APIView
 from api.apps.users.models import CustomUser
+from api.utils.throttling import AuthRateThrottle, StrictUserRateThrottle, CustomUserRateThrottle
 
 class RegisterView(generics.CreateAPIView):
     """
@@ -32,6 +33,7 @@ class RegisterView(generics.CreateAPIView):
     """
     
     serializer_class = UserSerializer
+    throttle_classes = [StrictUserRateThrottle]
 
     def perform_create(self, serializer):
         """
@@ -64,6 +66,8 @@ class LoginView(TokenObtainPairView):
     - Password verification
     """
     
+    throttle_classes = [AuthRateThrottle]
+
     @log_exception
     def post(self, request, *args, **kwargs):
         """
@@ -101,6 +105,7 @@ class LogoutView(generics.GenericAPIView):
     """
     
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [CustomUserRateThrottle]
 
     @log_exception
     def post(self, request):
@@ -126,6 +131,8 @@ class CreateUserView(APIView):
     requiring later credential setup.
     """
     
+    throttle_classes = [StrictUserRateThrottle]
+
     def post(self, request):
         """
         Create a new user with basic information.
@@ -159,6 +166,8 @@ class SetupCredentialsView(APIView):
     - Password
     - Authentication status
     """
+
+    throttle_classes = [AuthRateThrottle]
 
     @log_exception
     def post(self, request):
@@ -199,6 +208,7 @@ class MeView(APIView):
     """
     
     permission_classes = [permissions.IsAuthenticated]
+    throttle_classes = [CustomUserRateThrottle]
     
     def get(self, request):
         """
