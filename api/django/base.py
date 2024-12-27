@@ -79,6 +79,7 @@ INSTALLED_APPS = [
 # Middleware configuration for request/response processing
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -228,3 +229,33 @@ CSRF_COOKIE_SECURE = False  # Should be True in production
 CSRF_COOKIE_HTTPONLY = False
 CSRF_USE_SESSIONS = False
 CSRF_COOKIE_SAMESITE = 'Lax'
+
+# CORS Configuration
+CORS_ALLOWED_ORIGINS = [
+    "https://your-discord-bot-domain.com",
+]
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PATCH',
+]
+
+# Security Headers
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Add security headers middleware
+MIDDLEWARE.append('django.middleware.security.SecurityMiddleware')
+
+# CSP (Content Security Policy)
+CSP_DEFAULT_SRC = ("'none'",)
+CSP_SCRIPT_SRC = ("'self'",)
+CSP_CONNECT_SRC = ("'self'",)
+CSP_STYLE_SRC = ("'self'",)
+CSP_IMG_SRC = ("'self'",)
+
+# Session security
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Strict'

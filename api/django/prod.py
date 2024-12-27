@@ -19,3 +19,13 @@ ALLOWED_HOSTS = env('ALLOWED_HOSTS', default='your-production-domain.com,web').s
 
 # Override BASE_URL if needed (optional, as it's already handled in base.py)
 # BASE_URL = env('API_BASE_URL', default='https://your-production-domain.com')
+
+# Configuración SSL para MySQL en producción
+if env('ENVIRONMENT') == 'production':
+    DATABASES['default']['OPTIONS'].update({
+        'ssl': {
+            'ca': env('MYSQL_SSL_CA', default='/etc/mysql/certs/ca.pem'),
+            'cert': env('MYSQL_SSL_CERT', default='/etc/mysql/certs/client-cert.pem'),
+            'key': env('MYSQL_SSL_KEY', default='/etc/mysql/certs/client-key.pem'),
+        }
+    })

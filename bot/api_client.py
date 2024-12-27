@@ -1,4 +1,5 @@
 import aiohttp
+import asyncio
 from typing import Dict, Any, Optional, List
 from typing_extensions import Self
 from .utils.logging_bot import bot_logger
@@ -6,16 +7,21 @@ from api.django import (
     FILTER_URL, LEADERBOARD_URL, SCORES_URL, BASE_URL, TRIVIA_URL, QUESTIONS_URL
 )
 
+class RateLimitExceeded(Exception):
+    """Exception raised when rate limit is exceeded"""
+    def __init__(self, wait_seconds: int, message: str):
+        self.wait_seconds = wait_seconds
+        self.message = message
+        super().__init__(message)
 
 class TriviaAPIClient:
     def __init__(self) -> None:
         self.session: Optional[aiohttp.ClientSession] = None
         self.csrf_token: Optional[str] = None
         self.base_url = BASE_URL
-        self.ssl_verify = not BASE_URL.startswith('http://')  # Verificar SSL solo en HTTPS
+        self.ssl_verify = not BASE_URL.startswith('http://')  # Only verify SSL in HTTPS
         
     async def __aenter__(self) -> Self:
-        # Configurar el cliente con las opciones de SSL apropiadas
         if self.ssl_verify:
             self.session = aiohttp.ClientSession()
         else:
@@ -26,79 +32,90 @@ class TriviaAPIClient:
     async def __aexit__(self, exc_type: Optional[type], exc_val: Optional[Exception], exc_tb: Optional[Any]) -> None:
         if self.session:
             await self.session.close()
+
+    async def _handle_rate_limit_response(self, response_data: Dict[str, Any]) -> None:
+        """Handle rate limit response from the API"""
+        if 'message' in response_data and 'wait_seconds' in response_data:
+            wait_seconds = response_data['wait_seconds']
+            message = response_data['message']
+            bot_logger.warning(f"Rate limit exceeded: {message}")
+            raise RateLimitExceeded(wait_seconds, message)
             
-    async def get(self, url: str, params: Optional[Dict[str, Any]] = None) -> Any:
-        """Generic method for making GET requests with query parameters
-        
-        Args:
-            url (str): The URL to make the request to
-            params (Optional[Dict[str, Any]]): Query parameters to include in the URL
-            
-        Returns:
-            Any: The JSON response from the server
-            
-        Raises:
-            Exception: If there is an error making the request
-            
-        Note:
-            This method uses query parameters (added to URL) instead of a JSON body,
-            following REST conventions for GET requests.
-        """
+    async def get(self, url: str, params: Optional[Dict[str, Any]] = None, retry_count: int = 3) -> Any:
+        """Generic method for making GET requests with query parameters and rate limit handling"""
         if self.session is None:
             await self.__aenter__()
         
-        if self.session is None:  # Si aún es None después de __aenter__
-            raise RuntimeError("Failed to initialize session")
-            
-        try:
-            bot_logger.debug(f"Making GET request to {url} with params: {params}")
-            # Ensure we use HTTPS in production
-            if not self.ssl_verify and url.startswith('https://'):
-                url = url.replace('https://', 'http://')
-            async with self.session.get(url, params=params) as response:
-                response.raise_for_status()
-                return await response.json()
-        except Exception as e:
-            bot_logger.error(f"Error in GET request to {url}: {e}")
-            raise
-            
-    async def post(self, url: str, data: Dict[str, Any], use_csrf: bool = True) -> Any:
-        """Generic method for making POST requests"""
-        if self.session is None:
-            await self.__aenter__()
-            
         if self.session is None:
             raise RuntimeError("Failed to initialize session")
             
-        try:
-            headers = {'Content-Type': 'application/json'}            
-            if use_csrf:
-                csrf_token = await self.get_csrf_token()
-                if csrf_token is None:
-                    raise ValueError("Could not obtain CSRF token")
-                headers['X-CSRFToken'] = csrf_token
-                
-            bot_logger.info(f"Making POST request to {url}")
-            bot_logger.debug(f"Request data: {data}")
-            bot_logger.debug(f"Headers: {headers}")
-            
-            async with self.session.post(url, json=data, headers=headers) as response:
-                response_text = await response.text()
-                bot_logger.debug(f"Response status: {response.status}")
-                bot_logger.debug(f"Response text: {response_text}")
-                
-                try:
+        for attempt in range(retry_count):
+            try:
+                bot_logger.debug(f"Making GET request to {url} with params: {params}")
+                if not self.ssl_verify and url.startswith('https://'):
+                    url = url.replace('https://', 'http://')
+                    
+                async with self.session.get(url, params=params) as response:
+                    response_data = await response.json()
+                    
+                    if response.status == 429:  # Rate limit exceeded
+                        await self._handle_rate_limit_response(response_data)
+                        
                     response.raise_for_status()
-                    return await response.json()
-                except aiohttp.ClientResponseError as e:
-                    bot_logger.error(f"HTTP Error in POST request to {url}: {e.status} - {e.message}")
-                    bot_logger.error(f"Response body: {response_text}")
+                    return response_data
+                    
+            except RateLimitExceeded as e:
+                if attempt < retry_count - 1:
+                    wait_time = e.wait_seconds
+                    bot_logger.info(f"Waiting {wait_time} seconds before retry...")
+                    await asyncio.sleep(wait_time)
+                else:
                     raise
+            except Exception as e:
+                bot_logger.error(f"Error in GET request to {url}: {e}")
+                raise
             
-        except Exception as e:
-            bot_logger.error(f"Error in POST request to {url}: {str(e)}")
-            raise
+    async def post(self, url: str, data: Dict[str, Any], use_csrf: bool = True, retry_count: int = 3) -> Any:
+        """Generic method for making POST requests with rate limit handling"""
+        if self.session is None:
+            await self.__aenter__()
             
+        if self.session is None:
+            raise RuntimeError("Failed to initialize session")
+            
+        for attempt in range(retry_count):
+            try:
+                headers = {'Content-Type': 'application/json'}            
+                if use_csrf:
+                    csrf_token = await self.get_csrf_token()
+                    if csrf_token is None:
+                        raise ValueError("Could not obtain CSRF token")
+                    headers['X-CSRFToken'] = csrf_token
+                    
+                bot_logger.info(f"Making POST request to {url}")
+                bot_logger.debug(f"Request data: {data}")
+                bot_logger.debug(f"Headers: {headers}")
+                
+                async with self.session.post(url, json=data, headers=headers) as response:
+                    response_data = await response.json()
+                    
+                    if response.status == 429:  # Rate limit exceeded
+                        await self._handle_rate_limit_response(response_data)
+                        
+                    response.raise_for_status()
+                    return response_data
+                    
+            except RateLimitExceeded as e:
+                if attempt < retry_count - 1:
+                    wait_time = e.wait_seconds
+                    bot_logger.info(f"Waiting {wait_time} seconds before retry...")
+                    await asyncio.sleep(wait_time)
+                else:
+                    raise
+            except Exception as e:
+                bot_logger.error(f"Error in POST request to {url}: {str(e)}")
+                raise
+
     async def get_csrf_token(self) -> Optional[str]:
         """Gets the CSRF token from the server"""
         if self.session is None:
@@ -302,7 +319,7 @@ class TriviaAPIClient:
             bot_logger.info(f"Sending PATCH request to update trivia {trivia_id}")
             bot_logger.debug(f"Update data: {data}")
             
-            # Agregar username como query param
+            # Add username as query param
             url = f"{TRIVIA_URL}{trivia_id}/?username={username}"
             
             response = await self.patch(url, data)

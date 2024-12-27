@@ -10,11 +10,22 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
       MYSQL_ROOT_HOST: '%'
+      MYSQL_SSL_CERT: ${ENVIRONMENT:-development} == 'production' && '/etc/mysql/certs/server-cert.pem' || ''
+      MYSQL_SSL_KEY: ${ENVIRONMENT:-development} == 'production' && '/etc/mysql/certs/server-key.pem' || ''
+      MYSQL_SSL_CA: ${ENVIRONMENT:-development} == 'production' && '/etc/mysql/certs/ca.pem' || ''
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ${ENVIRONMENT:-development} == 'production' && ./mysql/certs:/etc/mysql/certs || ''
+    command: >
+      mysqld
+      ${ENVIRONMENT:-development} == 'production' && 
+      --ssl-cert=/etc/mysql/certs/server-cert.pem 
+      --ssl-key=/etc/mysql/certs/server-key.pem
+      --ssl-ca=/etc/mysql/certs/ca.pem ||
+      --skip-ssl
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 20s

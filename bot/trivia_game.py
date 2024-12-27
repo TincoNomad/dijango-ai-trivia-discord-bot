@@ -1,5 +1,5 @@
 from typing import Tuple, List, Dict, Any, Optional
-from .api_client import TriviaAPIClient
+from .api_client import TriviaAPIClient, RateLimitExceeded
 from .utils.logging_bot import game_logger
 from .utils.utils import get_theme_list, get_difficulty_list
 from api.django import TRIVIA_URL
@@ -16,23 +16,57 @@ class TriviaGame:
         self.theme_choices: Dict[int, Dict[str, Any]] = {}
         
     async def initialize(self) -> None:
+        """Initialize the trivia game by fetching necessary data"""
         try:
             self.game_data = await self.api_client.get(TRIVIA_URL)
             _, self.difficulty_choices = await get_difficulty_list()
             _, self.theme_choices = await get_theme_list()
             game_logger.info("Trivia game initialized successfully")
+        except RateLimitExceeded as e:
+            game_logger.warning(f"Rate limit exceeded during initialization: {e.message}")
+            raise
         except Exception as e:
             game_logger.error(f"Failed to initialize trivia game: {e}")
             raise
     
     async def get_available_options(self) -> Tuple[str, str]:
-        """Returns the formatted lists of themes and difficulties available"""
-        theme_list, theme_dict = await get_theme_list()
-        self.theme_choices = theme_dict
-        difficulty_list, _ = await get_difficulty_list()
-        return theme_list, difficulty_list
+        """
+        Returns the formatted lists of themes and difficulties available
+        
+        Returns:
+            Tuple[str, str]: Theme list and difficulty list
+            
+        Raises:
+            RateLimitExceeded: If API rate limit is exceeded
+            Exception: For other errors
+        """
+        try:
+            theme_list, theme_dict = await get_theme_list()
+            self.theme_choices = theme_dict
+            difficulty_list, _ = await get_difficulty_list()
+            return theme_list, difficulty_list
+        except RateLimitExceeded as e:
+            game_logger.warning(f"Rate limit exceeded while getting options: {e.message}")
+            raise
+        except Exception as e:
+            game_logger.error(f"Error getting game options: {e}")
+            raise
     
     async def get_trivia(self, theme_id: str, difficulty_level: int) -> Tuple[str, int]:
+        """
+        Get trivia questions filtered by theme and difficulty
+        
+        Args:
+            theme_id: Theme identifier
+            difficulty_level: Difficulty level
+            
+        Returns:
+            Tuple[str, int]: Trivia list and count
+            
+        Raises:
+            RateLimitExceeded: If API rate limit is exceeded
+            Exception: For other errors
+        """
         try:
             filtered_trivias = await self.api_client.get_filtered_trivias(theme_id, difficulty_level)
             
@@ -49,6 +83,9 @@ class TriviaGame:
             self.current_trivia = filtered_trivias
             return trivia_list, len(filtered_trivias)
                 
+        except RateLimitExceeded as e:
+            game_logger.warning(f"Rate limit exceeded while getting trivia: {e.message}")
+            raise
         except Exception as e:
             game_logger.error(f"Error obtaining trivias: {e}")
             raise

@@ -1,46 +1,65 @@
-import discord
+"""
+Discord Client Module
+
+This module handles Discord bot interactions and game flow.
+"""
+
+from discord.ext import commands
+from .trivia_game import TriviaGame
+from .api_client import RateLimitExceeded
 from .utils.logging_bot import bot_logger
-from .commands.trivia_commands import TriviaCommands
 
-
-# Main Discord Bot class
-class DiscordClient(discord.Client):
-    def __init__(self):
-        super().__init__(intents=discord.Intents.all())
-        self.trivia_commands = TriviaCommands(self)
-
-    # Confirm bot connection
-    async def on_ready(self):
-        bot_logger.info(f"We are connected as {self.user}")
-
-    # Handle incoming messages
-    async def on_message(self, message: discord.Message):
-        if message.author == self.user:
-            return
-
-        user_id = message.author.id
-        content = message.content.lower()
-
-        # Check if it's a command
-        if content.startswith('$'):
-            command = content[1:]  # Remove the '$'
+class DiscordClient(commands.Bot):
+    """
+    Discord bot client for handling trivia game interactions.
+    
+    Features:
+    - Command handling
+    - Error management
+    - Rate limit handling
+    - Game state tracking
+    """
+    
+    def __init__(self, command_prefix: str, **options):
+        super().__init__(command_prefix=command_prefix, **options)
+        self.trivia_game = TriviaGame()
+        
+    async def handle_rate_limit(self, ctx: commands.Context, error: RateLimitExceeded) -> None:
+        """
+        Handle rate limit errors from the API
+        
+        Args:
+            ctx: Discord command context
+            error: Rate limit exception with details
+        """
+        await ctx.send(
+            f"⚠️ {error.message}\n"
+            f"Please try again in {error.wait_seconds} seconds."
+        )
+        bot_logger.warning(f"Rate limit handled for user {ctx.author}: {error.message}")
+        
+    async def on_command_error(self, ctx: commands.Context, error: Exception) -> None:
+        """
+        Global error handler for bot commands
+        
+        Args:
+            ctx: Discord command context
+            error: The error that occurred
+        """
+        if isinstance(error, RateLimitExceeded):
+            await self.handle_rate_limit(ctx, error)
+        else:
+            bot_logger.error(f"Command error: {str(error)}")
+            await ctx.send("An error occurred while processing your command. Please try again later.")
             
-            if command == 'trivia':
-                await self.trivia_commands.handle_trivia(message)
-            elif command in ['create']:
-                await self.trivia_commands.handle_create_trivia(message)
-            elif command == 'score':
-                await self.trivia_commands.handle_score(message)
-            elif command == 'themes':
-                await self.trivia_commands.handle_themes(message)
-            elif command == 'stopgame':
-                await self.trivia_commands.handle_stop_game(message)
-            elif command == 'all-trivias':
-                await self.trivia_commands.handle_list_trivias(message)
-            elif command == 'update-trivia':
-                await self.trivia_commands.handle_update_trivia(message)
-            elif command == 'cancel':
-                await self.trivia_commands.handle_cancel(message)
-        # Check if user is in active game
-        elif user_id in self.trivia_commands.game_handler.game_state.active_games:
-            await self.trivia_commands.handle_game_response(message)
+    async def setup_hook(self) -> None:
+        """Initialize bot components and load commands"""
+        try:
+            await self.trivia_game.initialize()
+            bot_logger.info("Bot initialized successfully")
+        except RateLimitExceeded as e:
+            bot_logger.warning(f"Rate limit during initialization: {e.message}")
+            # The bot will still start, but initialization will be retried later
+        except Exception as e:
+            bot_logger.error(f"Error during bot initialization: {e}")
+            raise
