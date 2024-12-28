@@ -4660,3 +4660,19 @@ Exception Value: Trivia() got unexpected keyword arguments: &#x27;username&#x27;
 2024-12-23 02:34:05,756 - discord_bot - INFO - Making PATCH request to http://web:8000/api/trivias/b0d11232-35ba-486a-be98-a0030a5d5477/?username=tinconomad
 2024-12-23 02:34:05,782 - discord_bot - INFO - Successfully updated trivia b0d11232-35ba-486a-be98-a0030a5d5477
 2024-12-23 14:20:12,558 - discord_bot - INFO - We are connected as TriviaBotAI#7106
+2024-12-28 01:59:48,249 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 01:59:48,447 - discord_bot - ERROR - Error during bot initialization: 400, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url='http://web:8000/api/trivias/'
+2024-12-28 02:44:11,654 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 02:44:11,862 - discord_bot - ERROR - Error during bot initialization: Cannot connect to host web:8000 ssl:default [Name or service not known]
+2024-12-28 04:20:53,968 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 04:20:53,981 - discord_bot - ERROR - Error during bot initialization: Cannot connect to host web:8000 ssl:default [Name or service not known]
+2024-12-28 04:48:38,854 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 04:48:38,877 - discord_bot - ERROR - Error during bot initialization: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
+2024-12-28 05:05:08,664 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 05:05:08,875 - discord_bot - ERROR - Error during bot initialization: 500, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url='http://web:8000/api/trivias/'
+2024-12-28 05:12:59,721 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 05:12:59,725 - discord_bot - ERROR - Error during bot initialization: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
+2024-12-28 05:17:01,664 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 05:17:01,786 - discord_bot - ERROR - Error during bot initialization: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
+2024-12-28 05:30:06,722 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 05:30:06,732 - discord_bot - ERROR - Error during bot initialization: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]

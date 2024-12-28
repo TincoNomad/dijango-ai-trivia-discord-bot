@@ -120,3 +120,11 @@
 2024-12-22 17:03:35,650 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host 127.0.0.1:8000 ssl:default [Connect call failed ('127.0.0.1', 8000)]
 2024-12-22 17:31:03,374 - game_interactions - INFO - Trivia game initialized successfully
 2024-12-22 17:31:23,082 - game_interactions - INFO - Retrieved 3 questions for trivia 9b835aa7-5b66-4a76-aaad-27315e135e11
+2024-12-28 01:59:48,445 - game_interactions - ERROR - Failed to initialize trivia game: 400, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url='http://web:8000/api/trivias/'
+2024-12-28 02:44:11,862 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Name or service not known]
+2024-12-28 04:20:53,979 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Name or service not known]
+2024-12-28 04:48:38,872 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
+2024-12-28 05:05:08,874 - game_interactions - ERROR - Failed to initialize trivia game: 500, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url='http://web:8000/api/trivias/'
+2024-12-28 05:12:59,724 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
+2024-12-28 05:17:01,734 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
+2024-12-28 05:30:06,727 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]

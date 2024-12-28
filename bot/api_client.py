@@ -2,17 +2,16 @@ import aiohttp
 import asyncio
 from typing import Dict, Any, Optional, List
 from typing_extensions import Self
+import time
 from .utils.logging_bot import bot_logger
 from api.django import (
     FILTER_URL, LEADERBOARD_URL, SCORES_URL, BASE_URL, TRIVIA_URL, QUESTIONS_URL
 )
-
-class RateLimitExceeded(Exception):
-    """Exception raised when rate limit is exceeded"""
-    def __init__(self, wait_seconds: int, message: str):
-        self.wait_seconds = wait_seconds
-        self.message = message
-        super().__init__(message)
+from .utils.rate_limits import (
+    RateLimitExceeded, 
+    handle_rate_limit_response, 
+    handle_rate_limit_retry
+)
 
 class TriviaAPIClient:
     def __init__(self) -> None:
@@ -20,6 +19,7 @@ class TriviaAPIClient:
         self.csrf_token: Optional[str] = None
         self.base_url = BASE_URL
         self.ssl_verify = not BASE_URL.startswith('http://')  # Only verify SSL in HTTPS
+        self.rate_limits: Dict[str, float] = {}  # endpoint -> expiry time
         
     async def __aenter__(self) -> Self:
         if self.ssl_verify:
@@ -33,47 +33,41 @@ class TriviaAPIClient:
         if self.session:
             await self.session.close()
 
-    async def _handle_rate_limit_response(self, response_data: Dict[str, Any]) -> None:
-        """Handle rate limit response from the API"""
-        if 'message' in response_data and 'wait_seconds' in response_data:
-            wait_seconds = response_data['wait_seconds']
-            message = response_data['message']
-            bot_logger.warning(f"Rate limit exceeded: {message}")
-            raise RateLimitExceeded(wait_seconds, message)
-            
+    def _track_rate_limit(self, endpoint: str, wait_seconds: int, message: str) -> None:
+        """Track rate limit for endpoint"""
+        expiry = time.time() + wait_seconds
+        self.rate_limits[endpoint] = expiry
+        bot_logger.warning(
+            f"Rate limit for {endpoint}: {message}. "
+            f"Expires in {wait_seconds}s at {time.ctime(expiry)}"
+        )
+
     async def get(self, url: str, params: Optional[Dict[str, Any]] = None, retry_count: int = 3) -> Any:
-        """Generic method for making GET requests with query parameters and rate limit handling"""
+        """Enhanced GET with rate limit tracking"""
+        if url in self.rate_limits and time.time() < self.rate_limits[url]:
+            wait_time = int(self.rate_limits[url] - time.time())
+            bot_logger.info(f"Rate limit active for {url}. Waiting {wait_time}s")
+            raise RateLimitExceeded(wait_time, "Rate limit still active")
+
         if self.session is None:
             await self.__aenter__()
         
         if self.session is None:
             raise RuntimeError("Failed to initialize session")
             
-        for attempt in range(retry_count):
-            try:
-                bot_logger.debug(f"Making GET request to {url} with params: {params}")
-                if not self.ssl_verify and url.startswith('https://'):
-                    url = url.replace('https://', 'http://')
-                    
-                async with self.session.get(url, params=params) as response:
-                    response_data = await response.json()
-                    
-                    if response.status == 429:  # Rate limit exceeded
-                        await self._handle_rate_limit_response(response_data)
-                        
-                    response.raise_for_status()
-                    return response_data
-                    
-            except RateLimitExceeded as e:
-                if attempt < retry_count - 1:
-                    wait_time = e.wait_seconds
-                    bot_logger.info(f"Waiting {wait_time} seconds before retry...")
-                    await asyncio.sleep(wait_time)
-                else:
-                    raise
-            except Exception as e:
-                bot_logger.error(f"Error in GET request to {url}: {e}")
-                raise
+        async def _make_request():
+            async with self.session.get(url, params=params) as response:
+                response_data = await response.json()
+                if response.status == 429:
+                    await handle_rate_limit_response(response, response_data)
+                response.raise_for_status()
+                return response_data
+                
+        try:
+            return await handle_rate_limit_retry(_make_request, retry_count=retry_count)
+        except RateLimitExceeded as e:
+            self._track_rate_limit(url, e.wait_seconds, e.message)
+            raise
             
     async def post(self, url: str, data: Dict[str, Any], use_csrf: bool = True, retry_count: int = 3) -> Any:
         """Generic method for making POST requests with rate limit handling"""
@@ -100,7 +94,7 @@ class TriviaAPIClient:
                     response_data = await response.json()
                     
                     if response.status == 429:  # Rate limit exceeded
-                        await self._handle_rate_limit_response(response_data)
+                        await handle_rate_limit_response(response, response_data)
                         
                     response.raise_for_status()
                     return response_data

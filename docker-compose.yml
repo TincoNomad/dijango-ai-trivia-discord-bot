@@ -8,26 +8,16 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_ROOT_HOST: '%'
-      MYSQL_SSL_CERT: ${ENVIRONMENT:-development} == 'production' && '/etc/mysql/certs/server-cert.pem' || ''
-      MYSQL_SSL_KEY: ${ENVIRONMENT:-development} == 'production' && '/etc/mysql/certs/server-key.pem' || ''
-      MYSQL_SSL_CA: ${ENVIRONMENT:-development} == 'production' && '/etc/mysql/certs/ca.pem' || ''
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-      - ${ENVIRONMENT:-development} == 'production' && ./mysql/certs:/etc/mysql/certs || ''
-    command: >
-      mysqld
-      ${ENVIRONMENT:-development} == 'production' && 
-      --ssl-cert=/etc/mysql/certs/server-cert.pem 
-      --ssl-key=/etc/mysql/certs/server-key.pem
-      --ssl-ca=/etc/mysql/certs/ca.pem ||
-      --skip-ssl
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --skip-ssl
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       timeout: 20s
       retries: 10
       interval: 5s
@@ -41,16 +31,20 @@ services:
       - "8000:8000"
     environment:
       - DJANGO_SETTINGS_MODULE=api.django.dev
-      - ENVIRONMENT=${ENVIRONMENT}
-      - DEBUG=${DEBUG}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - DEBUG=${DEBUG:-True}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_HOST=db
       - MYSQL_PORT=${MYSQL_PORT}
       - SECRET_KEY=${SECRET_KEY}
       - SIGNING_KEY=${SIGNING_KEY}
       - DISCORD_KEY=${DISCORD_KEY}
+      - API_BASE_URL=${API_BASE_URL:-http://web:8000}
+      - MYSQL_SSL_CA=${MYSQL_SSL_CA:-}
+      - MYSQL_SSL_CERT=${MYSQL_SSL_CERT:-}
+      - MYSQL_SSL_KEY=${MYSQL_SSL_KEY:-}
     depends_on:
       db:
         condition: service_healthy
@@ -61,9 +55,9 @@ services:
     volumes:
       - .:/app
     environment:
-      - DJANGO_SETTINGS_MODULE=api.django.dev
-      - ENVIRONMENT=${ENVIRONMENT}
-      - DEBUG=${DEBUG}
+      - DJANGO_SETTINGS_MODULE=api.django.${ENVIRONMENT:-development}
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - DEBUG=${DEBUG:-True}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
@@ -78,3 +72,4 @@ services:
 
 volumes:
   mysql_data:
+    driver: local

@@ -15,6 +15,14 @@ class TriviaGame:
         self.difficulty_choice: Optional[int] = None
         self.theme_choices: Dict[int, Dict[str, Any]] = {}
         
+    async def handle_rate_limit(self, e: RateLimitExceeded) -> str:
+        """Format user-friendly rate limit messages"""
+        wait_time = e.wait_seconds
+        if wait_time > 60:
+            minutes = wait_time // 60
+            return f"⏳ Please wait {minutes} minutes before trying again. The bot is cooling down."
+        return f"⏳ Please wait {wait_time} seconds before trying again. The bot is cooling down."
+        
     async def initialize(self) -> None:
         """Initialize the trivia game by fetching necessary data"""
         try:
@@ -23,8 +31,9 @@ class TriviaGame:
             _, self.theme_choices = await get_theme_list()
             game_logger.info("Trivia game initialized successfully")
         except RateLimitExceeded as e:
-            game_logger.warning(f"Rate limit exceeded during initialization: {e.message}")
-            raise
+            error_msg = await self.handle_rate_limit(e)
+            game_logger.warning(f"Rate limit during initialization: {error_msg}")
+            raise RateLimitExceeded(e.wait_seconds, error_msg, e.retry_after)
         except Exception as e:
             game_logger.error(f"Failed to initialize trivia game: {e}")
             raise
@@ -46,30 +55,16 @@ class TriviaGame:
             difficulty_list, _ = await get_difficulty_list()
             return theme_list, difficulty_list
         except RateLimitExceeded as e:
-            game_logger.warning(f"Rate limit exceeded while getting options: {e.message}")
-            raise
+            error_msg = await self.handle_rate_limit(e)
+            game_logger.warning(f"Rate limit getting options: {error_msg}")
+            raise RateLimitExceeded(e.wait_seconds, error_msg, e.retry_after)
         except Exception as e:
             game_logger.error(f"Error getting game options: {e}")
             raise
     
     async def get_trivia(self, theme_id: str, difficulty_level: int) -> Tuple[str, int]:
-        """
-        Get trivia questions filtered by theme and difficulty
-        
-        Args:
-            theme_id: Theme identifier
-            difficulty_level: Difficulty level
-            
-        Returns:
-            Tuple[str, int]: Trivia list and count
-            
-        Raises:
-            RateLimitExceeded: If API rate limit is exceeded
-            Exception: For other errors
-        """
         try:
             filtered_trivias = await self.api_client.get_filtered_trivias(theme_id, difficulty_level)
-            
             game_logger.debug(f"Filtered trivias: {filtered_trivias}")
             
             if not filtered_trivias:
@@ -80,20 +75,26 @@ class TriviaGame:
                 for idx, trivia in enumerate(filtered_trivias)
             )
             
-            self.current_trivia = filtered_trivias
             return trivia_list, len(filtered_trivias)
                 
         except RateLimitExceeded as e:
-            game_logger.warning(f"Rate limit exceeded while getting trivia: {e.message}")
-            raise
+            error_msg = await self.handle_rate_limit(e)
+            game_logger.warning(
+                f"Rate limit hit for theme={theme_id}, difficulty={difficulty_level}: {error_msg}"
+            )
+            return error_msg, 0
         except Exception as e:
-            game_logger.error(f"Error obtaining trivias: {e}")
+            game_logger.error(f"Error getting trivia: {e}")
             raise
     
     async def get_trivia_info(self, trivia_id: str) -> Dict[str, Any]:
         """Gets detailed information about a trivia"""
         try:
             return await self.api_client.get_trivia_info(trivia_id)
+        except RateLimitExceeded as e:
+            error_msg = await self.handle_rate_limit(e)
+            game_logger.warning(f"Rate limit getting trivia info: {error_msg}")
+            raise RateLimitExceeded(e.wait_seconds, error_msg, e.retry_after)
         except Exception as e:
             game_logger.error(f"Error getting trivia info: {e}")
             raise
@@ -110,6 +111,10 @@ class TriviaGame:
             game_logger.info(f"Retrieved {len(questions)} questions for trivia {trivia_id}")
             return questions
             
+        except RateLimitExceeded as e:
+            error_msg = await self.handle_rate_limit(e)
+            game_logger.warning(f"Rate limit getting questions: {error_msg}")
+            raise RateLimitExceeded(e.wait_seconds, error_msg, e.retry_after)
         except Exception as e:
             game_logger.error(f"Error getting trivia questions: {e}")
             raise

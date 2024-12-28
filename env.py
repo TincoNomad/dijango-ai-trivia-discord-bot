@@ -3,8 +3,11 @@ import os
 
 # Initialize environ
 env = environ.Env(
+    # Environment & Debug settings
     ENVIRONMENT=(str, 'development'),
     DEBUG=(bool, True),
+    
+    # Core settings
     SECRET_KEY=(str, None),
     SIGNING_KEY=(str, None),
 )
