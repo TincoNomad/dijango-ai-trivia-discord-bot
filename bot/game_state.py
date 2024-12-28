@@ -26,8 +26,8 @@ class PlayerGame:
 class GameState:
     def __init__(self):
         self.user_states: Dict[str, UserState] = {}
-        self.active_games: Dict[int, PlayerGame] = {}  # user_id -> PlayerGame
-        self.user_selections: Dict[int, Dict[str, Any]] = {}  # user_id -> {theme, difficulty, etc}
+        self.active_games: Dict[int, PlayerGame] = {}  
+        self.user_selections: Dict[int, Dict[str, Any]] = {} 
 
     def start_process(self, user_id: str, process_type: ProcessType, channel_id: str) -> None:
         """Start a process for a user"""

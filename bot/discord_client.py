@@ -8,6 +8,7 @@ from discord.ext import commands
 from .trivia_game import TriviaGame
 from .api_client import RateLimitExceeded
 from .utils.logging_bot import bot_logger
+from .commands.trivia_cog import TriviaCog  # Add this import
 
 class DiscordClient(commands.Bot):
     """
@@ -56,6 +57,7 @@ class DiscordClient(commands.Bot):
         """Initialize bot components and load commands"""
         try:
             await self.trivia_game.initialize()
+            await self.add_cog(TriviaCog(self))  # Add this line
             bot_logger.info("Bot initialized successfully")
         except RateLimitExceeded as e:
             bot_logger.warning(f"Rate limit during initialization: {e.message}")

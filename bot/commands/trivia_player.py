@@ -5,6 +5,8 @@ from ..utils.logging_bot import command_logger
 from asyncio import TimeoutError
 import discord
 import asyncio
+from api.django import TRIVIA_URL
+
 
 class TriviaPlayer:
     def __init__(self, client: Client):
@@ -431,4 +433,24 @@ Ready!? 🚀"""
                 
         finally:
             self._cleanup_game(user_id)
-            await message.channel.send("Thanks for playing! You can start a new game anytime with $trivia") 
+            await message.channel.send("Thanks for playing! You can start a new game anytime with $trivia")
+
+    async def handle_list_trivias(self, message: Message) -> None:
+        """Display available public trivias"""
+        try:
+            trivias = await self.trivia_game.api_client.get(TRIVIA_URL)
+            
+            if not trivias:
+                await message.channel.send("❌ No trivias available.")
+                return
+                
+            trivia_list = "\n".join(
+                f"{i+1}. {trivia['title']} - Difficulty: {trivia['difficulty']}"
+                for i, trivia in enumerate(trivias)
+            )
+            
+            await message.channel.send(f"📚 Available Trivias:\n```\n{trivia_list}\n```")
+            
+        except Exception as e:
+            command_logger.error(f"Error listing trivias: {e}")
+            await message.channel.send("❌ Error fetching trivia list.")

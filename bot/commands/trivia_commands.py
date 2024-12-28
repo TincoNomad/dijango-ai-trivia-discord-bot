@@ -37,8 +37,8 @@ class TriviaCommands:
         await self.game_handler.handle_stop_game(message)
         
     async def handle_list_trivias(self, message: Message) -> None:
-        """Route list trivias command to updater"""
-        await self.trivia_updater.handle_list_trivias(message)
+        """Route trivia listing command to game handler"""
+        await self.game_handler.handle_list_trivias(message)
         
     async def handle_update_trivia(self, message: Message) -> None:
         """Route update trivia command to updater"""

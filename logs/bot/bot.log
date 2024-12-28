@@ -4676,3 +4676,15 @@ Exception Value: Trivia() got unexpected keyword arguments: &#x27;username&#x27;
 2024-12-28 05:17:01,786 - discord_bot - ERROR - Error during bot initialization: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
 2024-12-28 05:30:06,722 - discord_bot - WARNING - SSL verification disabled - Development environment detected
 2024-12-28 05:30:06,732 - discord_bot - ERROR - Error during bot initialization: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
+2024-12-28 15:31:26,152 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 15:31:26,174 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 15:31:26,183 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 15:31:26,196 - discord_bot - INFO - Bot initialized successfully
+2024-12-28 15:43:12,257 - discord_bot - ERROR - Command error: Command "trivias" is not found
+2024-12-28 15:43:36,707 - discord_bot - ERROR - Command error: Command "trivia" is not found
+2024-12-28 17:35:44,498 - discord_bot - ERROR - Command error: Command "trivia" is not found
+2024-12-28 20:02:29,381 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 20:02:29,416 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 20:02:29,424 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-28 20:02:29,434 - discord_bot - INFO - Bot initialized successfully
+2024-12-28 20:03:05,794 - discord_bot - WARNING - SSL verification disabled - Development environment detected
