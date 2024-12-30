@@ -62,10 +62,18 @@ class Trivia(models.Model):
         related_name='trivias', 
         verbose_name=_('Theme')
     )
+    language = models.ForeignKey(
+        'Language',
+        on_delete=models.CASCADE,
+        related_name='trivias',
+        verbose_name=_('Language'),
+        null=True,  
+        default=None 
+    )
     url = models.URLField(_('URL'), null=True, blank=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, 
-        on_delete=models.SET_NULL,  # If user is deleted, trivia remains
+        on_delete=models.SET_NULL, 
         related_name='trivias_created', 
         verbose_name=_('Created By'),
         null=True,
@@ -171,3 +179,19 @@ class Answer(models.Model):
     def __str__(self):
         """String representation of answer"""
         return self.answer_title
+
+class Language(models.Model):
+    """
+    Model for trivia languages.
+    
+    Features:
+    - UUID primary key
+    - Unique language names
+    """
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(_('Name'), max_length=100, unique=True)
+    code = models.CharField(_('Language Code'), max_length=2, unique=True)
+
+    def __str__(self):
+        return self.name

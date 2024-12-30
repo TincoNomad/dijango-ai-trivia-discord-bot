@@ -13,7 +13,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql:delegated
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --skip-ssl
     healthcheck:
@@ -21,10 +21,18 @@ services:
       timeout: 20s
       retries: 10
       interval: 5s
+    deploy:
+      resources:
+        limits:
+          memory: 1G
 
   web:
     build: .
-    command: ./entrypoint.sh
+    command: >
+      sh -c "
+        python manage.py migrate &&
+        ./entrypoint.sh
+      "
     volumes:
       - .:/app
     ports:
@@ -51,7 +59,11 @@ services:
 
   bot:
     build: .
-    command: ./bot-entrypoint.sh
+    command: >
+      sh -c "
+        sleep 30 &&  # Increased delay to allow migrations
+        ./bot-entrypoint.sh
+      "
     volumes:
       - .:/app
     environment:
@@ -67,8 +79,10 @@ services:
       - SIGNING_KEY=${SIGNING_KEY}
       - DISCORD_KEY=${DISCORD_KEY}
     depends_on:
-      - web
-      - db
+      db:
+        condition: service_healthy
+      web:
+        condition: service_started
 
 volumes:
   mysql_data:

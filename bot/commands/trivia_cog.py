@@ -14,7 +14,7 @@ class TriviaCog(commands.Cog):
     @commands.command()
     async def list_trivia(self, ctx: commands.Context):
         """Show available trivias"""
-        await self.trivia_commands.handle_list_trivias(ctx.message)  # Fixed method name
+        await self.trivia_commands.handle_list_trivias(ctx.message)
 
     @commands.command()
     async def score(self, ctx: commands.Context):

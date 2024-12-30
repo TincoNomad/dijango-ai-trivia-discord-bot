@@ -2171,3 +2171,215 @@ ValueError: too many values to unpack (expected 2)
 2024-12-28 15:31:26,159 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
 2024-12-28 20:02:29,392 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
 2024-12-28 20:03:05,844 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-28 22:23:58,518 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-28 22:23:58,553 - django.request - ERROR - Internal Server Error: /api/trivias/
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/backends/mysql/base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/MySQLdb/cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/MySQLdb/cursors.py", line 330, in _query
+    db.query(q)
+  File "/usr/local/lib/python3.12/site-packages/MySQLdb/connections.py", line 261, in query
+    _mysql.connection.query(self, query)
+MySQLdb.OperationalError: (1054, "Unknown column 'trivia_trivia.language_id' in 'field list'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/viewsets.py", line 124, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/api/apps/trivia/viewsets.py", line 182, in list
+    return super().list(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/mixins.py", line 46, in list
+    return Response(serializer.data)
+                    ^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 795, in data
+    ret = super().data
+          ^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 249, in data
+    self._data = self.to_representation(self.instance)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/rest_framework/serializers.py", line 714, in to_representation
+    self.child.to_representation(item) for item in iterable
+                                                   ^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 400, in __iter__
+    self._fetch_all()
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 1928, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/query.py", line 91, in __iter__
+    results = compiler.execute_sql(
+              ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/models/sql/compiler.py", line 1574, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/local/lib/python3.12/site-packages/django/db/backends/utils.py", line 122, in execute
+    return super().execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/backends/utils.py", line 79, in execute
+    return self._execute_with_wrappers(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/backends/utils.py", line 92, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/backends/utils.py", line 100, in _execute
+    with self.db.wrap_database_errors:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/usr/local/lib/python3.12/site-packages/django/db/backends/utils.py", line 105, in _execute
+    return self.cursor.execute(sql, params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/django/db/backends/mysql/base.py", line 76, in execute
+    return self.cursor.execute(query, args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/MySQLdb/cursors.py", line 179, in execute
+    res = self._query(mogrified_query)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/site-packages/MySQLdb/cursors.py", line 330, in _query
+    db.query(q)
+  File "/usr/local/lib/python3.12/site-packages/MySQLdb/connections.py", line 261, in query
+    _mysql.connection.query(self, query)
+django.db.utils.OperationalError: (1054, "Unknown column 'trivia_trivia.language_id' in 'field list'")
+2024-12-30 16:43:20,140 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:43:20,142 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:43:30,454 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:43:30,465 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:43:40,648 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:43:40,654 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:43:50,928 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:43:50,930 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:44:01,279 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:44:01,281 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:44:11,619 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:44:11,621 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:44:22,062 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:44:22,064 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:44:32,333 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:44:32,343 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:44:42,861 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:44:42,862 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:44:53,798 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:44:53,801 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:45:04,222 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:45:04,226 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:45:14,792 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:45:14,794 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:45:25,254 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:45:25,268 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:45:35,982 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:45:36,061 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:45:46,709 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:45:46,836 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:45:57,175 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:45:57,176 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:46:07,576 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:46:07,578 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:46:18,160 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:46:18,163 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:46:28,301 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:46:28,303 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:46:39,204 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:46:39,210 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:46:49,665 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:46:49,665 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:47:00,519 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:47:00,610 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:47:10,706 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:47:10,706 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:47:21,333 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:47:21,336 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:47:31,946 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:47:31,948 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:47:42,054 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:47:42,059 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:47:52,116 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:47:52,116 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:48:02,265 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:48:02,267 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:48:12,575 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:48:12,575 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:48:22,698 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:48:22,698 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:48:32,832 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:48:32,833 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:48:43,144 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:48:43,144 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:48:53,391 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:48:53,391 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:49:03,482 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:49:03,483 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:49:13,750 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:49:13,755 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:49:23,838 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:49:23,838 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:49:33,909 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:49:33,909 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:49:44,004 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:49:44,004 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:49:54,095 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:49:54,097 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:50:04,155 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:50:04,155 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:50:14,202 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:50:14,203 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:50:24,250 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:50:24,250 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:50:34,305 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:50:34,305 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:50:44,354 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:50:44,354 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:50:54,412 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:50:54,413 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:51:04,460 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:51:04,460 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:51:14,514 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:51:14,514 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:51:24,570 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:51:24,570 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:51:34,631 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:51:34,631 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:51:44,691 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:51:44,691 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:51:54,866 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:51:54,867 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:52:05,273 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:52:05,273 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:52:15,536 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:52:15,536 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:52:25,699 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:52:25,699 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:52:35,867 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:52:35,867 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 16:52:46,115 - asyncio - ERROR - Error in MonitoringMiddleware: (1146, "Table 'trivia_db.monitoring_errorlog' doesn't exist")
+2024-12-30 16:52:46,116 - django.request - WARNING - Not Found: /api/health/
+2024-12-30 17:56:36,667 - django.utils.autoreload - INFO - /app/api/apps/trivia/models.py changed, reloading.
+2024-12-30 17:57:07,643 - django.utils.autoreload - INFO - /app/api/apps/trivia/models.py changed, reloading.
+2024-12-30 18:01:32,173 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-30 18:37:51,190 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
