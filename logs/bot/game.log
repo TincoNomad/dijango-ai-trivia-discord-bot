@@ -135,3 +135,8 @@
 2024-12-30 16:53:54,132 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
 2024-12-30 17:49:04,249 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Connect call failed ('172.18.0.3', 8000)]
 2024-12-30 18:01:32,464 - game_interactions - INFO - Trivia game initialized successfully
+2024-12-30 18:46:16,479 - game_interactions - INFO - Trivia game initialized successfully
+2024-12-30 18:52:15,920 - game_interactions - INFO - Trivia game initialized successfully
+2024-12-30 18:54:58,402 - game_interactions - INFO - Trivia game initialized successfully
+2024-12-30 21:18:15,419 - game_interactions - INFO - Trivia game initialized successfully
+2024-12-30 21:21:34,535 - game_interactions - INFO - Trivia game initialized successfully

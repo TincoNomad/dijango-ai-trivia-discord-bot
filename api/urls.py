@@ -30,7 +30,8 @@ from .apps.users.viewsets import UserViewSet
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import HttpResponse
 from django.views import View
-from .apps.trivia.views import GetQuestions  # Importar la vista
+from .apps.trivia.views import GetQuestions 
+from .apps.monitoring.views import health_check
 
 # Configure router to make trailing slashes optional
 class OptionalSlashRouter(DefaultRouter):
@@ -82,6 +83,9 @@ urlpatterns = [
     
     # Agregar la ruta para questions
     re_path(r'^api/questions/(?P<trivia_id>[^/.]+)/?$', GetQuestions.as_view(), name='get-questions'),
+    
+    # Health check endpoint
+    re_path(r'^health/?$', health_check, name='health-check'),
 ]
 
 # Static/Media files serving in development

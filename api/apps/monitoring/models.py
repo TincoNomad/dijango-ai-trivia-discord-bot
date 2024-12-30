@@ -68,3 +68,11 @@ class ErrorLog(models.Model):
             models.Index(fields=['timestamp']),
             models.Index(fields=['error_type'])
         ]
+
+class HealthCheck(models.Model):
+    timestamp = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=20)
+    details = models.JSONField()
+    
+    class Meta:
+        ordering = ['-timestamp']
