@@ -1,0 +1,10 @@
+migrations:
+  logging:
+    enabled: ${MIGRATIONS_LOGGING_ENABLED}
+    level: ${MIGRATIONS_LOGGING_LEVEL}
+  validation:
+    check_db_connection: ${MIGRATIONS_VALIDATION_CHECK_DB}
+    check_dependencies: ${MIGRATIONS_VALIDATION_CHECK_DEPS}
+  performance:
+    batch_size: ${MIGRATIONS_PERFORMANCE_BATCH_SIZE}
+    use_transactions: ${MIGRATIONS_PERFORMANCE_USE_TRANSACTIONS}

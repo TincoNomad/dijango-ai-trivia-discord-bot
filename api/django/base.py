@@ -272,3 +272,19 @@ CSP_IMG_SRC = ("'self'",)
 SESSION_COOKIE_SECURE = True
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Strict'
+
+# Migrations Configuration
+MIGRATIONS_CONFIG = {
+    'logging': {
+        'enabled': env('MIGRATIONS_LOGGING_ENABLED', default=True),
+        'level': env('MIGRATIONS_LOGGING_LEVEL', default='INFO'),
+    },
+    'validation': {
+        'check_db_connection': env('MIGRATIONS_VALIDATION_CHECK_DB', default=True),
+        'check_dependencies': env('MIGRATIONS_VALIDATION_CHECK_DEPS', default=True),
+    },
+    'performance': {
+        'batch_size': env('MIGRATIONS_PERFORMANCE_BATCH_SIZE', default=1000),
+        'use_transactions': env('MIGRATIONS_PERFORMANCE_USE_TRANSACTIONS', default=True),
+    }
+}
