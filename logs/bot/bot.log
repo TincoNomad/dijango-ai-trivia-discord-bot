@@ -4724,3 +4724,8 @@ Exception Value: Trivia() got unexpected keyword arguments: &#x27;username&#x27;
 2024-12-30 21:22:12,118 - discord_bot - WARNING - SSL verification disabled - Development environment detected
 2024-12-31 00:55:29,046 - discord_bot - WARNING - SSL verification disabled - Development environment detected
 2024-12-31 00:55:29,248 - discord_bot - ERROR - Error during bot initialization: Cannot connect to host web:8000 ssl:default [Name or service not known]
+2024-12-31 21:48:33,428 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-31 22:04:07,995 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-31 22:04:08,407 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-31 22:04:08,478 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2024-12-31 22:04:08,693 - discord_bot - INFO - Bot initialized successfully

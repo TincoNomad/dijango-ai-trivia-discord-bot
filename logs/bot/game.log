@@ -141,3 +141,4 @@
 2024-12-30 21:18:15,419 - game_interactions - INFO - Trivia game initialized successfully
 2024-12-30 21:21:34,535 - game_interactions - INFO - Trivia game initialized successfully
 2024-12-31 00:55:29,247 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Name or service not known]
+2024-12-31 22:04:08,689 - game_interactions - INFO - Trivia game initialized successfully

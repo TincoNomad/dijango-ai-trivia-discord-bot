@@ -2389,3 +2389,4 @@ django.db.utils.OperationalError: (1054, "Unknown column 'trivia_trivia.language
 2024-12-30 21:18:14,843 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
 2024-12-30 21:21:34,433 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
 2024-12-30 21:22:12,379 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2024-12-31 22:04:08,016 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
