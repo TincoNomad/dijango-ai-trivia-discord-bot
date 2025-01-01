@@ -30,6 +30,7 @@ from django.contrib.auth import get_user_model
 from api.utils.jwt_utils import get_user_id_by_username
 from django.db import transaction
 import uuid
+from api.utils.cache_utils import cache_viewset_action
 
 User = get_user_model()
 
@@ -102,9 +103,18 @@ class TriviaViewSet(viewsets.ModelViewSet):
             )
             raise
 
+    @cache_viewset_action()
     @action(detail=False, methods=['get'])
     def get_trivia(self, request):
-        """Obtiene información general de la trivia (sin preguntas)"""
+        """
+        Get general trivia information without questions.
+        Cached to improve performance for frequently accessed trivias.
+        
+        Cache Strategy:
+        - TTL: 15 minutes
+        - Key: Based on trivia_id parameter
+        - Invalidated: On trivia update
+        """
         trivia_id = request.query_params.get('id')
         if not trivia_id:
             return Response(
@@ -130,13 +140,17 @@ class TriviaViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
 
+    @cache_viewset_action()
     @action(detail=False, methods=['get'])
     def difficulty(self, request):
         """
         Get available difficulty options.
+        Cached since difficulty options rarely change.
         
-        Returns:
-            Response: Dictionary of difficulty choices
+        Cache Strategy:
+        - TTL: 15 minutes
+        - Key: Static for all users
+        - Invalidated: Only when difficulty choices change
         """
         try:
             difficulties = dict(Trivia.DIFFICULTY_CHOICES)
@@ -338,3 +352,7 @@ class ThemeViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Theme.objects.all()
     serializer_class = ThemeSerializer
+
+    @cache_viewset_action()
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)

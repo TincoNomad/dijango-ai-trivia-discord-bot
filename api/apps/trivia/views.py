@@ -22,6 +22,7 @@ from api.utils.logging_utils import log_exception, logger
 from uuid import UUID
 from rest_framework import status
 from api.utils.throttling import CustomUserRateThrottle, CustomAnonRateThrottle
+from api.utils.cache_utils import cache_response
 
 class GetQuestions(APIView):
     """
@@ -38,9 +39,16 @@ class GetQuestions(APIView):
     throttle_classes = [CustomUserRateThrottle, CustomAnonRateThrottle]
     
     @log_exception
+    @cache_response()
     def get(self, request, trivia_id: str, format=None):
         """
         Get questions for a specific trivia.
+        Cached to improve performance and reduce database load.
+        
+        Cache Strategy:
+        - TTL: 15 minutes
+        - Key: Based on trivia_id
+        - Invalidated: When questions are updated
         
         Args:
             request: HTTP request

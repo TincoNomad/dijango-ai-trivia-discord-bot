@@ -26,6 +26,7 @@ from django.utils.decorators import method_decorator
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import ensure_csrf_cookie
 from api.utils.throttling import CustomUserRateThrottle, CustomAnonRateThrottle
+from api.utils.cache_utils import cache_viewset_action
 
 @method_decorator(csrf_exempt, name='dispatch')
 class LeaderBoardViewSet(viewsets.ModelViewSet):
@@ -92,16 +93,17 @@ class LeaderBoardViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
+    @cache_viewset_action()
     @action(detail=False, methods=['get'], url_path='all')
     def all_leaderboards(self, request):
         """
         Get all leaderboards with creator information.
+        Cached to reduce database load for frequent leaderboard queries.
         
-        GET /api/leaderboards/all/
-        
-        Returns:
-            200: List of all leaderboards with details
-            500: Server error details
+        Cache Strategy:
+        - TTL: 15 minutes
+        - Key: Global for all users
+        - Invalidated: When new leaderboards are created
         """
         try:
             leaderboards = LeaderBoard.objects.all()
@@ -117,12 +119,16 @@ class LeaderBoardViewSet(viewsets.ModelViewSet):
             logger.error(f"Error retrieving all leaderboards: {str(e)}")
             raise
 
+    @cache_viewset_action()
     def list(self, request, *args, **kwargs):
         """
-        GET /api/leaderboards/?channel=channel_name
-        or
-        GET /api/leaderboards/?discord_channel=channel_name
-        Returns: Only name and points of top 10 scores
+        List top 10 scores for a specific channel.
+        Cached to optimize frequent leaderboard views.
+        
+        Cache Strategy:
+        - TTL: 15 minutes
+        - Key: Based on channel parameter
+        - Invalidated: When scores are updated
         """
         discord_channel = request.query_params.get('channel') or request.query_params.get('discord_channel')
         if not discord_channel:
