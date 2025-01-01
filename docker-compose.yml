@@ -1,4 +1,3 @@
-version: '3.8'
 
 # Service definitions for Trivia application
 # - db: MySQL database server
