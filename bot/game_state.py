@@ -23,7 +23,31 @@ class PlayerGame:
     total_questions: int = 5
     leaderboard_id: Optional[str] = None
 
+"""
+Game State Management
+
+Tracks active games, processes and user states.
+
+Features:
+- Process tracking (games, creation, updates)
+- User state management
+- Game progress tracking
+"""
+
 class GameState:
+    """
+    Manages game and process states.
+    
+    Features:
+    - User process tracking
+    - Game session management
+    - State validation
+    
+    Attributes:
+        user_states (Dict[str, UserState]): Active user processes
+        active_games (Dict[int, PlayerGame]): Running game sessions
+        user_selections (Dict[int, Dict[str, Any]]): User choices
+    """
     def __init__(self):
         self.user_states: Dict[str, UserState] = {}
         self.active_games: Dict[int, PlayerGame] = {}  

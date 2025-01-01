@@ -1,24 +1,33 @@
 """
-Discord Client Module
+Discord Bot Client
 
-This module handles Discord bot interactions and game flow.
+Manages Discord interactions and command routing.
+
+Features:
+- Command handling through Cogs
+- Error management with logging
+- Rate limit handling
+- Game state coordination
 """
 
 from discord.ext import commands
 from .trivia_game import TriviaGame
 from .api_client import RateLimitExceeded
 from .utils.logging_bot import bot_logger
-from .commands.trivia_cog import TriviaCog  # Add this import
+from .commands.trivia_cog import TriviaCog
 
 class DiscordClient(commands.Bot):
     """
-    Discord bot client for handling trivia game interactions.
+    Discord bot client with trivia game functionality.
     
     Features:
-    - Command handling
-    - Error management
-    - Rate limit handling
-    - Game state tracking
+    - Automated game flow management
+    - Rate limit handling with user feedback
+    - Error logging and recovery
+    - Command routing through Cogs
+    
+    Attributes:
+        trivia_game (TriviaGame): Game mechanics handler
     """
     
     def __init__(self, command_prefix: str, **options):
@@ -57,7 +66,7 @@ class DiscordClient(commands.Bot):
         """Initialize bot components and load commands"""
         try:
             await self.trivia_game.initialize()
-            await self.add_cog(TriviaCog(self))  # Add this line
+            await self.add_cog(TriviaCog(self))
             bot_logger.info("Bot initialized successfully")
         except RateLimitExceeded as e:
             bot_logger.warning(f"Rate limit during initialization: {e.message}")

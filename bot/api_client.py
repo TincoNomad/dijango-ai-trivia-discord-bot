@@ -13,7 +13,36 @@ from .utils.rate_limits import (
     handle_rate_limit_retry
 )
 
+"""
+API Client for Trivia Bot
+
+Handles all API interactions with rate limiting and error handling.
+
+Features:
+- CRUD operations for trivias
+- Score management
+- Leaderboard tracking
+- Theme management
+- Rate limit handling
+"""
+
 class TriviaAPIClient:
+    """
+    Manages API interactions with rate limiting and retries.
+    
+    Features:
+    - Automatic rate limit tracking
+    - Request retries with exponential backoff
+    - CSRF token management
+    - SSL verification toggle for development
+    
+    Attributes:
+        session (Optional[aiohttp.ClientSession]): Active API session
+        csrf_token (Optional[str]): Current CSRF token
+        base_url (str): API base URL
+        ssl_verify (bool): Whether to verify SSL certificates
+        rate_limits (Dict[str, float]): Rate limit expiry times by endpoint
+    """
     def __init__(self) -> None:
         self.session: Optional[aiohttp.ClientSession] = None
         self.csrf_token: Optional[str] = None

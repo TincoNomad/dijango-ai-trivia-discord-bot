@@ -1,3 +1,15 @@
+"""
+Trivia Game Logic
+
+Manages game mechanics and scoring.
+
+Features:
+- Question management
+- Score calculation
+- Theme and difficulty handling
+- Game progression tracking
+"""
+
 from typing import Tuple, List, Dict, Any, Optional
 from .api_client import TriviaAPIClient, RateLimitExceeded
 from .utils.logging_bot import game_logger
@@ -7,6 +19,22 @@ from api.django import TRIVIA_URL
 POINTS_PER_CORRECT_ANSWER = 10
 
 class TriviaGame:
+    """
+    Core game mechanics handler.
+    
+    Features:
+    - Question retrieval and validation
+    - Score tracking
+    - Game flow control
+    - Rate limit handling
+    
+    Attributes:
+        api_client (TriviaAPIClient): API interaction handler
+        game_data (List[Dict[str, Any]]): Active game data
+        current_trivia (List[Dict[str, Any]]): Current trivia questions
+        difficulty_choices (Dict[int, str]): Available difficulties
+        theme_choices (Dict[int, Dict[str, Any]]): Available themes
+    """
     def __init__(self) -> None:
         self.api_client = TriviaAPIClient()
         self.game_data: List[Dict[str, Any]] = []

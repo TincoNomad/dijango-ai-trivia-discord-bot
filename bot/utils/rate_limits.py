@@ -1,3 +1,12 @@
+"""
+Rate limiting utilities for API interactions.
+
+Provides:
+- Rate limit exception handling
+- Exponential backoff implementation
+- Retry mechanisms for rate-limited requests
+"""
+
 import logging
 from typing import Optional
 import asyncio
@@ -7,7 +16,14 @@ from aiohttp import ClientResponse
 logger = logging.getLogger(__name__)
 
 class RateLimitExceeded(Exception):
-    """Custom exception for rate limit handling"""
+    """
+    Exception raised when API rate limits are hit.
+
+    Attributes:
+        wait_seconds (int): Seconds to wait before retry
+        message (str): Error message
+        retry_after (str): Raw retry-after header value
+    """
     def __init__(self, wait_seconds: int, message: str, retry_after: Optional[str] = None):
         self.wait_seconds = wait_seconds
         self.message = message
@@ -15,7 +31,16 @@ class RateLimitExceeded(Exception):
         super().__init__(message)
 
 async def handle_rate_limit_response(response: ClientResponse, response_data: dict) -> None:
-    """Handle rate limit responses from API"""
+    """
+    Process rate limit response from API.
+
+    Args:
+        response (ClientResponse): API response object
+        response_data (dict): Parsed response data
+
+    Raises:
+        RateLimitExceeded: With retry information
+    """
     retry_after = response.headers.get('Retry-After')
     wait_seconds = int(retry_after) if retry_after else 60
     message = response_data.get('message', 'Rate limit exceeded')

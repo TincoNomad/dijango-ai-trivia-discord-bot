@@ -1,3 +1,12 @@
+"""
+Bot Entry Point
+
+Configures and launches the Discord bot with required intents.
+
+Usage:
+    python -m bot.main
+"""
+
 import discord
 from env import env
 from bot.discord_client import DiscordClient
