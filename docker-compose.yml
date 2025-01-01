@@ -1,7 +1,16 @@
 version: '3.8'
 
+# Service definitions for Trivia application
+# - db: MySQL database server
+# - redis: Cache and message broker
+# - celery: Async task worker
+# - web: Django API server
+# - bot: Discord bot service
+
 services:
   db:
+    # MySQL database service configuration
+    # Handles persistent data storage with configurable credentials
     image: mysql:8.0
     restart: always
     environment:
@@ -27,6 +36,8 @@ services:
           memory: 1G
 
   redis:
+    # Redis service for caching and Celery broker
+    # Configured with persistence and health checks
     image: redis:alpine
     ports:
       - "6379:6379"
@@ -44,6 +55,8 @@ services:
           memory: 256M
 
   celery:
+    # Celery worker for async task processing
+    # Handles background jobs like cleanup tasks
     build: .
     command: celery -A api worker -l info
     volumes:
@@ -53,6 +66,8 @@ services:
       - web
 
   web:
+    # Django API service
+    # Provides REST endpoints for trivia game functionality
     build: .
     command: >
       sh -c "
@@ -107,6 +122,8 @@ services:
         condition: service_healthy
 
   bot:
+    # Discord bot service
+    # Interfaces with Discord and communicates with API
     build: .
     command: >
       sh -c "
