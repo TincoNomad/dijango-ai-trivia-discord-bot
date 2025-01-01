@@ -6,7 +6,25 @@ import json
 import discord
 from typing import List, Dict, Any
 
+"""
+Handles the creation of new trivia games.
+
+This module manages the interactive process of creating new trivias including:
+- Title validation
+- Theme selection/creation
+- Question/answer collection
+- Difficulty setting
+"""
+
 class TriviaCreator:
+    """
+    Manages the interactive creation of new trivia games.
+    
+    Attributes:
+        client (Client): Discord client instance
+        trivia_game (TriviaGame): Game mechanics handler
+    """
+
     def __init__(self, client: Client):
         self.client = client
         self.trivia_game = TriviaGame()
@@ -235,7 +253,18 @@ class TriviaCreator:
             await message.author.send("An error occurred while creating the trivia. Please try again.")
 
     async def get_valid_title(self, author) -> str:
-        """Gets a valid title for the trivia, handling duplicates"""
+        """
+        Gets a unique title for a new trivia.
+        
+        Args:
+            author: Discord user creating the trivia
+            
+        Returns:
+            str: Validated unique title
+            
+        Raises:
+            TimeoutError: If user takes too long to respond
+        """
         # Primero obtenemos y mostramos los títulos existentes
         existing_titles = set()
         async with self.trivia_game.api_client:
@@ -282,3 +311,31 @@ class TriviaCreator:
             
             await author.send("✅ Title is available!")
             return title
+
+"""
+Handles active trivia game sessions.
+
+This module manages the gameplay mechanics including:
+- Question presentation
+- Answer validation
+- Score tracking
+- Game state management
+"""
+
+class TriviaPlayer:
+    """
+    Manages active trivia game sessions and player interactions.
+    
+    Attributes:
+        trivia_game (TriviaGame): Game mechanics handler
+        game_state (GameState): Tracks active games
+        client (Client): Discord client instance
+    """
+
+    async def _handle_game_start(self, message: Message):
+        """
+        Initiates a new game session.
+        
+        Args:
+            message (Message): Discord message that triggered the game
+        """

@@ -16,6 +16,24 @@ The settings can be overridden by environment-specific files (dev.py, prod.py).
 
 Note:
     Secret values and environment-specific settings are loaded from env.py
+
+Celery Configuration:
+--------------------
+Celery is configured but inactive. To activate:
+
+1. Start Redis server:
+   $ brew services start redis
+
+2. Start Celery worker:
+   $ celery -A api worker -l info
+
+3. For periodic tasks, start Celery beat:
+   $ celery -A api beat -l info
+
+Note:
+    - Current broker URL: redis://localhost:6379/0
+    - Tasks location: api/tasks/
+    - Ensure Redis is installed and running before activation
 """
 
 import os
@@ -108,6 +126,28 @@ DATABASES = {
         }
     }
 }
+
+# Redis Cache Configuration
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": env('REDIS_URL', default="redis://127.0.0.1:6379/1"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SOCKET_CONNECT_TIMEOUT": 5,
+            "SOCKET_TIMEOUT": 5,
+            "RETRY_ON_TIMEOUT": True,
+            "MAX_CONNECTIONS": 1000,
+            "PARSER_CLASS": "redis.connection.HiredisParser",
+        }
+    }
+}
+
+# Cache time to live is 15 minutes by default
+CACHE_TTL = env('CACHE_TTL', default=60 * 15)
+
+# Cache key prefix to avoid collisions
+CACHE_KEY_PREFIX = env('CACHE_KEY_PREFIX', default='trivia_api')
 
 # JWT Authentication settings
 SIMPLE_JWT = {
@@ -288,3 +328,11 @@ MIGRATIONS_CONFIG = {
         'use_transactions': env('MIGRATIONS_PERFORMANCE_USE_TRANSACTIONS', default=True),
     }
 }
+
+# Celery Configuration (Inactive but ready)
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'

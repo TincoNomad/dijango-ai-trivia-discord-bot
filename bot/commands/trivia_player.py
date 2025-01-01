@@ -8,7 +8,25 @@ import asyncio
 from api.django import TRIVIA_URL
 
 
+"""
+Handles active trivia game sessions.
+
+This module manages the gameplay mechanics including:
+- Question presentation
+- Answer validation
+- Score tracking
+- Game state management
+"""
+
 class TriviaPlayer:
+    """
+    Manages active trivia game sessions and player interactions.
+    
+    Attributes:
+        trivia_game (TriviaGame): Game mechanics handler
+        game_state (GameState): Tracks active games
+        client (Client): Discord client instance
+    """
     def __init__(self, client: Client):
         self.trivia_game = TriviaGame()
         self.game_state = GameState()
@@ -54,6 +72,12 @@ class TriviaPlayer:
                 self._cleanup_game(user_id)
 
     async def _handle_game_start(self, message: Message):
+        """
+        Initiates a new game session.
+        
+        Args:
+            message (Message): Discord message that triggered the game
+        """
         await message.author.send("Welcome to the trivia game! Type 'go' to start.")
         
         try:

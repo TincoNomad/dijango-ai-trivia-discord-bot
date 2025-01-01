@@ -4,7 +4,28 @@ from ..utils.logging_bot import command_logger
 from typing import Dict, Any, List, Optional
 from ..game_state import GameState, ProcessType
 
+"""
+Handles updating existing trivia games.
+
+Manages the interactive process of updating trivia attributes including:
+- Title validation
+- Theme updates
+- Difficulty changes 
+- Questions/answers modifications
+"""
+
 class TriviaUpdater:
+    """
+    Manages the interactive updating of existing trivia games.
+
+    Provides methods for validating and processing updates to trivia attributes
+    through Discord DM interactions.
+
+    Attributes:
+        client (Client): Discord client instance
+        api_client (TriviaAPIClient): API interaction handler
+        game_state (GameState): Process state tracker
+    """
     def __init__(self, client: Client, game_state: GameState):
         self.client = client
         self.api_client = TriviaAPIClient()
@@ -68,7 +89,19 @@ class TriviaUpdater:
             return False
 
     async def handle_update_trivia(self, message: Message) -> None:
-        """Handles updating a trivia through DM"""
+        """
+        Handles the main trivia update flow through DM interaction.
+
+        Guides user through selecting a trivia and updating desired attributes.
+        Validates input and manages the update process state.
+
+        Args:
+            message (Message): The Discord message that triggered the update
+
+        Raises:
+            TimeoutError: If user takes too long to respond
+            Exception: For API or validation errors
+        """
         user_id = str(message.author.id)
         
         # Check if user can start update process

@@ -1,3 +1,12 @@
+"""
+Command handlers for trivia game functionality.
+
+This module contains the core logic for processing trivia commands including:
+- Game flow control
+- Creation/update operations
+- Score tracking
+"""
+
 from discord import Message, Client
 from .trivia_player import TriviaPlayer
 from .trivia_creator import TriviaCreator
@@ -6,11 +15,22 @@ from ..game_state import GameState, ProcessType
 
 
 class TriviaCommands:
+    """
+    Handles processing and routing of trivia game commands.
+    
+    Attributes:
+        game_state (GameState): Current game state tracker
+        game_handler (TriviaPlayer): Handles active game logic
+        trivia_creator (TriviaCreator): Handles trivia creation
+        trivia_updater (TriviaUpdater): Handles trivia updates
+    """
+
     def __init__(self, client: Client):
-        self.game_state = GameState()
-        self.game_handler = TriviaPlayer(client)
-        self.trivia_creator = TriviaCreator(client)
-        self.trivia_updater = TriviaUpdater(client, self.game_state)
+        # Initialize command handlers
+        self.game_state = GameState()  # Tracks active games and processes
+        self.game_handler = TriviaPlayer(client)  # Handles gameplay
+        self.trivia_creator = TriviaCreator(client)  # Handles creation
+        self.trivia_updater = TriviaUpdater(client, self.game_state)  # Handles updates
         
     async def handle_trivia(self, message: Message) -> None:
         """Route trivia game command to game handler"""

@@ -1,14 +1,38 @@
+"""
+Discord Cog for handling trivia game commands.
+
+This cog provides command handlers for all trivia-related functionality including:
+- Starting/stopping games
+- Creating/updating trivias
+- Showing scores and listings
+"""
+
 from discord.ext import commands
 from .trivia_commands import TriviaCommands
 
 class TriviaCog(commands.Cog):
+    """
+    Cog that handles all trivia-related commands and events.
+    
+    Attributes:
+        bot (commands.Bot): The Discord bot instance
+        trivia_commands (TriviaCommands): Handler for trivia command logic
+    """
+
     def __init__(self, bot: commands.Bot):
+        """
+        Initialize the TriviaCog.
+
+        Args:
+            bot (commands.Bot): The Discord bot instance
+        """
         self.bot = bot
         self.trivia_commands = TriviaCommands(bot)
 
+    # Command handlers with descriptive docstrings
     @commands.command()
     async def trivia(self, ctx: commands.Context):
-        """Start a trivia game"""
+        """Start a new trivia game session."""
         await self.trivia_commands.handle_trivia(ctx.message)
 
     @commands.command()
