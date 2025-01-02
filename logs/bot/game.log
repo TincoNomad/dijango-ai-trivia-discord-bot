@@ -142,3 +142,5 @@
 2024-12-30 21:21:34,535 - game_interactions - INFO - Trivia game initialized successfully
 2024-12-31 00:55:29,247 - game_interactions - ERROR - Failed to initialize trivia game: Cannot connect to host web:8000 ssl:default [Name or service not known]
 2024-12-31 22:04:08,689 - game_interactions - INFO - Trivia game initialized successfully
+2025-01-02 15:37:29,750 - game_interactions - ERROR - Failed to initialize trivia game: 500, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url='http://web:8000/api/trivias/'
+2025-01-02 18:03:13,653 - game_interactions - INFO - Trivia game initialized successfully

@@ -4732,3 +4732,10 @@ Exception Value: Trivia() got unexpected keyword arguments: &#x27;username&#x27;
 2024-12-31 22:11:41,183 - discord_bot - WARNING - SSL verification disabled - Development environment detected
 2024-12-31 22:11:55,792 - discord_bot - WARNING - SSL verification disabled - Development environment detected
 2024-12-31 22:11:55,976 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2025-01-02 15:37:29,507 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2025-01-02 15:37:29,751 - discord_bot - ERROR - Error during bot initialization: 500, message='Attempt to decode JSON with unexpected mimetype: text/html; charset=utf-8', url='http://web:8000/api/trivias/'
+2025-01-02 18:03:12,620 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2025-01-02 18:03:12,728 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2025-01-02 18:03:12,947 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2025-01-02 18:03:13,656 - discord_bot - INFO - Bot initialized successfully
+2025-01-02 18:04:21,089 - discord_bot - WARNING - SSL verification disabled - Development environment detected

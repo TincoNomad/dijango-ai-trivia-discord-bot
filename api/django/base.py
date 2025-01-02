@@ -59,9 +59,9 @@ ALLOWED_HOSTS: List[str] = []
 # These settings will be automatically adjusted based on the environment
 # In development (DEBUG=True): These will be overridden to be more permissive
 # In production (DEBUG=False): These strict security settings will be used
-SECURE_SSL_REDIRECT = not DEBUG  # Only force HTTPS in production
+SECURE_SSL_REDIRECT = not DEBUG  #c Only force HTTPS in production
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https' if not DEBUG else 'http')
-SESSION_COOKIE_SECURE = not DEBUG  # Only require HTTPS cookies in production
+SESSION_COOKIE_SECUREl = not DEBUG  # Only require HTTPS cookies in production
 CSRF_COOKIE_SECURE = not DEBUG     # Only require HTTPS CSRF in production
 SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0  # HSTS only in production
 SECURE_HSTS_INCLUDE_SUBDOMAINS = not DEBUG  # Include subdomains only in production
@@ -131,14 +131,14 @@ DATABASES = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": env('REDIS_URL', default="redis://127.0.0.1:6379/1"),
+        "LOCATION": env('REDIS_URL', default="redis://redis:6379/1"),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PARSER_CLASS": "redis.connection.DefaultParser",
             "SOCKET_CONNECT_TIMEOUT": 5,
             "SOCKET_TIMEOUT": 5,
             "RETRY_ON_TIMEOUT": True,
-            "MAX_CONNECTIONS": 1000,
-            "PARSER_CLASS": "redis.connection.HiredisParser",
+            "MAX_CONNECTIONS": 100,
         }
     }
 }
