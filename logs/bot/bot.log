@@ -4739,3 +4739,8 @@ Exception Value: Trivia() got unexpected keyword arguments: &#x27;username&#x27;
 2025-01-02 18:03:12,947 - discord_bot - WARNING - SSL verification disabled - Development environment detected
 2025-01-02 18:03:13,656 - discord_bot - INFO - Bot initialized successfully
 2025-01-02 18:04:21,089 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2025-01-02 20:43:40,736 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2025-01-02 20:43:40,893 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2025-01-02 20:43:40,917 - discord_bot - WARNING - SSL verification disabled - Development environment detected
+2025-01-02 20:43:41,006 - discord_bot - INFO - Bot initialized successfully
+2025-01-02 20:44:18,871 - discord_bot - WARNING - SSL verification disabled - Development environment detected

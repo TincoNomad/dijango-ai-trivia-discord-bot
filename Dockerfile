@@ -17,8 +17,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+COPY requirements.txt requirements-docker.txt ./
+RUN pip install -r requirements.txt && \
+    pip install -r requirements-docker.txt
 
 # Copy application code
 COPY . .

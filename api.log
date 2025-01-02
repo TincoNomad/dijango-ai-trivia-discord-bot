@@ -7901,3 +7901,5 @@ Traceback (most recent call last):
 redis.exceptions.ConnectionError: Error -2 connecting to redis:6379. Name or service not known.
 2025-01-02 18:03:12,646 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
 2025-01-02 18:04:21,121 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2025-01-02 20:43:40,831 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
+2025-01-02 20:44:18,896 - api.utils.logging_utils - INFO - Anonymous access: querying public trivias
