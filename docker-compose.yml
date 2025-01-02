@@ -114,7 +114,7 @@ services:
   bot:
     # Discord bot service
     # Interfaces with Discord and communicates with API
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     entrypoint: ["./bot-entrypoint.sh"]

@@ -8,15 +8,16 @@ Usage:
 """
 
 import discord
-from env import env
+
 from bot.discord_client import DiscordClient
+from env import env
 
 # Set up Discord bot connection
 intents = discord.Intents.default()
 intents.message_content = True
 
 # Initialize bot with command prefix '$'
-client = DiscordClient(command_prefix='$', intents=intents)
+client = DiscordClient(command_prefix="$", intents=intents)
 
 # Run the Discord bot
-client.run(env('DISCORD_KEY')) #type: ignore
+client.run(env("DISCORD_KEY"))  # type: ignore

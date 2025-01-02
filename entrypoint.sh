@@ -14,7 +14,7 @@ set -e
 # Database connection check function
 wait_for_db() {
     echo "🔄 Waiting for MySQL..."
-    
+
     # Verify MySQL connection
     while ! python -c "import MySQLdb; MySQLdb.connect(
         host='db',
@@ -25,7 +25,7 @@ wait_for_db() {
         echo "⏳ MySQL is unavailable - sleeping"
         sleep 1
     done
-    
+
     echo "✅ MySQL connected"
 }
 

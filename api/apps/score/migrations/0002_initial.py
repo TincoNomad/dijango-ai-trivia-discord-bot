@@ -6,23 +6,32 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('score', '0001_initial'),
+        ("score", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='leaderboard',
-            name='created_by',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='leaderboards', to=settings.AUTH_USER_MODEL, verbose_name='Created By'),
+            model_name="leaderboard",
+            name="created_by",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="leaderboards",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Created By",
+            ),
         ),
         migrations.AddField(
-            model_name='score',
-            name='leaderboard',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='scores', to='score.leaderboard', verbose_name='LeaderBoard'),
+            model_name="score",
+            name="leaderboard",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="scores",
+                to="score.leaderboard",
+                verbose_name="LeaderBoard",
+            ),
         ),
     ]

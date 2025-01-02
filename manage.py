@@ -20,19 +20,19 @@ import sys
 def main():
     """
     Main function that runs administrative tasks.
-    
+
     This function:
     1. Sets the Django settings module
     2. Imports and executes Django management commands
     3. Handles import errors with helpful messages
-    
+
     Returns:
         None
-    
+
     Raises:
         ImportError: If Django is not installed or PYTHONPATH is not set correctly
     """
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'api.django.base')
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.django.base")
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
@@ -44,5 +44,5 @@ def main():
     execute_from_command_line(sys.argv)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

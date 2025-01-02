@@ -12,9 +12,12 @@ This module verifies:
 """
 
 import pytest
-from .test_base import MonitoringBaseTest
-from api.apps.monitoring.models import RequestLog, ErrorLog
+
+from api.apps.monitoring.models import ErrorLog, RequestLog
 from api.django import TRIVIA_URL
+
+from .test_base import MonitoringBaseTest
+
 
 @pytest.mark.django_db
 class TestMonitoringIntegration(MonitoringBaseTest):
@@ -28,20 +31,23 @@ class TestMonitoringIntegration(MonitoringBaseTest):
         yield
         self.cleanup_logs()
 
-    @pytest.mark.parametrize("endpoint,method,expected_status", [
-        ('/api/users/', 'GET', 200),
-        ('/api/score/', 'POST', 200),
-        ('/api/nonexistent/', 'GET', 404)
-    ])
+    @pytest.mark.parametrize(
+        "endpoint,method,expected_status",
+        [
+            ("/api/users/", "GET", 200),
+            ("/api/score/", "POST", 200),
+            ("/api/nonexistent/", "GET", 404),
+        ],
+    )
     def test_endpoint_logging(self, endpoint, method, expected_status):
         """
         Verify logging for different endpoints.
-        
+
         Args:
             endpoint (str): Endpoint URL to test
             method (str): HTTP method (GET, POST)
             expected_status (int): Expected status code
-            
+
         Verifies:
             - Correct log creation
             - Log fields match request
@@ -49,7 +55,8 @@ class TestMonitoringIntegration(MonitoringBaseTest):
         """
         # Act
         response = (
-            self.client.get(endpoint) if method == 'GET'
+            self.client.get(endpoint)
+            if method == "GET"
             else self.client.post(endpoint, {})
         )
 
@@ -73,28 +80,30 @@ class TestMonitoringIntegration(MonitoringBaseTest):
         """Verify logging for authenticated requests"""
         # Arrange
         endpoint = TRIVIA_URL
-        
+
         # Act
         api_client_authenticated.get(endpoint)
-        
+
         # Assert
-        log = RequestLog.objects.filter(path__endswith='/api/trivias/').first()
+        log = RequestLog.objects.filter(path__endswith="/api/trivias/").first()
         assert log is not None
         assert log.status_code == 200
 
-    def test_request_with_data_logging(self, api_client_authenticated, test_leaderboard):
+    def test_request_with_data_logging(
+        self, api_client_authenticated, test_leaderboard
+    ):
         """Verify logging for requests with data"""
         # Arrange
-        endpoint = '/api/score/'
+        endpoint = "/api/score/"
         test_data = {
-            'name': 'test',
-            'points': 100,
-            'discord_channel': test_leaderboard.discord_channel
+            "name": "test",
+            "points": 100,
+            "discord_channel": test_leaderboard.discord_channel,
         }
-        
+
         # Act
-        api_client_authenticated.post(endpoint, test_data, format='json')
-        
+        api_client_authenticated.post(endpoint, test_data, format="json")
+
         # Assert
         log = RequestLog.objects.filter(path=endpoint).first()
         assert log is not None

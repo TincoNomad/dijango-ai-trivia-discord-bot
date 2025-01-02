@@ -10,8 +10,10 @@ Tests cover:
 """
 
 import pytest
-from .test_score_base import BaseScoreTest, LeaderboardTestMixin
+
 from .factories import LeaderBoardFactory, ScoreFactory
+from .test_score_base import BaseScoreTest, LeaderboardTestMixin
+
 
 @pytest.mark.django_db
 class TestLeaderboardOperations(BaseScoreTest, LeaderboardTestMixin):
@@ -24,7 +26,7 @@ class TestLeaderboardOperations(BaseScoreTest, LeaderboardTestMixin):
 
     def setup_test_data(self):
         """Set up initial test data"""
-        self.url = '/api/leaderboards/'
+        self.url = "/api/leaderboards/"
 
     def teardown_test_data(self):
         """Clean up test data"""
@@ -36,9 +38,7 @@ class TestLeaderboardOperations(BaseScoreTest, LeaderboardTestMixin):
         leaderboard = leaderboard_with_scores
 
         # Act
-        response = api_client.get(
-            f"{self.url}?channel={leaderboard.discord_channel}"
-        )
+        response = api_client.get(f"{self.url}?channel={leaderboard.discord_channel}")
 
         # Assert
         self.assert_leaderboard_response(response, 200)
@@ -48,7 +48,7 @@ class TestLeaderboardOperations(BaseScoreTest, LeaderboardTestMixin):
         """Test retrieving a non-existent leaderboard"""
         # Act
         response = api_client.get(f"{self.url}?channel=nonexistent")
-        
+
         # Assert
         assert response.status_code == 404
 
@@ -60,19 +60,21 @@ class TestLeaderboardOperations(BaseScoreTest, LeaderboardTestMixin):
 
         # Act
         response = api_client.get(f"{self.url}?channel={leaderboard.discord_channel}")
-        
+
         # Assert
         scores = response.data
         assert all(
-            scores[i]['points'] >= scores[i+1]['points'] 
-            for i in range(len(scores)-1)
+            scores[i]["points"] >= scores[i + 1]["points"]
+            for i in range(len(scores) - 1)
         )
 
     def test_get_leaderboard_by_id(self, api_client, test_leaderboard):
         """Test retrieving leaderboard by ID"""
         # Act
-        response = api_client.get(f"{self.url}get_leaderboard/?id={test_leaderboard.id}")
-        
+        response = api_client.get(
+            f"{self.url}get_leaderboard/?id={test_leaderboard.id}"
+        )
+
         # Assert
         assert response.status_code == 200
-        assert response.data['leaderboard_id'] == str(test_leaderboard.id)
+        assert response.data["leaderboard_id"] == str(test_leaderboard.id)

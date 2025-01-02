@@ -12,21 +12,32 @@ Features:
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+
 from .models import CustomUser
+
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     """
     Admin configuration for CustomUser model.
-    
+
     Extends Django's UserAdmin to include:
     - Role and verification status in list display
     - Custom field grouping
     - Additional filters
     """
-    
-    list_display = ('username', 'email', 'role', 'is_verified', 'login_attempts')
-    list_filter = ('role', 'is_verified')
+
+    list_display = (
+        "username",
+        "email",
+        "role",
+        "is_verified",
+        "login_attempts",
+    )
+    list_filter = ("role", "is_verified")
     fieldsets = UserAdmin.fieldsets + (
-        ('Custom Fields', {'fields': ('role', 'is_verified', 'login_attempts')}),
+        (
+            "Custom Fields",
+            {"fields": ("role", "is_verified", "login_attempts")},
+        ),
     )

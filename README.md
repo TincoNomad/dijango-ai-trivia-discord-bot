@@ -1,2 +1,2 @@
 # triviaPlatziBot
-Bot de trivia para servidor de Discord de Platzi 
+Bot de trivia para servidor de Discord de Platzi
