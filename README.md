@@ -1,4 +1,4 @@
-# TriviaPlatziBot
+# Dijango-Trivia-Discord-Bot
 
 [![Python](https://img.shields.io/badge/python-v3.8+-blue.svg)](https://www.python.org/)
 [![Django](https://img.shields.io/badge/django-5.1.2+-green.svg)](https://www.djangoproject.com/)
