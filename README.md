@@ -15,27 +15,21 @@ A sophisticated Discord bot for interactive trivia games built with Python, Djan
     - Real-time score tracking and leaderboards
     - Theme-based question categories
 
-- **Modern Architecture**
-    - REST API with Django REST Framework
-    - Asynchronous Discord bot using discord.py
-    - Clean architecture with separation of concerns
+- **System Capabilities**
+    - Real-time interaction handling
     - Comprehensive logging and monitoring
+    - Score tracking and statistics
+    - Multi-server support
 
-- **Security & Performance**
-    - JWT token authentication
-    - CSRF protection and rate limiting
-    - Database query optimization
-    - Docker containerization
+## 🛠️ Technology Stack & Architecture
 
-## 🛠️ Technology Stack
-
-- **Backend**
-    - Django 5.1.2+
-    - Django REST Framework
+- **Backend (Django REST API)**
+    - Django 5.1.2+ with REST Framework
     - MySQL 8.0
+    - JWT authentication & CSRF protection
     - Docker & Docker Compose
 
-- **Bot**
+- **Discord Bot**
     - Discord.py
     - Aiohttp
     - Python 3.8+
@@ -117,9 +111,6 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📝 License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🔍 Additional Information
-For more detailed information about implementation and architecture decisions, please refer to the documentation in the docs directory.
-
 Built with ❤️ by Renzo **Tinconomad** Tincopa
 
 ## 📊 Codebase Architecture
@@ -134,3 +125,52 @@ graph TD
     B -->|Security| G[CSRF Protection]
     B -->|Performance| H[Rate Limiting]
 ```
+
+## 📁 Project Structure
+
+### Backend API
+api/
+├── core/
+│   ├── migrations/
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── serializers.py
+│   ├── urls.py
+│   └── views.py
+├── trivia/
+│   ├── migrations/
+│   ├── admin.py
+│   ├── apps.py
+│   ├── models.py
+│   ├── serializers.py
+│   ├── urls.py
+│   └── views.py
+├── config/
+│   ├── settings/
+│   │   ├── base.py
+│   │   ├── local.py
+│   │   └── production.py
+│   ├── urls.py
+│   └── wsgi.py
+├── manage.py
+├── requirements.txt
+└── README.md
+
+### Discord Bot
+
+bot/
+├── cogs/
+│   ├── __init__.py
+│   ├── trivia.py
+│   └── admin.py
+├── utils/
+│   ├── __init__.py
+│   ├── api_client.py
+│   └── helpers.py
+├── config/
+│   ├── __init__.py
+│   └── settings.py
+├── main.py
+├── requirements.txt
+└── README.md
