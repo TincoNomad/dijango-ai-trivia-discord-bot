@@ -20,9 +20,14 @@ staticfiles/
 .vscode/
 *.swp
 *.swo
+*.code-workspace
 
 # macOS
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
 
 # Testing
 .coverage
@@ -38,3 +43,19 @@ build/
 logs/
 *.pem
 *.key
+
+# Logs & Coverage
+logs/
+.coverage
+coverage/
+htmlcov/
+
+# Cache
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Static & Media
+staticfiles/
+media/
