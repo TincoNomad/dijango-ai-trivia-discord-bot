@@ -129,6 +129,7 @@ graph TD
 ## 📁 Project Structure
 
 ### Backend API
+```
 api/
 ├── core/
 │   ├── migrations/
@@ -156,9 +157,10 @@ api/
 ├── manage.py
 ├── requirements.txt
 └── README.md
+```
 
 ### Discord Bot
-
+```
 bot/
 ├── cogs/
 │   ├── __init__.py
@@ -174,3 +176,4 @@ bot/
 ├── main.py
 ├── requirements.txt
 └── README.md
+```
